@@ -11,7 +11,7 @@ public class User {
     private String homeTown;
     private Image pfp;
     private Set<User> friends;
-    private TreeSet posts;
+    private Tree posts;
 
 
     public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends, TreeSet posts)
@@ -48,13 +48,7 @@ public class User {
 
     public void displayUserInfo()
     {
-        System.out.println();
-        System.out.println(getID());
-        System.out.println(getName());
-        System.out.println(getWorkPlace());
-        System.out.println(getHomeTown());
-        System.out.println(getPfp());
-        System.out.println();
+        Menu.displayUserPage(name, ID, workPlace, homeTown, pfp, friends, posts);
     }
 
     public void displayPosts()
