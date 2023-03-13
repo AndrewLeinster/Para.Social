@@ -1,5 +1,5 @@
 import java.util.Set;
-import java.util.TreeSet;
+
 import java.util.HashSet;
 import java.awt.*;
 
@@ -14,7 +14,8 @@ public class User {
     private Tree posts;
 
 
-    public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends, TreeSet posts)
+
+    public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends, Tree posts)
     {
         this.name = name;
         this.ID = ID;
@@ -33,7 +34,7 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-        posts = new TreeSet(comparator Post.getTimePosted);
+        posts = null;
     }
 
     public void displayFriends()
@@ -46,9 +47,31 @@ public class User {
         }
     }
 
+    public String getFriendInfo()
+    {
+        User[] friendList = friends.toArray(new User[friends.size()]);
+        String friendInfo = "";
+        for (int i = 0; i < friendList.length; i++)
+        {
+           
+           friendInfo += "\n" + friendList[i].getUserInfo();
+        }
+        return friendInfo;
+    }
+
     public void displayUserInfo()
     {
         Menu.displayUserPage(name, ID, workPlace, homeTown, pfp, friends, posts);
+    }
+
+    /**
+     * Returns the user details as a string
+     * @return The user information as a string
+     */
+    public String getUserInfo()
+    {
+        String userInfo = "ID:" + ID + "\nName: " + name + "\nWorkplace: " + workPlace + "\nHome Town: " + homeTown;
+        return userInfo;
     }
 
     public void displayPosts()
@@ -144,7 +167,7 @@ public class User {
         return friends;
     }
 
-    public void setFriends(HashSet<User> friends)
+    public void setFriends(Set<User> friends)
     {
         this.friends = friends;
     }
