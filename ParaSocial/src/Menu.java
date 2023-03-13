@@ -10,13 +10,10 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,9 +21,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.border.EtchedBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.Set;
+import java.util.HashSet;
 
 
 public class Menu {
@@ -36,7 +32,10 @@ public class Menu {
     private JLabel titleLabel;
     private JButton displayButton, friendsButton;
     private JFormattedTextField textField;
-    User user1 = new User();
+    User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
+    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
+    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
+   
 
     /**
      * Constructor for menu class
@@ -54,6 +53,12 @@ public class Menu {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("para.social");
         window.setVisible(true);
+
+        Set<User> friends1 = new HashSet<User>();
+        friends1.add(user2);
+        friends1.add(user3);
+        user1.setFriends(friends1);
+    
     }
 
       /**
@@ -117,17 +122,17 @@ public class Menu {
         displayButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                JOptionPane.showMessageDialog(displayButton, "Display details");
-                user1.displayUserInfo();
+                JOptionPane.showMessageDialog(displayButton, user1.getUserInfo());
+               
             }
         });
 
         //action listener for display friends
-        displayButton.addActionListener(new ActionListener() {
+        friendsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                JOptionPane.showMessageDialog(displayButton, "Display friends");
-                user1.displayFriends();
+                JOptionPane.showMessageDialog(displayButton, user1.getFriendInfo());
+                
             }
         });
     }

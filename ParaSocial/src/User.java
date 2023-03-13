@@ -1,5 +1,5 @@
 import java.util.Set;
-import java.util.TreeSet;
+//import java.util.TreeSet;
 import java.util.HashSet;
 import java.awt.*;
 
@@ -11,10 +11,10 @@ public class User {
     private String homeTown;
     private Image pfp;
     private Set<User> friends;
-    private TreeSet posts;
+   // private TreeSet posts;
 
 
-    public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends, TreeSet posts)
+    public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends)
     {
         this.name = name;
         this.ID = ID;
@@ -22,7 +22,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-        this.posts = null;
+       // this.posts = null;
     }
 
     public User()
@@ -33,7 +33,6 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-        posts = new TreeSet(comparator Post.getTimePosted);
     }
 
     public void displayFriends()
@@ -46,6 +45,18 @@ public class User {
         }
     }
 
+    public String getFriendInfo()
+    {
+        User[] friendList = friends.toArray(new User[friends.size()]);
+        String friendInfo = "";
+        for (int i = 0; i < friendList.length; i++)
+        {
+           
+           friendInfo += "\n" + friendList[i].getUserInfo();
+        }
+        return friendInfo;
+    }
+
     public void displayUserInfo()
     {
         System.out.println();
@@ -55,6 +66,16 @@ public class User {
         System.out.println(getHomeTown());
         System.out.println(getPfp());
         System.out.println();
+    }
+
+    /**
+     * Returns the user details as a string
+     * @return The user information as a string
+     */
+    public String getUserInfo()
+    {
+        String userInfo = "ID:" + ID + "\nName: " + name + "\nWorkplace: " + workPlace + "\nHome Town: " + homeTown;
+        return userInfo;
     }
 
     public void displayPosts()
@@ -150,7 +171,7 @@ public class User {
         return friends;
     }
 
-    public void setFriends(HashSet<User> friends)
+    public void setFriends(Set<User> friends)
     {
         this.friends = friends;
     }
