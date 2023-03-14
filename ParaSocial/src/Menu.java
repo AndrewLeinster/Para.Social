@@ -32,9 +32,11 @@ public class Menu {
     private JLabel titleLabel;
     private JButton displayButton, friendsButton;
     private JFormattedTextField textField;
-    User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
-    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
-    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
+    private Tree allPosts;
+    private Set<User> allUsers;
+    User user1 = new User("Dave", "12345", "a place", "dundee", null, null, null);
+    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null, null);
+    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null, null);
    
 
     /**
@@ -187,5 +189,30 @@ public class Menu {
 	    textPanel.setBackground(Color.lightGray);
 	    return textPanel;
 	  }
+
+      public void postsPanel()
+      {
+
+        BorderLayout layout = new BorderLayout();
+        topPanel = new JPanel(layout);
+        mainPanel = new JPanel();
+        mainPanel.setBackground(Color.decode("0xF5CCE8"));
+    
+        // add main panel to top panel
+        topPanel.add(mainPanel, BorderLayout.CENTER);
+
+        allPosts.postorderDisplay(allPosts.getRoot());
+
+      }
+
+      public void displayPost(Post p)
+      {
+
+        topPanel.add(); //add the Username of who posted it
+        topPanel.add(); //add the image
+        topPanel.add(); //the caption
+        topPanel.add(); //like button
+
+      }
 
 }
