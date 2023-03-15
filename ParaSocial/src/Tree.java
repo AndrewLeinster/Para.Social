@@ -119,7 +119,7 @@ public class Tree {
 
 			found = true;
 			System.out.println("Item Found");
-			current.displayNode(); //displays the node once found
+			Menu.displayPost(current.getItem()); //displays the node once found
 
 		} else if (target < ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getLeftNode() != null) {
 
@@ -216,7 +216,7 @@ public class Tree {
 
 		if (current != null && current.getItem() != null) {
 			inorderDisplay(current.getLeftNode()); //traverses the tree
-			current.displayNode(); //displays the current node
+			Menu.displayPosts(current.getItem()); //displays the current node
 			inorderDisplay(current.getRightNode());
 		}
 
@@ -233,7 +233,7 @@ public class Tree {
 		if (current != null && current.getItem() != null) {
 			inorderDisplay(current.getLeftNode()); //traverses the tree
 			inorderDisplay(current.getRightNode());
-			current.displayNode(); //displays the current node
+			Menu.displayPosts(current.getItem()); //displays the current node
 		}
 
 	}
@@ -247,7 +247,7 @@ public class Tree {
 	public void preorderDisplay(Node current) {
 
 		if (current != null && current.getItem() != null) {
-			current.displayNode(); //displays the current node
+			Menu.displayPosts(current.getItem()); //displays the current node
 			inorderDisplay(current.getLeftNode()); //traverses the tree
 			inorderDisplay(current.getRightNode());
 		}

@@ -1,5 +1,4 @@
 import java.util.Set;
-
 import java.util.HashSet;
 import java.awt.*;
 
@@ -12,7 +11,6 @@ public class User {
     private Image pfp;
     private Set<User> friends;
     private Tree posts;
-
 
 
     public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends, Tree posts)
@@ -47,36 +45,15 @@ public class User {
         }
     }
 
-    public String getFriendInfo()
-    {
-        User[] friendList = friends.toArray(new User[friends.size()]);
-        String friendInfo = "";
-        for (int i = 0; i < friendList.length; i++)
-        {
-           
-           friendInfo += "\n" + friendList[i].getUserInfo();
-        }
-        return friendInfo;
-    }
-
     public void displayUserInfo()
     {
-        Menu.displayUserPage(name, ID, workPlace, homeTown, pfp, friends, posts);
-    }
-
-    /**
-     * Returns the user details as a string
-     * @return The user information as a string
-     */
-    public String getUserInfo()
-    {
-        String userInfo = "ID:" + ID + "\nName: " + name + "\nWorkplace: " + workPlace + "\nHome Town: " + homeTown;
-        return userInfo;
-    }
-
-    public void displayPosts()
-    {
-
+        System.out.println();
+        System.out.println(getID());
+        System.out.println(getName());
+        System.out.println(getWorkPlace());
+        System.out.println(getHomeTown());
+        System.out.println(getPfp());
+        System.out.println();
     }
 
     public Set<User> getMutuals(User a, User b)

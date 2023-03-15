@@ -2,6 +2,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.awt.*;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 
 public class Post {
 
@@ -27,6 +28,13 @@ public class Post {
         caption = null;
         numberOfLikes = 0;
         likedBy = null;
+    }
+
+    public void likePost(User a)
+    {
+        likedBy.add(a);
+        numberOfLikes = likedBy.size();
+        
     }
 
     public LocalDateTime getTimePosted()
@@ -67,6 +75,13 @@ public class Post {
     public void setNumberOfLikes(int numberOfLikes)
     {
         this.numberOfLikes = numberOfLikes;
+    }
+
+    public long getElapsedTime(LocalDateTime start, LocalDateTime end)
+    {
+        long elapsedTime = ChronoUnit.SECONDS.between(start, end);
+
+        return elapsedTime;
     }
 
     public Set<User> getLikedBy()
