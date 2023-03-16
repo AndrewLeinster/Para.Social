@@ -23,21 +23,26 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
 import java.util.HashSet;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.io.File;
 
 
-public class Menu {
+public class Menu{
 
     private JFrame window;
-    private JPanel topPanel, mainPanel, sidePanel;
-    private JLabel titleLabel;
-    private JButton displayButton, friendsButton;
+    private JPanel topPanel, mainPanel, leftPanel, rightPanel;
+    private JLabel titleLabel, profileLabel;
+    private JButton editButton, friendsButton;
     private JFormattedTextField textField;
     private Tree allPosts;
+    private ImageIcon profile1;
     private Set<User> allUsers;
-    User user1 = new User("Dave", "12345", "a place", "dundee", null, null, null);
+    User user1 = new User("Dave Smith", "12345", "a place", "dundee", null, null, null);
     User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null, null);
     User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null, null);
-   
+    
 
     /**
      * Constructor for menu class
@@ -54,12 +59,16 @@ public class Menu {
         window.setContentPane(topPanel);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("para.social");
+        window.setSize(1000, 700);
         window.setVisible(true);
+        window.pack();
 
         Set<User> friends1 = new HashSet<User>();
         friends1.add(user2);
         friends1.add(user3);
         user1.setFriends(friends1);
+
+        //user1.setPfp(profile1);
     
     }
 
@@ -103,40 +112,73 @@ public class Menu {
         BorderLayout layout = new BorderLayout();
         topPanel = new JPanel(layout);
         mainPanel = new JPanel();
-        mainPanel.setBackground(Color.decode("0xF5CCE8"));
+        rightPanel = new JPanel();
+        leftPanel = new JPanel();
+        mainPanel.setBackground(Color.decode("0x3d405b"));
+        rightPanel.setBackground(Color.decode("0x81b29a"));
+        leftPanel.setBackground(Color.decode("0xf2cc8f"));
     
-        // add main panel to top panel
+        // add main, left and right panels to top panel
         topPanel.add(mainPanel, BorderLayout.CENTER);
+        topPanel.add(rightPanel, BorderLayout.EAST);
+        topPanel.add(leftPanel, BorderLayout.WEST);
 
-        //create a JButton
-        displayButton = new JButton("Display user details");
-        displayButton.setBackground(Color.decode("0x9F6BA0"));
-        mainPanel.add(displayButton);
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
-        //create a JButton
-        friendsButton = new JButton("Display Friends");
-        friendsButton.setBackground(Color.decode("0x9F6BA0"));
-        mainPanel.add(friendsButton);
+        createFriendsPanel();
+        createProfilePanel();
+    }
 
-        mainPanel.add(createTextPanel());
+    /*
+  */
 
-        // action listener for the display button
-        displayButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                JOptionPane.showMessageDialog(displayButton, user1.getUserInfo());
-               
-            }
-        });
+    /**
+     * Method to create the right hand panel to display friends
+     */
+    public void createFriendsPanel()
+    {
+        rightPanel.add(createTextPanel());
+    }
 
-        //action listener for display friends
-        friendsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                JOptionPane.showMessageDialog(displayButton, user1.getFriendInfo());
-                
-            }
-        });
+    /**
+     * Create the left hand panel with all profile information
+     */
+    public void createProfilePanel()
+    {
+       // https://www.youtube.com/watch?v=ntirmRhy6Fw
+
+        //profile image - i hate :)
+        // reminder to put this in a try catch
+        // as a temporary fix, image has been moved to source code file
+        profile1 = new javax.swing.ImageIcon(getClass().getResource("Marcus.jpg"));
+        Image profileImage = profile1.getImage();
+        // https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
+        Image resized = profileImage.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resized);
+        profileLabel = new JLabel(resizedIcon);
+        leftPanel.add(profileLabel);
+
+        // add profile information
+        JLabel name = new JLabel(user1.getName());
+        name.setFont(new Font("Sans", Font.PLAIN, 20));
+        leftPanel.add(name);
+        JLabel id = new JLabel("ID: " + user1.getID());
+        id.setFont(new Font("Sans", Font.PLAIN, 16));
+        leftPanel.add(id);
+        JLabel work = new JLabel("Workplace: " + user1.getWorkPlace());
+        work.setFont(new Font("Sans", Font.PLAIN, 16));
+        leftPanel.add(work);
+        JLabel home = new JLabel("Hometown: " + user1.getHomeTown());
+        home.setFont(new Font("Sans", Font.PLAIN, 16));
+        leftPanel.add(home);
+
+        // Create a JButton to edit details
+	    editButton = new JButton("Edit Profile");
+	    editButton.setBackground(Color.decode("0xe07a5f"));
+	    leftPanel.add(editButton);
     }
 
     /**
@@ -180,7 +222,7 @@ public class Menu {
 	    
 	    // create a formatted text field called scaleField
 	    textField = new JFormattedTextField(new String("Search for a friend"));
-	    textField.setColumns(3);
+	    textField.setColumns(12);
 	   
 	   textPanel.add(titleLabel);
 	   textPanel.add(textField);
@@ -189,7 +231,8 @@ public class Menu {
 	    textPanel.setBackground(Color.lightGray);
 	    return textPanel;
 	  }
-
+    
+      /* 
       public void postsPanel()
       {
 
@@ -203,8 +246,9 @@ public class Menu {
 
         allPosts.postorderDisplay(allPosts.getRoot());
 
-      }
+      }*/
 
+      /*
       public void displayPost(Post p)
       {
 
@@ -214,5 +258,5 @@ public class Menu {
         topPanel.add(); //like button
 
       }
-
+      */
 }
