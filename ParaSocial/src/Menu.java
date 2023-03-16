@@ -54,7 +54,6 @@ public class Menu {
     window.setContentPane(topPanel);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setTitle("para.social");
-    // window.setSize(1000, 1000);
     window.setVisible(true);
     window.pack();
 
@@ -187,6 +186,7 @@ public class Menu {
           // Create JButtons to edit details
           leftPanel.add(profilePictureButton);
 
+          // change name
           leftPanel.add(nameButton);
           nameButton.addActionListener(new ActionListener() 
           {
@@ -231,7 +231,7 @@ public class Menu {
                 public void actionPerformed(ActionEvent e)
                  {
                   user1.setID(changeID.getText());
-                  id.setText(changeID.getText());
+                  id.setText("ID: " + changeID.getText());
                   leftPanel.remove(submitButton);
                   leftPanel.remove(changeID);
                 }
@@ -240,9 +240,59 @@ public class Menu {
 
           });
           
-
+          //change workplace
           leftPanel.add(workplaceButton);
+          workplaceButton.addActionListener(new ActionListener() 
+          {
+            public void actionPerformed(ActionEvent e) 
+            {
+              JTextField changeWorkPlace = new JTextField("Change your Workplace");
+              leftPanel.add(changeWorkPlace);
+
+              JButton submitButton = new JButton("Submit");
+              submitButton.setBackground(Color.decode("0xe07a5f"));
+              leftPanel.add(submitButton);
+              // add action listener to submit button
+              submitButton.addActionListener(new ActionListener() 
+              {
+                public void actionPerformed(ActionEvent e)
+                 {
+                  user1.setWorkPlace(changeWorkPlace.getText());
+                  work.setText("Workplace: " + changeWorkPlace.getText());
+                  leftPanel.remove(submitButton);
+                  leftPanel.remove(changeWorkPlace);
+                }
+              });
+            }
+
+          });
+
+          // change hometown 
           leftPanel.add(hometownButton);
+          hometownButton.addActionListener(new ActionListener() 
+          {
+            public void actionPerformed(ActionEvent e) 
+            {
+              JTextField changeHometown = new JTextField("Change your hometown");
+              leftPanel.add(changeHometown);
+
+              JButton submitButton = new JButton("Submit");
+              submitButton.setBackground(Color.decode("0xe07a5f"));
+              leftPanel.add(submitButton);
+              // add action listener to submit button
+              submitButton.addActionListener(new ActionListener() 
+              {
+                public void actionPerformed(ActionEvent e)
+                 {
+                  user1.setHomeTown(changeHometown.getText());
+                  home.setText("Hometown:" + changeHometown.getText());
+                  leftPanel.remove(submitButton);
+                  leftPanel.remove(changeHometown);
+                }
+              });
+            }
+
+          });
           displayed = true;
         }
         else{
