@@ -209,6 +209,7 @@ public class Menu {
                   leftPanel.remove(changeName);
                 }
               });
+              SwingUtilities.updateComponentTreeUI(window);
             }
 
           });
@@ -236,6 +237,7 @@ public class Menu {
                   leftPanel.remove(changeID);
                 }
               });
+              SwingUtilities.updateComponentTreeUI(window);
             }
 
           });
@@ -263,8 +265,9 @@ public class Menu {
                   leftPanel.remove(changeWorkPlace);
                 }
               });
+              SwingUtilities.updateComponentTreeUI(window);
             }
-
+            
           });
 
           // change hometown 
@@ -288,12 +291,15 @@ public class Menu {
                   home.setText("Hometown:" + changeHometown.getText());
                   leftPanel.remove(submitButton);
                   leftPanel.remove(changeHometown);
+                  
                 }
               });
+              SwingUtilities.updateComponentTreeUI(window);
             }
 
           });
           displayed = true;
+          SwingUtilities.updateComponentTreeUI(window);
         }
         else{
           leftPanel.remove(nameButton);
@@ -302,6 +308,7 @@ public class Menu {
           leftPanel.remove(hometownButton);
           leftPanel.remove(profilePictureButton);
           displayed = false;
+          SwingUtilities.updateComponentTreeUI(window);
         }
 
       }
