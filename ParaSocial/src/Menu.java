@@ -14,7 +14,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.File;
 
@@ -35,9 +34,6 @@ public class Menu {
   private boolean displayed, button;
   private JFileChooser chooser;
   private Main main;
-  // User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
-  // User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
-  // User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
   User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
   User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
   User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
@@ -49,7 +45,6 @@ public class Menu {
    * Constructor for menu class
    */
   public Menu() {
-
     user1.addFriend(user2.getID());
     user1.addFriend(user3.getID());
     user1.addFriend(user5.getID());
@@ -65,10 +60,7 @@ public class Menu {
     user5.addFriend(user3.getID());
     user5.addFriend(user4.getID());
 
-    System.out.println(user1.getFriends().size());
-
     main = new Main();
-
     main.addUser(user1);
     main.addUser(user2);
     main.addUser(user3);
@@ -77,7 +69,6 @@ public class Menu {
 
     // create the window
     window = new JFrame();
-
     // create the panels
     createMainPanels();
 
@@ -90,7 +81,6 @@ public class Menu {
 
     displayed = false;
     button = false;
-
   }
 
   /**
@@ -111,7 +101,6 @@ public class Menu {
    * Static method to create an instance of Menu class
    */
   public static void runProgram() {
-    // create an instance of Menu class
     Menu newMenu = new Menu();
   }
 
@@ -170,39 +159,35 @@ public class Menu {
     // rightPanel.add(createTextPanel());
     for (int i = 0; i < user1.getFriends().size(); i++) {
       // make strings containing friend info
-      String name = main.IDtoUser((user1.getFriends().get(i))).getName();
-      String hometown = main.IDtoUser((user1.getFriends().get(i))).getHomeTown();
-      String workplace = main.IDtoUser((user1.getFriends().get(i))).getWorkPlace();
-      String pfp = main.IDtoUser((user1.getFriends().get(i))).getPfp();
+      User mainUser = main.IDtoUser(user1.getFriends().get(i));
 
       // add profile information
-      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(pfp));
+      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(mainUser.getPfp()));
       ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
       JLabel friendProfiLabel = new JLabel(friendProfileResized);
       rightPanel.add(friendProfiLabel);
-      JLabel friendName = new JLabel(name);
+      JLabel friendName = new JLabel(mainUser.getName());
       friendName.setFont(new Font("Sans", Font.PLAIN, 20));
       rightPanel.add(friendName);
       JLabel friendId = new JLabel("ID: " + user1.getFriends().get(i));
       friendId.setFont(new Font("Sans", Font.PLAIN, 16));
       rightPanel.add(friendId);
-      JLabel friendWork = new JLabel("Workplace: " + workplace);
+      JLabel friendWork = new JLabel("Workplace: " + mainUser.getWorkPlace());
       friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
       rightPanel.add(friendWork);
-      JLabel friendHome = new JLabel("Hometown: " + hometown);
+      JLabel friendHome = new JLabel("Hometown: " + mainUser.getHomeTown());
       friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
       rightPanel.add(friendHome);
 
       // view friends button
-      JButton viewFriends = new JButton("View " + name + "'s Friends");
+      JButton viewFriends = new JButton("View " + mainUser.getName() + "'s Friends");
       viewFriends.setBackground(Color.decode("0xe07a5f"));
       rightPanel.add(viewFriends);
 
       viewButtonsArrayList.add(viewFriends);
       SwingUtilities.updateComponentTreeUI(window);
     }
-    // for every button in the list of buttons, add an action listener to that
-    // button
+    // for every button in the list of buttons, add an action listener to that button
     for (int j = 0; j < viewButtonsArrayList.size(); j++) {
       // https://stackoverflow.com/questions/33799800/java-local-variable-mi-defined-in-an-enclosing-scope-must-be-final-or-effective
       final Integer innerj = new Integer(j);
@@ -212,35 +197,64 @@ public class Menu {
           topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
 
           User friend = main.IDtoUser(user1.getFriends().get(innerj));
-          JLabel friendFriends = new JLabel(friend.getName() + "'s friends");
-          friendFriends.setFont(new Font("Sans", Font.PLAIN, 20));
-          friendsPanel.add(friendFriends);
+          JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
+          friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 20));
+          friendsPanel.add(friendFriendsLabel);
+
           // display the info of each of the friends friends
           for (int k = 0; k < friend.getFriends().size(); k++) {
-            String name = main.IDtoUser(friend.getFriends().get(k)).getName();
-            String hometown = main.IDtoUser(friend.getFriends().get(k)).getHomeTown();
-            String workplace = main.IDtoUser(friend.getFriends().get(k)).getWorkPlace();
-            String pfp = main.IDtoUser(friend.getFriends().get(k)).getPfp();
+            User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
 
             // add profile information
-            ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(pfp));
+            ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(friendsFriend.getPfp()));
             ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
             JLabel friendProfiLabel = new JLabel(friendProfileResized);
             friendsPanel.add(friendProfiLabel);
-            JLabel friendName = new JLabel(name);
+            JLabel friendName = new JLabel(friendsFriend.getName());
             friendName.setFont(new Font("Sans", Font.PLAIN, 20));
             friendsPanel.add(friendName);
-            JLabel friendId = new JLabel("ID: " + friend.getFriends().get(k));
+            JLabel friendId = new JLabel("ID: " + friendsFriend.getID());
             friendId.setFont(new Font("Sans", Font.PLAIN, 16));
             friendsPanel.add(friendId);
-            JLabel friendWork = new JLabel("Workplace: " + workplace);
+            JLabel friendWork = new JLabel("Workplace: " + friendsFriend.getWorkPlace());
             friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
             friendsPanel.add(friendWork);
-            JLabel friendHome = new JLabel("Hometown: " + hometown);
+            JLabel friendHome = new JLabel("Hometown: " + friendsFriend.getHomeTown());
             friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
             friendsPanel.add(friendHome);
             SwingUtilities.updateComponentTreeUI(window);
+
+            //add an add friends button to each friend
+            JButton addFriend = new JButton("Add Friend");
+            addFriend.setBackground(Color.decode("0xe07a5f"));
+            friendsPanel.add(addFriend);
+
+            // add the friend to main users friend list
+            addFriend.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e)
+              {
+                user1.addFriend(friendsFriend.getID());
+                ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(friendsFriend.getPfp()));
+                ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+                JLabel friendProfiLabel = new JLabel(friendProfileResized);
+                rightPanel.add(friendProfiLabel);
+                JLabel friendName = new JLabel(friendsFriend.getName());
+                friendName.setFont(new Font("Sans", Font.PLAIN, 20));
+                rightPanel.add(friendName);
+                JLabel friendId = new JLabel("ID: " + friendsFriend.getID());
+                friendId.setFont(new Font("Sans", Font.PLAIN, 16));
+                rightPanel.add(friendId);
+                JLabel friendWork = new JLabel("Workplace: " + friendsFriend.getWorkPlace());
+                friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
+                rightPanel.add(friendWork);
+                JLabel friendHome = new JLabel("Hometown: " + friendsFriend.getHomeTown());
+                friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
+                rightPanel.add(friendHome);
+                SwingUtilities.updateComponentTreeUI(window);
+              }
+            });
           }
+        
 
           // add a back button if one is not already added
           if (button == false) {
@@ -279,9 +293,9 @@ public class Menu {
    * Resize the image and put it into form so that it can be displayed using
    * JLabel
    * 
-   * @param The    ImageIcon that is being used as a profile picture
-   * @param width  The width to set the ImageIcon to
-   * @param height The height to set the ImageIcon to
+   * @param testProfile ImageIcon that is being used as a profile picture
+   * @param width       The width to set the ImageIcon to
+   * @param height      The height to set the ImageIcon to
    * @return The resized profile picture to be displayed on the profile
    */
   public ImageIcon resizeImage(ImageIcon testProfile, int width, int height) {
@@ -378,7 +392,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeID = new JTextField("Change your ID");
               leftPanel.add(changeID);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -393,7 +406,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change workplace
@@ -402,7 +414,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeWorkPlace = new JTextField("Change your Workplace");
               leftPanel.add(changeWorkPlace);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -417,7 +428,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change hometown
@@ -426,7 +436,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeHometown = new JTextField("Change your hometown");
               leftPanel.add(changeHometown);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -437,12 +446,10 @@ public class Menu {
                   home.setText("Hometown:" + changeHometown.getText());
                   leftPanel.remove(submitButton);
                   leftPanel.remove(changeHometown);
-
                 }
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change profile picture
@@ -452,7 +459,6 @@ public class Menu {
               // call method to choose an image to set PFP to
               selectFile();
             }
-
           });
           displayed = true;
           SwingUtilities.updateComponentTreeUI(window);
@@ -487,19 +493,6 @@ public class Menu {
     menu.add(menuItem);
     menu.add(menuItem2);
 
-    // make menu items do things
-    menuItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // do something
-      }
-    });
-
-    menuItem2.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // do something
-      }
-    });
-
     menuBar.setBackground(Color.GRAY);
     return menuBar;
   }
@@ -532,7 +525,6 @@ public class Menu {
    */
   public void selectFile() {
     chooser = new JFileChooser();
-
     FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg");
     chooser.setFileFilter(filter);
 
@@ -545,22 +537,16 @@ public class Menu {
       File file = chooser.getSelectedFile();
       // get the file path
       System.out.println(file.getAbsolutePath());
-      // JOptionPane.showMessageDialog(null, file.getPath());
 
       String[] filePathArray = file.getPath().split("src");
       String relative = filePathArray[1];
 
       ImageIcon newProfilePic = new ImageIcon();
       newProfilePic = new javax.swing.ImageIcon(getClass().getResource(relative));
-
-      // user1.setPfp(newProfilePic.getImage());
       profileLabel.setIcon(resizeImage(newProfilePic, 300, 300));
       SwingUtilities.updateComponentTreeUI(window);
-
     } else {
-      // test message
-      JOptionPane.showMessageDialog(null, "Test");
-      // return null;
+      System.out.println("Error choosing image!");
     }
   }
 
