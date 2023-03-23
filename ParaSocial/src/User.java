@@ -1,5 +1,4 @@
 import java.util.Set;
-//import java.util.TreeSet;
 import java.util.HashSet;
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,11 +10,13 @@ public class User {
     private String workPlace;
     private String homeTown;
     private Image pfp;
+    
     private ArrayList<Integer> friends;
    // private TreeSet posts;
 
 
     public User(String name, String ID, String workPlace, String homeTown, Image pfp, ArrayList<Integer> friends)
+
     {
         this.name = name;
         this.ID = ID;
@@ -23,7 +24,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-       // this.posts = null;
+        this.posts = null;
     }
 
     public User()
@@ -34,18 +35,13 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
+        posts = null;
     }
 
-    public void displayFriends()
-    {
-        User[] friendList = friends.toArray(new User[friends.size()]);
-
-        for (int i = 0; i < friendList.length; i++)
-        {
-           friendList[i].displayUserInfo();
-        }
-    }
-
+    /**
+     * Get the details of all of a person's friends
+     * @return The details of a person's friends as a String
+     */
     public String getFriendInfo()
     {
         User[] friendList = friends.toArray(new User[friends.size()]);
@@ -56,17 +52,6 @@ public class User {
            friendInfo += "\n" + friendList[i].getUserInfo();
         }
         return friendInfo;
-    }
-
-    public void displayUserInfo()
-    {
-        System.out.println();
-        System.out.println(getID());
-        System.out.println(getName());
-        System.out.println(getWorkPlace());
-        System.out.println(getHomeTown());
-        System.out.println(getPfp());
-        System.out.println();
     }
 
     /**
@@ -81,6 +66,7 @@ public class User {
 
     public void displayPosts()
     {
+
 
     }
 
