@@ -68,7 +68,7 @@ public class Main {
             // get next object in set
             nextUser = userIterator.next();
 
-            nextUser.displayUserInfo();
+            nextUser.getUserInfo();
             int loop = nextUser.getFriends().size();
 
             for (int i = 0; i < loop; i ++)

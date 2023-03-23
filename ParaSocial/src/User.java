@@ -9,13 +9,13 @@ public class User {
     private String ID;
     private String workPlace;
     private String homeTown;
-    private Image pfp;
+    private String pfp;
     
     private ArrayList<Integer> friends;
    // private TreeSet posts;
 
 
-    public User(String name, String ID, String workPlace, String homeTown, Image pfp, ArrayList<Integer> friends)
+    public User(String name, String ID, String workPlace, String homeTown, String pfp, ArrayList<Integer> friends)
 
     {
         this.name = name;
@@ -143,12 +143,12 @@ public class User {
         this.homeTown = homeTown;
     }
 
-    public Image getPfp()
+    public String getPfp()
     {
         return pfp;
     }
 
-    public void setPfp(Image pfp)
+    public void setPfp(String pfp)
     {
         this.pfp = pfp;
     }
