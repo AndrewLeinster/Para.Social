@@ -15,52 +15,57 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.io.File;
+
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
 
-  private JFrame window;
-  private JPanel topPanel, mainPanel, leftPanel, rightPanel;
-  private JLabel titleLabel, profileLabel, newResizedProfile;
-  private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
-  private JFormattedTextField textField;
-  //private Tree allPosts;
-  private ImageIcon profile1, profileIcon;
-  //private Set<User> allUsers;
-  private boolean displayed;
-  private JFileChooser chooser;
-  User user1 = new User("Dave Smith", "12345", "a place", "dundee", null, null, null);
-  User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null, null);
-  User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null, null);
+    private JFrame window;
+    private JPanel topPanel, mainPanel, leftPanel, rightPanel;
+    private JLabel titleLabel, profileLabel, newResizedProfile;
+    private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
+    private JFormattedTextField textField;
+    //private Tree allPosts;
+    private ImageIcon profile1, profileIcon;
+    //private Set<User> allUsers;
+    private boolean displayed;
+    private JFileChooser chooser;
+    User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
+    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
+    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
+   
 
-  /**
-   * Constructor for menu class
-   */
-  public Menu() {
-    displayed = false;
-    // create the window
-    window = new JFrame();
+    /**
+     * Constructor for menu class
+     */
+    public Menu()
+    {
+        // create the window
+        window = new JFrame();
 
-    // create the panels
-    createMainPanels();
+        // create the panels
+        createMainPanels();
 
-    window.setJMenuBar(createMenuBar());
-    window.setContentPane(topPanel);
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.setTitle("para.social");
-    window.setVisible(true);
-    window.pack();
+        window.setJMenuBar(createMenuBar());
+        window.setContentPane(topPanel);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setTitle("para.social");
+        window.setVisible(true);
+        window.pack();
+        
+        displayed = false;
 
-    Set<User> friends1 = new HashSet<User>();
-    friends1.add(user2);
-    friends1.add(user3);
-    user1.setFriends(friends1);
-    user1.setPfp(profile1.getImage());
-
-  }
+        ArrayList<Integer> friends1 = new ArrayList<Integer>();
+        friends1.add(user2);
+        friends1.add(user3);
+        user1.setFriends(friends1);
+        user1.setPfp(profile1.getImage();
+    
+    }
 
   /**
    * main method to launch GUI program on EDT
