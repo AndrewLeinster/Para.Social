@@ -31,19 +31,49 @@ public class Menu {
     private JFormattedTextField textField;
     //private Tree allPosts;
     private ImageIcon profile1, profileIcon;
-    //private Set<User> allUsers;
+    private Set<User> users;
     private boolean displayed;
     private JFileChooser chooser;
-    User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
-    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
-    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
-   
-
-    /**
+    private Main main;
+    //User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
+    //User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
+    //User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
+    User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
+    User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
+    User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
+    User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP02429.jpg", new ArrayList<String>());
+    User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());   
+/**
      * Constructor for menu class
      */
     public Menu()
     {
+
+        user1.addFriend(user2.getID());
+        user1.addFriend(user3.getID());
+        user1.addFriend(user5.getID());
+        user2.addFriend(user1.getID());
+        user2.addFriend(user4.getID());
+        user3.addFriend(user1.getID());
+        user3.addFriend(user2.getID());
+        user3.addFriend(user5.getID());
+        user4.addFriend(user1.getID());
+        user4.addFriend(user2.getID());
+        user4.addFriend(user5.getID());
+        user5.addFriend(user2.getID());
+        user5.addFriend(user3.getID());
+        user5.addFriend(user4.getID());
+
+        System.out.println(user1.getFriends().size());
+    
+        main = new Main();
+
+        main.addUser(user1);
+        main.addUser(user2);
+        main.addUser(user3);
+        main.addUser(user4);
+        main.addUser(user5);
+
         // create the window
         window = new JFrame();
 
@@ -59,12 +89,8 @@ public class Menu {
         
         displayed = false;
 
-        ArrayList<String> friends1 = new ArrayList<String>();
-        friends1.add(user2.getID());
-        friends1.add(user3.getID());
-        user1.setFriends(friends1);
-        //user1.setPfp();
-    
+        
+       
     }
 
   /**
@@ -79,7 +105,6 @@ public class Menu {
         runProgram();
       }
     });
-
   }
 
   /*
@@ -117,21 +142,43 @@ public class Menu {
     createProfilePanel();
   }
 
-  /*
-  */
-
   /**
    * Method to create the right hand panel to display friends
    */
   public void createFriendsPanel() {
+
+    JLabel friendsInfo = new JLabel("Friends");
+    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 20));
+    rightPanel.add(friendsInfo);
+
+    System.out.println(user1.getFriends().size());
     rightPanel.add(createTextPanel());
+    for (int i=0; i<user1.getFriends().size(); i++)
+    {
+        String name = main.IDtoUser((user1.getFriends().get(i))).getName();
+        System.out.println(name);
+        // add profile information
+        JLabel friendName = new JLabel(name);
+        friendName.setFont(new Font("Sans", Font.PLAIN, 20));
+        rightPanel.add(friendName);
+        JLabel friendId = new JLabel("ID: " + user1.getFriends().get(i));
+        friendId.setFont(new Font("Sans", Font.PLAIN, 16));
+        rightPanel.add(friendId);
+        /*
+        JLabel work = new JLabel("Workplace: " + user1.getWorkPlace());
+        work.setFont(new Font("Sans", Font.PLAIN, 16));
+        leftPanel.add(work);
+        JLabel home = new JLabel("Hometown: " + user1.getHomeTown());
+        home.setFont(new Font("Sans", Font.PLAIN, 16));
+        leftPanel.add(home);*/
+    }
   }
 
   /**
    * Resize the image and put it into form so that it can be displayed using JLabel
    * 
-   * @param
-   * @return
+   * @param The ImageIcon that is being used as a profile picture
+   * @return The resized profile picture to be displayed on the profile
    */
   public ImageIcon resizeImage(ImageIcon testProfile)
   {
@@ -149,9 +196,12 @@ public class Menu {
    * Create the left hand panel with all profile information
    */
   public void createProfilePanel() {
+    JLabel profile = new JLabel("Your Profile");
+    profile.setFont(new Font("Sans", Font.PLAIN, 20));
+    leftPanel.add(profile);
 
     // as a temporary fix, image has been moved to source code file
-    profile1 = new javax.swing.ImageIcon(getClass().getResource("Images/PFPs/Marcus.jpg"));
+    profile1 = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
     profileIcon = resizeImage(profile1);
     profileLabel = new JLabel(profileIcon);
 
@@ -217,7 +267,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change id button
@@ -297,13 +346,7 @@ public class Menu {
           leftPanel.add(editProfilePictureButton);
           editProfilePictureButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            
-              /* 
-              // changing the profile picture to a specific different picture now works
-              ImageIcon profile2 = new javax.swing.ImageIcon(getClass().getResource("Images/PFPs/Person.jpg"));
-              profileLabel.setIcon(resizeImage(profile2));
-              SwingUtilities.updateComponentTreeUI(window);*/
-
+              // call method to choose an image to set PFP to
               selectFile();
             }
 
