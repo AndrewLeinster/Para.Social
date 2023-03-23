@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -252,6 +253,97 @@ public class Tree {
 			inorderDisplay(current.getRightNode());
 		}
 
+	}
+
+	public void writeTree() {
+		FileOutputStream outputStream = null;
+		PrintWriter printWriter = null;
+		String fileName;
+
+		fileName = ("PsPosts.txt");
+
+		try {
+			outputStream = new FileOutputStream(fileName);
+			printWriter = new PrintWriter(outputStream);
+			writeNodes(root, printWriter); //writes the tree node by node to the tree
+
+		} catch (IOException e) {
+			System.out.println("Error Saving File");
+		} finally {
+			if (printWriter != null) {
+				printWriter.close(); //closes the file
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * Writes the nodes to a file
+	 * 
+	 * @param current the node being written
+	 * @param printWriter the instance of PrintWriter being used to write to the file
+	 */
+	public void writeNodes(Node current, PrintWriter printWriter) {
+		if (current != null) {
+			current.writeNode(printWriter); //writes the current node to the file
+			writeNodes(current.getLeftNode(), printWriter); //traverses the tree
+			writeNodes(current.getRightNode(), printWriter);
+		}
+	}
+
+	public void readTree() {
+		String fileName = null;
+		FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+		String nextLine;
+
+		fileName = ("PsPosts.txt");
+
+		try {
+			fileReader = new FileReader(fileName);
+			bufferedReader = new BufferedReader(fileReader);
+			nextLine = bufferedReader.readLine();
+			while (nextLine != null) {
+				String ID = nextLine;
+				nextLine = bufferedReader.readLine();
+				String postedBy = nextLine;
+				nextLine = bufferedReader.readLine();
+				LocalDateTime timePosted = LocalDateTime.parse(nextLine);
+				nextLine = bufferedReader.readLine();
+				String caption = nextLine;
+				nextLine = bufferedReader.readLine();
+				int numberOfLikes = Integer.parseInt(nextLine);
+				nextLine = bufferedReader.readLine();
+				int size = Integer.parseInt(nextLine);
+				ArrayList<String> likedBy = new ArrayList<String>();
+				for (int i = 0; i < size; i++)
+				{
+
+					nextLine = bufferedReader.readLine();
+					likedBy.add(nextLine);
+					
+				}
+				nextLine = bufferedReader.readLine();
+				String postImage = nextLine;
+
+				Post item = new Post(postImage, caption, numberOfLikes, likedBy, timePosted, postedBy, ID); //reads the values from the file and creates a new Item, passing the read fields as parameters
+				Node node = new Node(item); //creates a new Node containing Item
+				nextLine = bufferedReader.readLine();
+				addItem(node, root, null); //adds the new Node to the tree as normal
+
+			}
+			System.out.println("Loaded");
+		} catch (IOException e) {
+			System.out.println("Error Loading File");
+		} finally {
+			if (bufferedReader != null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					System.out.println("Error Closing File");
+				}
+			}
+		}
 	}
 
 	/**

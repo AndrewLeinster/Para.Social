@@ -76,6 +76,49 @@ public class User {
 
     }
 
+    /**
+     * 
+     * Finds the search strength of each applicable user to determine how they should be ordered in the search results
+     * 
+     * @param search the term searched
+     * @param a the User being searched
+     * @return searchStrength 
+     */
+    public int getSearchStrength(String search, User a)
+    {
+        int searchStrength = 0;
+
+        if (compareStrings(ID, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(name, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(workPlace, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(homeTown, search))
+        {
+            searchStrength++;
+        }
+
+        searchStrength = searchStrength + getMutuals(Main.getPrimaryUser(), a).size();
+
+        if (a.getFriends().contains(Main.getPrimaryUser()))
+        {
+            searchStrength = searchStrength * 2;
+        }
+
+
+        return searchStrength;
+    }
+
     public boolean compareStrings(String a, String b)
     {
         for (int i = 0; i < a.length() - b.length(); i++)
