@@ -223,5 +223,22 @@ public class Main {
 		}
     }
 
+    public User IDtoUser(String ID)
+    {
+
+        User[] userArray = users.toArray(new User[users.size()]);
+
+        for (int i = 0; i < userArray.length; i++)
+        {
+            if (ID.equals(userArray[i].getID()))
+            {
+                return userArray[i];
+            }
+        }
+
+        System.out.println("user not found");
+        return null;
+    }
+
 }
 
