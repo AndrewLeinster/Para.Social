@@ -59,11 +59,11 @@ public class Menu {
         
         displayed = false;
 
-        ArrayList<Integer> friends1 = new ArrayList<Integer>();
-        friends1.add(user2);
-        friends1.add(user3);
+        ArrayList<String> friends1 = new ArrayList<String>();
+        friends1.add(user2.getID());
+        friends1.add(user3.getID());
         user1.setFriends(friends1);
-        user1.setPfp(profile1.getImage();
+        //user1.setPfp();
     
     }
 
@@ -408,7 +408,7 @@ public class Menu {
       ImageIcon newProfilePic = new ImageIcon();
       newProfilePic = new javax.swing.ImageIcon(getClass().getResource(relative));
     
-      user1.setPfp(newProfilePic.getImage());
+      //user1.setPfp(newProfilePic.getImage());
       profileLabel.setIcon(resizeImage(newProfilePic));
       SwingUtilities.updateComponentTreeUI(window);
       
