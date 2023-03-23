@@ -11,11 +11,11 @@ public class User {
     private String homeTown;
     private String pfp;
     
-    private ArrayList<Integer> friends;
+    private ArrayList<String> friends;
    // private TreeSet posts;
 
 
-    public User(String name, String ID, String workPlace, String homeTown, String pfp, ArrayList<Integer> friends)
+    public User(String name, String ID, String workPlace, String homeTown, String pfp, ArrayList<String> friends)
 
     {
         this.name = name;
@@ -24,7 +24,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-        this.posts = null;
+        //this.posts = null;
     }
 
     public User()
@@ -35,7 +35,7 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-        posts = null;
+       // posts = null;
     }
 
     /**
@@ -70,9 +70,9 @@ public class User {
 
     }
 
-    public ArrayList<Integer> getMutuals(User a, User b)
+    public ArrayList<String> getMutuals(User a, User b)
     {
-        ArrayList<Integer> mutuals = a.getFriends();
+        ArrayList<String> mutuals = a.getFriends();
         mutuals.retainAll(b.getFriends());
 
         return mutuals;
@@ -153,22 +153,22 @@ public class User {
         this.pfp = pfp;
     }
 
-    public ArrayList<Integer> getFriends()
+    public ArrayList<String> getFriends()
     {
         return friends;
     }
 
-    public void setFriends(ArrayList<Integer> friends)
+    public void setFriends(ArrayList<String> friends)
     {
         this.friends = friends;
     }
 
-    public void addFriend(Integer friend)
+    public void addFriend(String friend)
     {
         friends.add(friend);
     }
 
-    public void removeFriend(Integer friend)
+    public void removeFriend(String friend)
     {
         friends.remove(friend);
     }
