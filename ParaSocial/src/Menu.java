@@ -154,10 +154,9 @@ public class Menu {
     friendsInfo.setFont(new Font("Sans", Font.PLAIN, 20));
     rightPanel.add(friendsInfo);
 
-    ArrayList<JButton> viewButtonsArrayList = new ArrayList<JButton>();
-
     // rightPanel.add(createTextPanel());
-    for (int i = 0; i < user1.getFriends().size(); i++) {
+    for (int i = 0; i < user1.getFriends().size(); i++) 
+    {
       // make strings containing friend info
       User mainUser = main.IDtoUser(user1.getFriends().get(i));
 
@@ -184,19 +183,15 @@ public class Menu {
       viewFriends.setBackground(Color.decode("0xe07a5f"));
       rightPanel.add(viewFriends);
 
-      viewButtonsArrayList.add(viewFriends);
-      SwingUtilities.updateComponentTreeUI(window);
-    }
-    // for every button in the list of buttons, add an action listener to that button
-    for (int j = 0; j < viewButtonsArrayList.size(); j++) {
       // https://stackoverflow.com/questions/33799800/java-local-variable-mi-defined-in-an-enclosing-scope-must-be-final-or-effective
-      final Integer innerj = new Integer(j);
-      viewButtonsArrayList.get(j).addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
+      final Integer inneri = new Integer(i);
+      viewFriends.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e)
+        {
           topPanel.remove(scrollPanel);
           topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
 
-          User friend = main.IDtoUser(user1.getFriends().get(innerj));
+          User friend = main.IDtoUser(user1.getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
           friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 20));
           friendsPanel.add(friendFriendsLabel);
@@ -250,12 +245,15 @@ public class Menu {
                 JLabel friendHome = new JLabel("Hometown: " + friendsFriend.getHomeTown());
                 friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
                 rightPanel.add(friendHome);
+                // view friends button
+                JButton viewFriends = new JButton("View " + friendsFriend.getName() + "'s Friends");
+                viewFriends.setBackground(Color.decode("0xe07a5f"));
+                rightPanel.add(viewFriends);
                 SwingUtilities.updateComponentTreeUI(window);
               }
             });
           }
-        
-
+      
           // add a back button if one is not already added
           if (button == false) {
             // back button to go back to main user friends
@@ -284,9 +282,10 @@ public class Menu {
             });
           }
         }
-      });
-
+        });
     }
+
+    SwingUtilities.updateComponentTreeUI(window);
   }
 
   /**
