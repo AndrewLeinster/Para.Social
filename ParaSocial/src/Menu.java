@@ -26,6 +26,7 @@ public class Menu {
 
     private JFrame window;
     private JPanel topPanel, mainPanel, leftPanel, rightPanel;
+    private JScrollPane scrollPanel;
     private JLabel titleLabel, profileLabel, newResizedProfile;
     private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
     private JFormattedTextField textField;
@@ -41,7 +42,7 @@ public class Menu {
     User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
     User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
     User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
-    User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP02429.jpg", new ArrayList<String>());
+    User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP9275.jpg", new ArrayList<String>());
     User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());   
 /**
      * Constructor for menu class
@@ -52,6 +53,7 @@ public class Menu {
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
         user1.addFriend(user5.getID());
+        user1.addFriend(user4.getID());
         user2.addFriend(user1.getID());
         user2.addFriend(user4.getID());
         user3.addFriend(user1.getID());
@@ -123,6 +125,10 @@ public class Menu {
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
     rightPanel = new JPanel();
+    // make a scroll panel so you can scroll to see all friends
+    scrollPanel = new JScrollPane(rightPanel);
+    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
     mainPanel.setBackground(Color.decode("0x3d405b"));
     rightPanel.setBackground(Color.decode("0x81b29a"));
@@ -130,7 +136,7 @@ public class Menu {
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
-    topPanel.add(rightPanel, BorderLayout.EAST);
+    topPanel.add(scrollPanel, BorderLayout.EAST);
     topPanel.add(leftPanel, BorderLayout.WEST);
 
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -151,26 +157,47 @@ public class Menu {
     friendsInfo.setFont(new Font("Sans", Font.PLAIN, 20));
     rightPanel.add(friendsInfo);
 
-    System.out.println(user1.getFriends().size());
-    rightPanel.add(createTextPanel());
+    //rightPanel.add(createTextPanel());
     for (int i=0; i<user1.getFriends().size(); i++)
     {
+        // make strings containing friend info
         String name = main.IDtoUser((user1.getFriends().get(i))).getName();
-        System.out.println(name);
+        String hometown = main.IDtoUser((user1.getFriends().get(i))).getHomeTown();
+        String workplace = main.IDtoUser((user1.getFriends().get(i))).getWorkPlace();
+        String pfp = main.IDtoUser((user1.getFriends().get(i))).getPfp();
+      
         // add profile information
+        ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(pfp));
+        ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+        JLabel friendProfiLabel = new JLabel(friendProfileResized);
+        rightPanel.add(friendProfiLabel);
         JLabel friendName = new JLabel(name);
         friendName.setFont(new Font("Sans", Font.PLAIN, 20));
         rightPanel.add(friendName);
         JLabel friendId = new JLabel("ID: " + user1.getFriends().get(i));
         friendId.setFont(new Font("Sans", Font.PLAIN, 16));
         rightPanel.add(friendId);
-        /*
-        JLabel work = new JLabel("Workplace: " + user1.getWorkPlace());
-        work.setFont(new Font("Sans", Font.PLAIN, 16));
-        leftPanel.add(work);
-        JLabel home = new JLabel("Hometown: " + user1.getHomeTown());
-        home.setFont(new Font("Sans", Font.PLAIN, 16));
-        leftPanel.add(home);*/
+        JLabel friendWork = new JLabel("Workplace: " + workplace);
+        friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
+        rightPanel.add(friendWork);
+        JLabel friendHome = new JLabel("Hometown: " + hometown);
+        friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
+        rightPanel.add(friendHome);
+
+        //view friends button
+        JButton viewFriends = new JButton("View Friends");
+        viewFriends.setBackground(Color.decode("0xe07a5f"));
+        rightPanel.add(viewFriends);
+
+        viewFriends.addActionListener (new ActionListener() {
+    			  public void actionPerformed(ActionEvent e)
+    			  {
+    				  
+    			  }
+    		  });
+
+
+
     }
   }
 
@@ -178,15 +205,17 @@ public class Menu {
    * Resize the image and put it into form so that it can be displayed using JLabel
    * 
    * @param The ImageIcon that is being used as a profile picture
+   * @param width The width to set the ImageIcon to
+   * @param height The height to set the ImageIcon to
    * @return The resized profile picture to be displayed on the profile
    */
-  public ImageIcon resizeImage(ImageIcon testProfile)
+  public ImageIcon resizeImage(ImageIcon testProfile, int width, int height)
   {
      // https://www.youtube.com/watch?v=ntirmRhy6Fw
     // reminder to put this in a try catch
     Image testProfileImage = testProfile.getImage();
     // https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-    Image resized = testProfileImage.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH);
+    Image resized = testProfileImage.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
     ImageIcon resizedIcon = new ImageIcon(resized);
 
     return resizedIcon;
@@ -202,7 +231,7 @@ public class Menu {
 
     // as a temporary fix, image has been moved to source code file
     profile1 = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
-    profileIcon = resizeImage(profile1);
+    profileIcon = resizeImage(profile1, 300, 300);
     profileLabel = new JLabel(profileIcon);
 
     leftPanel.add(profileLabel);
@@ -452,7 +481,7 @@ public class Menu {
       newProfilePic = new javax.swing.ImageIcon(getClass().getResource(relative));
     
       //user1.setPfp(newProfilePic.getImage());
-      profileLabel.setIcon(resizeImage(newProfilePic));
+      profileLabel.setIcon(resizeImage(newProfilePic, 300, 300));
       SwingUtilities.updateComponentTreeUI(window);
       
     }
