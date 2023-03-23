@@ -23,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 
 public class Menu {
@@ -54,7 +55,7 @@ public class Menu {
         window.setTitle("para.social");
         window.setVisible(true);
 
-        Set<User> friends1 = new HashSet<User>();
+        ArrayList<Integer> friends1 = new ArrayList<Integer>();
         friends1.add(user2);
         friends1.add(user3);
         user1.setFriends(friends1);

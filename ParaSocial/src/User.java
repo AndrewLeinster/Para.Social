@@ -2,6 +2,7 @@ import java.util.Set;
 //import java.util.TreeSet;
 import java.util.HashSet;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class User {
 
@@ -10,11 +11,11 @@ public class User {
     private String workPlace;
     private String homeTown;
     private Image pfp;
-    private Set<User> friends;
+    private ArrayList<Integer> friends;
    // private TreeSet posts;
 
 
-    public User(String name, String ID, String workPlace, String homeTown, Image pfp, HashSet<User> friends)
+    public User(String name, String ID, String workPlace, String homeTown, Image pfp, ArrayList<Integer> friends)
     {
         this.name = name;
         this.ID = ID;
@@ -83,9 +84,9 @@ public class User {
 
     }
 
-    public Set<User> getMutuals(User a, User b)
+    public ArrayList<Integer> getMutuals(User a, User b)
     {
-        Set<User> mutuals = a.getFriends();
+        ArrayList<Integer> mutuals = a.getFriends();
         mutuals.retainAll(b.getFriends());
 
         return mutuals;
@@ -166,22 +167,22 @@ public class User {
         this.pfp = pfp;
     }
 
-    public Set<User> getFriends()
+    public ArrayList<Integer> getFriends()
     {
         return friends;
     }
 
-    public void setFriends(Set<User> friends)
+    public void setFriends(ArrayList<Integer> friends)
     {
         this.friends = friends;
     }
 
-    public void addFriend(User friend)
+    public void addFriend(Integer friend)
     {
         friends.add(friend);
     }
 
-    public void removeFriend(User friend)
+    public void removeFriend(Integer friend)
     {
         friends.remove(friend);
     }
