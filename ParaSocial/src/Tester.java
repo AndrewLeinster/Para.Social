@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tester {
     private Main main;
@@ -23,13 +24,25 @@ public class Tester {
         main.writeToFile();
     }
 
-
+    public void addUsers()
+    {
         User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Laura.jpg", new ArrayList<String>());
         User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.jpg", new ArrayList<String>());
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Iona.jpg", new ArrayList<String>());
         User user4 = new User("Andrew", "4", "Self-Employed", "Fife", "Images/PFPs/Andrew.jpg", new ArrayList<String>());
         User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
         
+
+        for (int i=1; i<=getUserCount();i++) {
+            Random random = new Random();
+            int max_friends = random.nextInt(getUserCount()) + 1; 
+
+            for (int j=1; j<=max_friends; j++) {
+                String user = "user" + i;
+                user1.addFriend(user2.getID());
+            }
+        }
+
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
         user1.addFriend(user5.getID());
@@ -50,5 +63,13 @@ public class Tester {
         main.addUsers(user3);
         main.addUsers(user4);
         main.addUsers(user5);
+    }
+
+    public int getUserCount() {
+        int max = 31;
+
+        // Any thoughts on getting a max ID value?
+
+        return max;
     }
 }
