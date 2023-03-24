@@ -208,8 +208,6 @@ public class Menu {
           // display the info of each of the friends friends
           for (int k = 0; k < friend.getFriends().size(); k++) {
             User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
-
-            // add profile information
             displayUserInfo(friendsFriend, friendsPanel);
             
             //add an add friends button to each friend
@@ -235,12 +233,11 @@ public class Menu {
                 else
                 {
                   user1.addFriend(friendsFriend.getID());
-                  displayUserInfo(friendsFriend, rightPanel);
-                  JButton viewFriends = new JButton("View " + friendsFriend.getName() + "'s Friends");
-                  viewFriends.setBackground(Color.decode("0xe07a5f"));
-                  rightPanel.add(viewFriends);
+                  rightPanel.removeAll();
+                  rightPanel.revalidate();
+                  rightPanel.repaint();
                   JOptionPane.showMessageDialog(null, "Friend successfully added!");
-                  SwingUtilities.updateComponentTreeUI(window);
+                  createFriendsPanel();
                 }
               }
             });
@@ -299,7 +296,7 @@ public class Menu {
    */
   public void createProfilePanel() {
     JLabel profile = new JLabel("Your Profile");
-    profile.setFont(new Font("Sans", Font.PLAIN, 20));
+    profile.setFont(new Font("Sans", Font.PLAIN, 26));
     leftPanel.add(profile);
 
     // as a temporary fix, image has been moved to source code file
