@@ -3,20 +3,32 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class Tester {
-    private Set<User> users;
-    private Set<Post> posts;
+    private Main main;
 
     public Tester()
     {
-        Set<User> users = new HashSet<User>();
-        Set<Post> posts = new HashSet<Post>();
+       main = new Main();
     }
+
+    public static void main(String[] args)
+    {
+        Tester t = new Tester();
+        t.addUsers();
+        t.write();
+
+    }
+
+    public void write()
+    {
+        main.writeToFile();
+    }
+
     public void addUsers()
     {
         User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
         User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
-        User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP02429.jpg", new ArrayList<String>());
+        User user4 = new User("Andrew", "4", "Self-Employed", "Fife", "Images/PFPs/1ALP02429.jpg", new ArrayList<String>());
         User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
         
         user1.addFriend(user2.getID());
@@ -34,10 +46,10 @@ public class Tester {
         user5.addFriend(user3.getID());
         user5.addFriend(user4.getID());
 
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-        users.add(user5);
+        main.addUsers(user1);
+        main.addUsers(user2);
+        main.addUsers(user3);
+        main.addUsers(user4);
+        main.addUsers(user5);
     }
 }
