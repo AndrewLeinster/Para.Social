@@ -87,7 +87,7 @@ public class Tree {
 		while (!valid) {
 			System.out.println();
 			System.out.println("Enter ID to " + function + ".");
-			Scanner s1 = new Scanner(System.in);
+			try (Scanner s1 = new Scanner(System.in);) {
 			try {
 
 				target = s1.nextInt();

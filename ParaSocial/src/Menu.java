@@ -8,6 +8,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,7 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Menu {
 
   private JFrame window;
-  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel;
+  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, postsPanel;
   private JScrollPane scrollPanel, scrollFriendsPanel;
   private JLabel titleLabel, profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
@@ -37,7 +39,7 @@ public class Menu {
   User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
   User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
   User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
-  User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP9275.jpg",
+  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/1ALP9275.jpg",
       new ArrayList<String>());
   User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
 
@@ -112,20 +114,34 @@ public class Menu {
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
     rightPanel = new JPanel();
+
     // make a scroll panel so you can scroll to see all friends
     scrollPanel = new JScrollPane(rightPanel);
     scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
+
     // panel to display friends friends, set visibility to false
     friendsPanel = new JPanel();
     scrollFriendsPanel = new JScrollPane(friendsPanel);
     scrollFriendsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollFriendsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    mainPanel.setBackground(Color.decode("0x3d405b"));
-    rightPanel.setBackground(Color.decode("0x81b29a"));
-    leftPanel.setBackground(Color.decode("0xf2cc8f"));
-    friendsPanel.setBackground(Color.decode("0x81b29a"));
+
+    String teaGreen = "0xCCD5AE";
+    String beige = "0xE9EDC9";
+    String cornsilk = "0xFEFAE0";
+    String papayaWhip = "0xFAEDCD";
+    String buff = "0xD4A373";
+
+    mainPanel.setBackground(Color.decode(cornsilk));
+    rightPanel.setBackground(Color.decode(beige));
+    leftPanel.setBackground(Color.decode(teaGreen));
+    friendsPanel.setBackground(Color.decode(beige));
+    //postsPanel.setBackground(Color.decode(papayaWhip));
+
+    // panel to display posts
+    postsPanel = new JPanel();
+
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -531,6 +547,12 @@ public class Menu {
       System.out.println("Error choosing image!");
     }
   }
+
+  public static void displayMessage(String message, String title) {
+    int messageType = JOptionPane.PLAIN_MESSAGE;
+    JOptionPane.showMessageDialog(null, message, title, messageType);
+  } 
+
 
   /*
    * public void postsPanel()
