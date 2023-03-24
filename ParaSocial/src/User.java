@@ -24,7 +24,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-        //this.posts = null;
+        
     }
 
     public User()
@@ -35,7 +35,7 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-       // posts = null;
+       
     }
 
     /**
@@ -102,24 +102,14 @@ public class User {
     {
         int searchStrength = 0;
 
-        if (compareStrings(ID, search))
+        String[] userDetails = {ID, name, workPlace, homeTown};
+
+        for (int i = 0; i < userDetails.length; i++)
+        {
+            if (compareStrings(userDetails[i], search))
         {
             searchStrength++;
         }
-
-        if (compareStrings(name, search))
-        {
-            searchStrength++;
-        }
-
-        if (compareStrings(workPlace, search))
-        {
-            searchStrength++;
-        }
-
-        if (compareStrings(homeTown, search))
-        {
-            searchStrength++;
         }
 
         searchStrength = searchStrength + getMutuals(Main.getPrimaryUser(), a).size();

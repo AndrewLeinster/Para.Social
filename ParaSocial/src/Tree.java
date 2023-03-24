@@ -10,7 +10,9 @@ import java.util.Scanner;
 
 /**
  * 
- * Stores the binary tree object, containing methods for reading from and writing to files, displaying and searching the tree as well as addding and removing nodes
+ * Stores the binary tree object, containing methods for reading from and
+ * writing to files, displaying and searching the tree as well as addding and
+ * removing nodes
  * 
  * @author Adam Munro
  * @version 1.0.0
@@ -19,7 +21,6 @@ import java.util.Scanner;
 public class Tree {
 
 	private Node root;
-
 
 	public Tree() {
 
@@ -37,26 +38,31 @@ public class Tree {
 	 * 
 	 * Finds where a node should go in the tree and then adds it
 	 * 
-	 * @param newNode The node to be added
-	 * @param current The current node it is checking
+	 * @param newNode  The node to be added
+	 * @param current  The current node it is checking
 	 * @param previous The last node checked
 	 */
 	public void addItem(Node newNode, Node current, Node previous) {
 
+		long currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()); //determines the elapsed time of each node
+		long previousTime = previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()); //and stores them as fields in the method
+		long newTime = newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now());
+
 		if (treeEmpty()) {
-			setRoot(newNode); //if there's nothing in the tree, it makes newNode the root
-		} else if (current == null || current.getItem() == null) { //if it finds and empty space in the tree it checks the value of the ID and places it appropriately
-			if (previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()) < newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now())) {
+			setRoot(newNode); // if there's nothing in the tree, it makes newNode the root
+		} else if (current == null || current.getItem() == null) { // if it finds and empty space in the tree it checks
+																	// the value of the ID and places it appropriately
+			if (previousTime < newTime) {
 				previous.setRightNode(newNode);
-			} else if (previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()) > newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now())) {
+			} else if (previousTime > newTime) {
 				previous.setLeftNode(newNode);
 			}
-		} else if (current.getItem() != null && current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()) < newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now())) {
-			addItem(newNode, current.getRightNode(), current); //if the current node isn't empty, it checks the correct next node
-		} else if (current.getItem() != null && current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()) > newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now())) {
+		} else if (current.getItem() != null && currentTime < newTime) {
+			addItem(newNode, current.getRightNode(), current); // if the current node isn't empty, it checks the correct
+																// next node
+		} else if (current.getItem() != null && currentTime > newTime) {
 			addItem(newNode, current.getLeftNode(), current);
 		}
-		
 
 	}
 
@@ -73,108 +79,45 @@ public class Tree {
 			return false;
 		}
 	}
-	
-	/**
-	 * 
-	 * Processes user input when searching for a node
-	 * 
-	 * @param function indicates whether the sought node is to be displayed or deleted
-	 */
-	public void findNode(String function) {
-		boolean valid = false;
-		int target = 0;
-
-		while (!valid) {
-			System.out.println();
-			System.out.println("Enter ID to " + function + ".");
-			try (Scanner s1 = new Scanner(System.in);) {
-			try {
-
-				target = s1.nextInt();
-				valid = true;
-
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid ID"); //outputs an error message if a non-integer is entered
-			}
-		}
-
-		if (function.equals("Search")) {
-			searchDisplay(false, root, target); //calls the correct method dependent on the value of function
-		} else if (function.equals("Delete")) {
-			searchDelete(false, root, target, null);
-		}
-
-	}
-
-	/**
-	 * 
-	 * Searches the tree for a node and if found, displays it
-	 * 
-	 * @param found boolean value indicating whether the node has been found or not
-	 * @param current the node currently being checked
-	 * @param target the node being searched for
-	 */
-	public void searchDisplay(boolean found, Node current, int target) {
-
-		if (target == ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()))) {
-
-			found = true;
-			System.out.println("Item Found");
-			Menu.displayPost(current.getItem()); //displays the node once found
-
-		} else if (target < ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getLeftNode() != null) {
-
-			searchDisplay(found, current.getLeftNode(), target); //traverses the tree, calling searchDisplay again with the new value of current
-
-		} else if (target > ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getRightNode() != null) {
-
-			searchDisplay(found, current.getRightNode(), target);
-
-		}
-		if (current.getItem() != null) {
-			if (!found && (target > ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getRightNode() == null)
-					|| (target < ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getLeftNode() == null)) {
-				System.out.println("Item Wasn't Found"); //if the end of the tree is reached and found = false, a message is displayed
-			}
-		}
-
-	}
 
 	/**
 	 * Searches the tree for a node and if found, deletes it
 	 * 
-	 * @param found whether the node has been found
-	 * @param current the node currently being checked
-	 * @param target the node being searched for
+	 * @param found    whether the node has been found
+	 * @param current  the node currently being checked
+	 * @param target   the node being searched for
 	 * @param previous the previous node that was checked
 	 * 
 	 */
 	public void searchDelete(boolean found, Node current, int target, Node previous) {
 
-		if (target == ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()))) {
+		long currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now());
+
+		if (target == currentTime) {
 
 			found = true;
-			removeItem(current, previous); //deletes the node when found
+			removeItem(current, previous); // deletes the node when found
 			System.out.println("Item Deleted");
 
-		} else if (target < ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getLeftNode() != null) {
+		} else if (target < currentTime && current.getLeftNode() != null) {
 
 			searchDelete(found, current.getLeftNode(), target, current);
 
-		} else if (target > ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getRightNode() != null) {
+		} else if (target > currentTime && current.getRightNode() != null) {
 
 			searchDelete(found, current.getRightNode(), target, current);
 
 		}
 
 		if (current.getItem() != null) {
-			if (!found && (target > ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getRightNode() == null)
-					|| (target < ((current.getItem()).getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now())) && current.getLeftNode() == null)) {
-				System.out.println("Item Wasn't Found"); //if the end of the tree is reached and found = false, a message is displayed
+			if (!found && (target > currentTime && current.getRightNode() == null)
+					|| (target < currentTime && current.getLeftNode() == null)) {
+				System.out.println("Item Wasn't Found"); // if the end of the tree is reached and found = false, a
+															// message is displayed
 			}
 		}
 
-    }
+	}
 
 	/**
 	 * 
@@ -185,28 +128,28 @@ public class Tree {
 	 */
 	public void removeItem(Node target, Node parent) {
 		if (target.getLeftNode() == null && target.getRightNode() == null) {
-			target.setItem(null); //if the node has no children, the node is removed
+			target.setItem(null); // if the node has no children, the node is removed
 		} else if (target.getLeftNode() != null && target.getRightNode() == null) {
-			target.setItem(null); //if the node has a single child, the node is removed
-			parent.setLeftNode(target.getLeftNode()); //and the child is set to be a child of target's parent node
+			target.setItem(null); // if the node has a single child, the node is removed
+			parent.setLeftNode(target.getLeftNode()); // and the child is set to be a child of target's parent node
 		} else if (target.getLeftNode() == null && target.getRightNode() != null) {
 			target.setItem(null);
 			parent.setRightNode(target.getRightNode());
-		} else if (target.getLeftNode() != null && target.getRightNode() != null) { //if the node has two children
-			
+		} else if (target.getLeftNode() != null && target.getRightNode() != null) { // if the node has two children
+
 			Node replaced = target.getRightNode();
 
 			while (replaced.getLeftNode() != null) {
-				replaced = replaced.getLeftNode(); //finds the left most node on the right hand side of the remainder of the tree
+				replaced = replaced.getLeftNode(); // finds the left most node on the right hand side of the remainder
+													// of the tree
 			}
 
-			target.setItem(replaced.getItem()); //sets target to the node found
-			replaced.setItem(null); //sets the original node found to null
+			target.setItem(replaced.getItem()); // sets target to the node found
+			replaced.setItem(null); // sets the original node found to null
 
 		}
 	}
 
-	
 	/**
 	 * 
 	 * Displays the tree from lowest ID to highest
@@ -216,13 +159,13 @@ public class Tree {
 	public void inorderDisplay(Node current) {
 
 		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); //traverses the tree
-			Menu.displayPosts(current.getItem()); //displays the current node
+			inorderDisplay(current.getLeftNode()); // traverses the tree
+			Menu.displayPosts(current.getItem()); // displays the current node
 			inorderDisplay(current.getRightNode());
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * Displays the tree from bottom to top
@@ -232,9 +175,9 @@ public class Tree {
 	public void postorderDisplay(Node current) {
 
 		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); //traverses the tree
+			inorderDisplay(current.getLeftNode()); // traverses the tree
 			inorderDisplay(current.getRightNode());
-			Menu.displayPosts(current.getItem()); //displays the current node
+			Menu.displayPosts(current.getItem()); // displays the current node
 		}
 
 	}
@@ -248,8 +191,8 @@ public class Tree {
 	public void preorderDisplay(Node current) {
 
 		if (current != null && current.getItem() != null) {
-			Menu.displayPosts(current.getItem()); //displays the current node
-			inorderDisplay(current.getLeftNode()); //traverses the tree
+			Menu.displayPosts(current.getItem()); // displays the current node
+			inorderDisplay(current.getLeftNode()); // traverses the tree
 			inorderDisplay(current.getRightNode());
 		}
 
@@ -265,13 +208,13 @@ public class Tree {
 		try {
 			outputStream = new FileOutputStream(fileName);
 			printWriter = new PrintWriter(outputStream);
-			writeNodes(root, printWriter); //writes the tree node by node to the tree
+			writeNodes(root, printWriter); // writes the tree node by node to the tree
 
 		} catch (IOException e) {
 			System.out.println("Error Saving File");
 		} finally {
 			if (printWriter != null) {
-				printWriter.close(); //closes the file
+				printWriter.close(); // closes the file
 			}
 		}
 	}
@@ -280,13 +223,14 @@ public class Tree {
 	 * 
 	 * Writes the nodes to a file
 	 * 
-	 * @param current the node being written
+	 * @param current     the node being written
 	 * @param printWriter the instance of PrintWriter being used to write to the file
+	 *                
 	 */
 	public void writeNodes(Node current, PrintWriter printWriter) {
 		if (current != null) {
-			current.writeNode(printWriter); //writes the current node to the file
-			writeNodes(current.getLeftNode(), printWriter); //traverses the tree
+			current.writeNode(printWriter); // writes the current node to the file
+			writeNodes(current.getLeftNode(), printWriter); // traverses the tree
 			writeNodes(current.getRightNode(), printWriter);
 		}
 	}
@@ -306,30 +250,30 @@ public class Tree {
 			while (nextLine != null) {
 				String ID = nextLine;
 				nextLine = bufferedReader.readLine();
-				String postedBy = nextLine;
+				String postedBy = nextLine; 
 				nextLine = bufferedReader.readLine();
-				LocalDateTime timePosted = LocalDateTime.parse(nextLine);
+				LocalDateTime timePosted = LocalDateTime.parse(nextLine); //converts the text in the file to the neccesary field type
 				nextLine = bufferedReader.readLine();
 				String caption = nextLine;
 				nextLine = bufferedReader.readLine();
-				int numberOfLikes = Integer.parseInt(nextLine);
+				int numberOfLikes = Integer.parseInt(nextLine); //converts the text in the file to the neccesary field type
 				nextLine = bufferedReader.readLine();
 				int size = Integer.parseInt(nextLine);
 				ArrayList<String> likedBy = new ArrayList<String>();
-				for (int i = 0; i < size; i++)
-				{
+				for (int i = 0; i < size; i++) {
 
 					nextLine = bufferedReader.readLine();
 					likedBy.add(nextLine);
-					
+
 				}
 				nextLine = bufferedReader.readLine();
 				String postImage = nextLine;
 
-				Post item = new Post(postImage, caption, numberOfLikes, likedBy, timePosted, postedBy, ID); //reads the values from the file and creates a new Item, passing the read fields as parameters
-				Node node = new Node(item); //creates a new Node containing Item
+				Post item = new Post(postImage, caption, numberOfLikes, likedBy, timePosted, postedBy, ID); 
+				// reads the values from the file and creates a new Item, passing the read fields as parameters
+				Node node = new Node(item); // creates a new Node containing Item
 				nextLine = bufferedReader.readLine();
-				addItem(node, root, null); //adds the new Node to the tree as normal
+				addItem(node, root, null); // adds the new Node to the tree as normal
 
 			}
 			System.out.println("Loaded");
@@ -365,6 +309,3 @@ public class Tree {
 	}
 
 }
-
-
-
