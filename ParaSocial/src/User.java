@@ -72,9 +72,12 @@ public class User {
 
     public ArrayList<String> getMutuals(User a, User b)
     {
-        ArrayList<String> mutuals = a.getFriends();
+        ArrayList<String> mutuals = new ArrayList<String>();
+        for (int i=0; i<a.getFriends().size(); i++)
+        {
+          mutuals.add(a.getFriends().get(i));
+        }
         mutuals.retainAll(b.getFriends());
-
         return mutuals;
     }
 
