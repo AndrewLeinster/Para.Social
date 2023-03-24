@@ -32,28 +32,6 @@ public class Main {
     {
         Main m1 = new Main();
 
-        /** 
-        // test data
-        User user1 = new User("Dave", "1", "a place", "dundee", null, new ArrayList<Integer>());
-        User user2 = new User("Steve", "2", "a workplace", "edinburgh", null, new ArrayList<Integer>());
-        User user3 = new User("abbie", "3", "asda", "glasgow", null, new ArrayList<Integer>());
-
-        // add to friends list
-        user1.addFriend(Integer.parseInt(user3.getID()));
-        user1.addFriend(Integer.parseInt(user2.getID()));
-        user2.addFriend(Integer.parseInt(user3.getID()));
-        user2.addFriend(Integer.parseInt(user1.getID()));
-        user3.addFriend(Integer.parseInt(user2.getID()));
-
-        // add users to main set of users
-        m1.users.add(user1);
-        m1.users.add(user2);
-        m1.users.add(user3);
-
-        // call write to file method
-        m1.writeToFile();
-        */
-
         m1.readIn();
 
         // create iterator to loop through set of users
@@ -76,6 +54,13 @@ public class Main {
                 System.out.println(nextUser.getFriends().get(i));
             }
         }
+
+        m1.writeToFile();
+    }
+
+    public void addUsers(User u)
+    {
+        users.add(u);
     }
 
     public void writeToFile()
@@ -124,13 +109,14 @@ public class Main {
     public void writeUser (User u, PrintWriter printWriter)
     {
         // create new ArrayList to store friends list
-        ArrayList<Integer> friends = u.getFriends();
+        ArrayList<String> friends = u.getFriends();
 
         // write user details to the file
         printWriter.println(u.getName());
         printWriter.println(u.getID());
         printWriter.println(u.getWorkPlace());
         printWriter.println(u.getHomeTown());
+        printWriter.println(u.getPfp());
 
         printWriter.println(friends.size());
         
@@ -152,6 +138,7 @@ public class Main {
         String id;
         String workPlace;
         String homeTown;
+        String pfp;
         String noOfFriends;
         String friendID;
 
@@ -167,13 +154,14 @@ public class Main {
             id = bufferedReader.readLine();
             workPlace = bufferedReader.readLine();
             homeTown = bufferedReader.readLine();
+            pfp = bufferedReader.readLine();
             noOfFriends = bufferedReader.readLine();
 
             // while there are still lines to read in
             while (name != null)
             {
                 // create a new user with the values that have been read in
-                User newUser = new User(name, id, workPlace, homeTown, null, new ArrayList<Integer>());
+                User newUser = new User(name, id, workPlace, homeTown, pfp, new ArrayList<String>());
 
                 // for the number of friends
                 for (int i = 0; i < Integer.parseInt(noOfFriends); i++)
@@ -181,7 +169,7 @@ public class Main {
                     // read in the friendID
                     friendID = bufferedReader.readLine();
                     // add the friend to the friends list
-                    newUser.addFriend(Integer.parseInt(friendID));
+                    newUser.addFriend(friendID);
                 }
 
                 // add new user to set of users
@@ -227,9 +215,10 @@ public class Main {
     {
 
         User[] userArray = users.toArray(new User[users.size()]);
-
+        
         for (int i = 0; i < userArray.length; i++)
         {
+        
             if (ID.equals(userArray[i].getID()))
             {
                 return userArray[i];
@@ -239,6 +228,12 @@ public class Main {
         System.out.println("user not found");
         return null;
     }
+
+
+public void addUser(User a)
+{
+    users.add(a);
+}
 
 }
 
