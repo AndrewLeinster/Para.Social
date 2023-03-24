@@ -1,8 +1,9 @@
-
+import java.io.PrintWriter;
 
 /**
  * 
- * Stores the Nodes of the binary tree containing methods to display individual nodes and write individual nodes to a file
+ * Stores the Nodes of the binary tree containing methods to display individual
+ * nodes and write individual nodes to a file
  * 
  * @author Adam Munro
  * @version 1.0.0
@@ -13,7 +14,6 @@ public class Node {
 	private Post item;
 	private Node leftNode;
 	private Node rightNode;
-	
 
 	public Node() {
 
@@ -31,6 +31,28 @@ public class Node {
 
 	}
 
+	/**
+	 * 
+	 * Writes a node to a text file
+	 * 
+	 * @param printWriter the instance of PrintWriter used
+	 */
+	public void writeNode(PrintWriter printWriter) {
+
+		printWriter.println(getItem().getID());
+		printWriter.println(getItem().getPostedBy());
+		printWriter.println(getItem().getTimePosted());
+		printWriter.println(getItem().getCaption()); 
+		printWriter.println(getItem().getNumberOfLikes());
+		printWriter.println(getItem().getLikedBy().size());
+
+		for (int i = 0; i < getItem().getLikedBy().size(); i++) {
+			printWriter.println(getItem().getLikedBy());
+		}
+
+		printWriter.println(getItem().getPostImage());
+
+	}
 
 	/**
 	 * 
@@ -71,7 +93,7 @@ public class Node {
 	public void setLeftNode(Node leftNode) {
 		this.leftNode = leftNode;
 	}
-	
+
 	/**
 	 * 
 	 * Gets the value of rightNode
