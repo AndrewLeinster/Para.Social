@@ -31,18 +31,20 @@ public class Tester {
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Iona.jpg", new ArrayList<String>());
         User user4 = new User("Andrew", "4", "Self-Employed", "Fife", "Images/PFPs/Andrew.jpg", new ArrayList<String>());
         User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
+        User user6 = new User("Adri", "6", "Odeon", "Las Vegas", "Images/PFPs/Adri.jpg", new ArrayList<String>());
+        User user7 = new User("Beth", "7", "DUSA", "Falkirk", "Images/PFPs/Beth.jpg", new ArrayList<String>());
         
-
+/*
         for (int i=1; i<=getUserCount();i++) {
             Random random = new Random();
             int max_friends = random.nextInt(getUserCount()) + 1; 
 
             for (int j=1; j<=max_friends; j++) {
                 String user = "user" + i;
-                user1.addFriend(user2.getID());
+                user.addFriend(user2.getID());
             }
         }
-
+*/
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
         user1.addFriend(user5.getID());
@@ -57,6 +59,16 @@ public class Tester {
         user5.addFriend(user2.getID());
         user5.addFriend(user3.getID());
         user5.addFriend(user4.getID());
+        user6.addFriend(user7.getID());
+        user6.addFriend(user1.getID());
+        user6.addFriend(user2.getID());
+        user6.addFriend(user5.getID());
+        user6.addFriend(user1.getID());
+        user7.addFriend(user1.getID());
+        user7.addFriend(user2.getID());
+        user7.addFriend(user5.getID());
+        user7.addFriend(user1.getID());
+
 
         main.addUsers(user1);
         main.addUsers(user2);
