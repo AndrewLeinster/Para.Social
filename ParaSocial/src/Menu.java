@@ -146,37 +146,46 @@ public class Menu {
   }
 
   /**
+   * Method to display all of an inputted users details to the user
+   * @param user The user to display the details of
+   * @param panel The panel to add the information to
+   */
+  public void displayUserInfo(User user, JPanel panel)
+  {
+      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(user.getPfp()));
+      ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+      JLabel friendProfiLabel = new JLabel(friendProfileResized);
+      panel.add(friendProfiLabel);
+      JLabel friendName = new JLabel(user.getName());
+      friendName.setFont(new Font("Sans", Font.PLAIN, 20));
+      panel.add(friendName);
+      JLabel friendId = new JLabel("ID: " + user.getID());
+      friendId.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendId);
+      JLabel friendWork = new JLabel("Workplace: " + user.getWorkPlace());
+      friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendWork);
+      JLabel friendHome = new JLabel("Hometown: " + user.getHomeTown());
+      friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendHome);
+      SwingUtilities.updateComponentTreeUI(window);
+  }
+
+  /**
    * Method to create the right hand panel to display friends
    */
   public void createFriendsPanel() {
 
     JLabel friendsInfo = new JLabel("Friends");
-    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 20));
+    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     rightPanel.add(friendsInfo);
 
     // rightPanel.add(createTextPanel());
     for (int i = 0; i < user1.getFriends().size(); i++) 
     {
-      // make strings containing friend info
+      // display user info
       User mainUser = main.IDtoUser(user1.getFriends().get(i));
-
-      // add profile information
-      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(mainUser.getPfp()));
-      ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
-      JLabel friendProfiLabel = new JLabel(friendProfileResized);
-      rightPanel.add(friendProfiLabel);
-      JLabel friendName = new JLabel(mainUser.getName());
-      friendName.setFont(new Font("Sans", Font.PLAIN, 20));
-      rightPanel.add(friendName);
-      JLabel friendId = new JLabel("ID: " + user1.getFriends().get(i));
-      friendId.setFont(new Font("Sans", Font.PLAIN, 16));
-      rightPanel.add(friendId);
-      JLabel friendWork = new JLabel("Workplace: " + mainUser.getWorkPlace());
-      friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
-      rightPanel.add(friendWork);
-      JLabel friendHome = new JLabel("Hometown: " + mainUser.getHomeTown());
-      friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
-      rightPanel.add(friendHome);
+      displayUserInfo(mainUser, rightPanel);
 
       // view friends button
       JButton viewFriends = new JButton("View " + mainUser.getName() + "'s Friends");
@@ -193,7 +202,7 @@ public class Menu {
 
           User friend = main.IDtoUser(user1.getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
-          friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 20));
+          friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
           friendsPanel.add(friendFriendsLabel);
 
           // display the info of each of the friends friends
@@ -201,24 +210,8 @@ public class Menu {
             User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
 
             // add profile information
-            ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(friendsFriend.getPfp()));
-            ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
-            JLabel friendProfiLabel = new JLabel(friendProfileResized);
-            friendsPanel.add(friendProfiLabel);
-            JLabel friendName = new JLabel(friendsFriend.getName());
-            friendName.setFont(new Font("Sans", Font.PLAIN, 20));
-            friendsPanel.add(friendName);
-            JLabel friendId = new JLabel("ID: " + friendsFriend.getID());
-            friendId.setFont(new Font("Sans", Font.PLAIN, 16));
-            friendsPanel.add(friendId);
-            JLabel friendWork = new JLabel("Workplace: " + friendsFriend.getWorkPlace());
-            friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
-            friendsPanel.add(friendWork);
-            JLabel friendHome = new JLabel("Hometown: " + friendsFriend.getHomeTown());
-            friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
-            friendsPanel.add(friendHome);
-            SwingUtilities.updateComponentTreeUI(window);
-
+            displayUserInfo(friendsFriend, friendsPanel);
+            
             //add an add friends button to each friend
             JButton addFriend = new JButton("Add Friend");
             addFriend.setBackground(Color.decode("0xe07a5f"));
@@ -228,32 +221,30 @@ public class Menu {
             addFriend.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e)
               {
-                user1.addFriend(friendsFriend.getID());
-                ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(friendsFriend.getPfp()));
-                ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
-                JLabel friendProfiLabel = new JLabel(friendProfileResized);
-                rightPanel.add(friendProfiLabel);
-                JLabel friendName = new JLabel(friendsFriend.getName());
-                friendName.setFont(new Font("Sans", Font.PLAIN, 20));
-                rightPanel.add(friendName);
-                JLabel friendId = new JLabel("ID: " + friendsFriend.getID());
-                friendId.setFont(new Font("Sans", Font.PLAIN, 16));
-                rightPanel.add(friendId);
-                JLabel friendWork = new JLabel("Workplace: " + friendsFriend.getWorkPlace());
-                friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
-                rightPanel.add(friendWork);
-                JLabel friendHome = new JLabel("Hometown: " + friendsFriend.getHomeTown());
-                friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
-                rightPanel.add(friendHome);
-                // view friends button
-                JButton viewFriends = new JButton("View " + friendsFriend.getName() + "'s Friends");
-                viewFriends.setBackground(Color.decode("0xe07a5f"));
-                rightPanel.add(viewFriends);
-                SwingUtilities.updateComponentTreeUI(window);
+                // check if they try to add themseleves
+                if (friendsFriend.getID() == user1.getID())
+                {
+                    JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
+                }
+                // check if user is already in their friends list
+                else if (user1.getFriends().contains(friendsFriend.getID()))
+                {
+                  JOptionPane.showMessageDialog(null, "This person is already in your friends list!");
+                }
+                // else, add them to friends list
+                else
+                {
+                  user1.addFriend(friendsFriend.getID());
+                  displayUserInfo(friendsFriend, rightPanel);
+                  JButton viewFriends = new JButton("View " + friendsFriend.getName() + "'s Friends");
+                  viewFriends.setBackground(Color.decode("0xe07a5f"));
+                  rightPanel.add(viewFriends);
+                  JOptionPane.showMessageDialog(null, "Friend successfully added!");
+                  SwingUtilities.updateComponentTreeUI(window);
+                }
               }
             });
           }
-      
           // add a back button if one is not already added
           if (button == false) {
             // back button to go back to main user friends
@@ -262,16 +253,14 @@ public class Menu {
             friendsPanel.add(backButton);
             SwingUtilities.updateComponentTreeUI(window);
             button = true;
-
             backButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                 // go back to the main right panel
                 button = false;
                 // remove all content from the friends panel
-                Component[] friendsPanelItems = friendsPanel.getComponents();
-                for (Component friendsPanelItem : friendsPanelItems) {
-                  friendsPanel.remove(friendsPanelItem);
-                }
+                friendsPanel.removeAll();
+                friendsPanel.revalidate();
+                friendsPanel.repaint();
 
                 topPanel.remove(scrollFriendsPanel);
                 scrollFriendsPanel.revalidate();
@@ -284,17 +273,14 @@ public class Menu {
         }
         });
     }
-
-    SwingUtilities.updateComponentTreeUI(window);
   }
 
   /**
-   * Resize the image and put it into form so that it can be displayed using
-   * JLabel
+   * Resize an image and put it into form so that it can be displayed using JLabel
    * 
    * @param testProfile ImageIcon that is being used as a profile picture
-   * @param width       The width to set the ImageIcon to
-   * @param height      The height to set the ImageIcon to
+   * @param width The width to set the ImageIcon to
+   * @param height The height to set the ImageIcon to
    * @return The resized profile picture to be displayed on the profile
    */
   public ImageIcon resizeImage(ImageIcon testProfile, int width, int height) {
