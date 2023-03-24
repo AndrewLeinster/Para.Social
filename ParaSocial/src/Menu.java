@@ -14,58 +14,74 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.io.File;
-
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
 
-    private JFrame window;
-    private JPanel topPanel, mainPanel, leftPanel, rightPanel;
-    private JLabel titleLabel, profileLabel, newResizedProfile;
-    private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
-    private JFormattedTextField textField;
-    //private Tree allPosts;
-    private ImageIcon profile1, profileIcon;
-    //private Set<User> allUsers;
-    private boolean displayed;
-    private JFileChooser chooser;
-    User user1 = new User("Dave", "12345", "a place", "dundee", null, null);
-    User user2 = new User("Steve", "id", "a workplace", "edinburgh", null, null);
-    User user3 = new User("abbie", "skdjfh", "asda", "glasgow", null, null);
-   
+  private JFrame window;
+  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel;
+  private JScrollPane scrollPanel, scrollFriendsPanel;
+  private JLabel titleLabel, profileLabel;
+  private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
+  private JFormattedTextField textField;
+  // private Tree allPosts;
+  private ImageIcon profile1, profileIcon;
+  private Set<User> users;
+  private boolean displayed, button;
+  private JFileChooser chooser;
+  private Main main;
+  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
+  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
+  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
+  User user4 = new User("Andrew", "4", "Self-Employed", "idk somewhere in fife?", "Images/PFPs/1ALP9275.jpg",
+      new ArrayList<String>());
+  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
 
-    /**
-     * Constructor for menu class
-     */
-    public Menu()
-    {
-        // create the window
-        window = new JFrame();
+  /**
+   * Constructor for menu class
+   */
+  public Menu() {
+    user1.addFriend(user2.getID());
+    user1.addFriend(user3.getID());
+    user1.addFriend(user5.getID());
+    user2.addFriend(user1.getID());
+    user2.addFriend(user4.getID());
+    user3.addFriend(user1.getID());
+    user3.addFriend(user2.getID());
+    user3.addFriend(user5.getID());
+    user4.addFriend(user1.getID());
+    user4.addFriend(user2.getID());
+    user4.addFriend(user5.getID());
+    user5.addFriend(user2.getID());
+    user5.addFriend(user3.getID());
+    user5.addFriend(user4.getID());
 
-        // create the panels
-        createMainPanels();
+    main = new Main();
+    main.addUser(user1);
+    main.addUser(user2);
+    main.addUser(user3);
+    main.addUser(user4);
+    main.addUser(user5);
 
-        window.setJMenuBar(createMenuBar());
-        window.setContentPane(topPanel);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setTitle("para.social");
-        window.setVisible(true);
-        window.pack();
-        
-        displayed = false;
+    // create the window
+    window = new JFrame();
+    // create the panels
+    createMainPanels();
 
-        ArrayList<String> friends1 = new ArrayList<String>();
-        friends1.add(user2.getID());
-        friends1.add(user3.getID());
-        user1.setFriends(friends1);
-        //user1.setPfp();
-    
-    }
+    window.setJMenuBar(createMenuBar());
+    window.setContentPane(topPanel);
+    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    window.setTitle("para.social");
+    window.setVisible(true);
+    window.pack();
+
+    displayed = false;
+    button = false;
+  }
 
   /**
    * main method to launch GUI program on EDT
@@ -73,20 +89,18 @@ public class Menu {
   public static void main(String[] args) {
     // use annonymous class
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
-      // override run method 
+      // override run method
       public void run() {
         // call separate method to set up and run GUI
         runProgram();
       }
     });
-
   }
 
   /*
    * Static method to create an instance of Menu class
    */
   public static void runProgram() {
-    // create an instance of Menu class
     Menu newMenu = new Menu();
   }
 
@@ -98,14 +112,24 @@ public class Menu {
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
     rightPanel = new JPanel();
+    // make a scroll panel so you can scroll to see all friends
+    scrollPanel = new JScrollPane(rightPanel);
+    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
+    // panel to display friends friends, set visibility to false
+    friendsPanel = new JPanel();
+    scrollFriendsPanel = new JScrollPane(friendsPanel);
+    scrollFriendsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollFriendsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     mainPanel.setBackground(Color.decode("0x3d405b"));
     rightPanel.setBackground(Color.decode("0x81b29a"));
     leftPanel.setBackground(Color.decode("0xf2cc8f"));
+    friendsPanel.setBackground(Color.decode("0x81b29a"));
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
-    topPanel.add(rightPanel, BorderLayout.EAST);
+    topPanel.add(scrollPanel, BorderLayout.EAST);
     topPanel.add(leftPanel, BorderLayout.WEST);
 
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -113,33 +137,155 @@ public class Menu {
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
     rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
+    // friends panel will be added to display later, to replace right panel
+    friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
+    friendsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+
     createFriendsPanel();
     createProfilePanel();
   }
 
-  /*
-  */
+  /**
+   * Method to display all of an inputted users details to the user
+   * @param user The user to display the details of
+   * @param panel The panel to add the information to
+   */
+  public void displayUserInfo(User user, JPanel panel)
+  {
+      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(user.getPfp()));
+      ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+      JLabel friendProfiLabel = new JLabel(friendProfileResized);
+      panel.add(friendProfiLabel);
+      JLabel friendName = new JLabel(user.getName());
+      friendName.setFont(new Font("Sans", Font.PLAIN, 20));
+      panel.add(friendName);
+      JLabel friendId = new JLabel("ID: " + user.getID());
+      friendId.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendId);
+      JLabel friendWork = new JLabel("Workplace: " + user.getWorkPlace());
+      friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendWork);
+      JLabel friendHome = new JLabel("Hometown: " + user.getHomeTown());
+      friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
+      panel.add(friendHome);
+      SwingUtilities.updateComponentTreeUI(window);
+  }
 
   /**
    * Method to create the right hand panel to display friends
    */
   public void createFriendsPanel() {
-    rightPanel.add(createTextPanel());
+
+    JLabel friendsInfo = new JLabel("Friends");
+    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
+    rightPanel.add(friendsInfo);
+
+    // rightPanel.add(createTextPanel());
+    for (int i = 0; i < user1.getFriends().size(); i++) 
+    {
+      // display user info
+      User mainUser = main.IDtoUser(user1.getFriends().get(i));
+      displayUserInfo(mainUser, rightPanel);
+
+      // view friends button
+      JButton viewFriends = new JButton("View " + mainUser.getName() + "'s Friends");
+      viewFriends.setBackground(Color.decode("0xe07a5f"));
+      rightPanel.add(viewFriends);
+
+      // https://stackoverflow.com/questions/33799800/java-local-variable-mi-defined-in-an-enclosing-scope-must-be-final-or-effective
+      final Integer inneri = new Integer(i);
+      viewFriends.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e)
+        {
+          topPanel.remove(scrollPanel);
+          topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
+
+          User friend = main.IDtoUser(user1.getFriends().get(inneri));
+          JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
+          friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
+          friendsPanel.add(friendFriendsLabel);
+
+          // display the info of each of the friends friends
+          for (int k = 0; k < friend.getFriends().size(); k++) {
+            User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
+            displayUserInfo(friendsFriend, friendsPanel);
+            
+            //add an add friends button to each friend
+            JButton addFriend = new JButton("Add Friend");
+            addFriend.setBackground(Color.decode("0xe07a5f"));
+            friendsPanel.add(addFriend);
+
+            // add the friend to main users friend list
+            addFriend.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e)
+              {
+                // check if they try to add themseleves
+                if (friendsFriend.getID() == user1.getID())
+                {
+                    JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
+                }
+                // check if user is already in their friends list
+                else if (user1.getFriends().contains(friendsFriend.getID()))
+                {
+                  JOptionPane.showMessageDialog(null, "This person is already in your friends list!");
+                }
+                // else, add them to friends list
+                else
+                {
+                  user1.addFriend(friendsFriend.getID());
+                  rightPanel.removeAll();
+                  rightPanel.revalidate();
+                  rightPanel.repaint();
+                  JOptionPane.showMessageDialog(null, "Friend successfully added!");
+                  createFriendsPanel();
+                }
+              }
+            });
+          }
+          // add a back button if one is not already added
+          if (button == false) {
+            // back button to go back to main user friends
+            JButton backButton = new JButton("Back");
+            backButton.setBackground(Color.decode("0xe07a5f"));
+            friendsPanel.add(backButton);
+            SwingUtilities.updateComponentTreeUI(window);
+            button = true;
+            backButton.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                // go back to the main right panel
+                button = false;
+                // remove all content from the friends panel
+                friendsPanel.removeAll();
+                friendsPanel.revalidate();
+                friendsPanel.repaint();
+
+                topPanel.remove(scrollFriendsPanel);
+                scrollFriendsPanel.revalidate();
+                scrollFriendsPanel.repaint();
+                topPanel.add(scrollPanel, BorderLayout.EAST);
+                SwingUtilities.updateComponentTreeUI(window);
+              }
+            });
+          }
+        }
+        });
+    }
   }
 
   /**
-   * Resize the image and put it into form so that it can be displayed using JLabel
+   * Resize an image and put it into form so that it can be displayed using JLabel
    * 
-   * @param
-   * @return
+   * @param testProfile ImageIcon that is being used as a profile picture
+   * @param width The width to set the ImageIcon to
+   * @param height The height to set the ImageIcon to
+   * @return The resized profile picture to be displayed on the profile
    */
-  public ImageIcon resizeImage(ImageIcon testProfile)
-  {
-     // https://www.youtube.com/watch?v=ntirmRhy6Fw
+  public ImageIcon resizeImage(ImageIcon testProfile, int width, int height) {
+    // https://www.youtube.com/watch?v=ntirmRhy6Fw
     // reminder to put this in a try catch
     Image testProfileImage = testProfile.getImage();
     // https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-    Image resized = testProfileImage.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH);
+    Image resized = testProfileImage.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
     ImageIcon resizedIcon = new ImageIcon(resized);
 
     return resizedIcon;
@@ -149,10 +295,13 @@ public class Menu {
    * Create the left hand panel with all profile information
    */
   public void createProfilePanel() {
+    JLabel profile = new JLabel("Your Profile");
+    profile.setFont(new Font("Sans", Font.PLAIN, 26));
+    leftPanel.add(profile);
 
     // as a temporary fix, image has been moved to source code file
-    profile1 = new javax.swing.ImageIcon(getClass().getResource("Images/PFPs/Marcus.jpg"));
-    profileIcon = resizeImage(profile1);
+    profile1 = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
+    profileIcon = resizeImage(profile1, 300, 300);
     profileLabel = new JLabel(profileIcon);
 
     leftPanel.add(profileLabel);
@@ -217,7 +366,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change id button
@@ -226,7 +374,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeID = new JTextField("Change your ID");
               leftPanel.add(changeID);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -241,7 +388,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change workplace
@@ -250,7 +396,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeWorkPlace = new JTextField("Change your Workplace");
               leftPanel.add(changeWorkPlace);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -265,7 +410,6 @@ public class Menu {
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change hometown
@@ -274,7 +418,6 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
               JTextField changeHometown = new JTextField("Change your hometown");
               leftPanel.add(changeHometown);
-
               JButton submitButton = new JButton("Submit");
               submitButton.setBackground(Color.decode("0xe07a5f"));
               leftPanel.add(submitButton);
@@ -285,28 +428,19 @@ public class Menu {
                   home.setText("Hometown:" + changeHometown.getText());
                   leftPanel.remove(submitButton);
                   leftPanel.remove(changeHometown);
-
                 }
               });
               SwingUtilities.updateComponentTreeUI(window);
             }
-
           });
 
           // change profile picture
           leftPanel.add(editProfilePictureButton);
           editProfilePictureButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            
-              /* 
-              // changing the profile picture to a specific different picture now works
-              ImageIcon profile2 = new javax.swing.ImageIcon(getClass().getResource("Images/PFPs/Person.jpg"));
-              profileLabel.setIcon(resizeImage(profile2));
-              SwingUtilities.updateComponentTreeUI(window);*/
-
+              // call method to choose an image to set PFP to
               selectFile();
             }
-
           });
           displayed = true;
           SwingUtilities.updateComponentTreeUI(window);
@@ -341,19 +475,6 @@ public class Menu {
     menu.add(menuItem);
     menu.add(menuItem2);
 
-    // make menu items do things
-    menuItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // do something
-      }
-    });
-
-    menuItem2.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // do something
-      }
-    });
-
     menuBar.setBackground(Color.GRAY);
     return menuBar;
   }
@@ -381,12 +502,11 @@ public class Menu {
 
   /**
    * Select a new file to set the profile picture to
+   * 
    * @return
    */
-  public void selectFile()
-  {
+  public void selectFile() {
     chooser = new JFileChooser();
-
     FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg");
     chooser.setFileFilter(filter);
 
@@ -394,30 +514,21 @@ public class Menu {
     int returnVal = chooser.showOpenDialog(window);
 
     // check if user has selected a file and open it
-    if (returnVal == JFileChooser.APPROVE_OPTION)
-    {
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
       // open dialog box to select files
       File file = chooser.getSelectedFile();
       // get the file path
       System.out.println(file.getAbsolutePath());
-      //JOptionPane.showMessageDialog(null, file.getPath());
 
       String[] filePathArray = file.getPath().split("src");
       String relative = filePathArray[1];
 
       ImageIcon newProfilePic = new ImageIcon();
       newProfilePic = new javax.swing.ImageIcon(getClass().getResource(relative));
-    
-      //user1.setPfp(newProfilePic.getImage());
-      profileLabel.setIcon(resizeImage(newProfilePic));
+      profileLabel.setIcon(resizeImage(newProfilePic, 300, 300));
       SwingUtilities.updateComponentTreeUI(window);
-      
-    }
-    else
-    {
-      //test message
-      JOptionPane.showMessageDialog(null, "Test");
-        //return null;
+    } else {
+      System.out.println("Error choosing image!");
     }
   }
 
