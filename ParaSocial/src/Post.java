@@ -1,5 +1,4 @@
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.awt.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -7,18 +6,22 @@ import java.time.temporal.ChronoUnit;
 public class Post {
 
     private LocalDateTime timePosted;
-    private Image postImage;
+    private String postImage;
     private String caption;
     private int numberOfLikes;
-    private Set<User> likedBy;
+    private ArrayList<String> likedBy;
+    private String postedBy;
+    private String ID;
 
-    public Post(Image postImage, String caption, int numberOfLikes, HashSet<User> likedBy, LocalDateTime timePosted)
+    public Post(String postImage, String caption, int numberOfLikes, ArrayList<String> likedBy, LocalDateTime timePosted, String postedBy, String ID)
     {
         this.timePosted = timePosted;
         this.postImage = postImage;
         this.caption = caption;
         this.numberOfLikes = numberOfLikes;
         this.likedBy = likedBy;
+        this.postedBy =  postedBy;
+        this.ID = ID;
     }
 
     public Post()
@@ -30,7 +33,7 @@ public class Post {
         likedBy = null;
     }
 
-    public void likePost(User a)
+    public void likePost(String a)
     {
         likedBy.add(a);
         numberOfLikes = likedBy.size();
@@ -47,12 +50,12 @@ public class Post {
         this.timePosted = timePosted;
     }
 
-    public Image getPostImage()
+    public String getPostImage()
     {
         return postImage;
     }
 
-    public void setPostImage(Image postImage)
+    public void setPostImage(String postImage)
     {
         this.postImage = postImage;
     }
@@ -84,14 +87,34 @@ public class Post {
         return elapsedTime;
     }
 
-    public Set<User> getLikedBy()
+    public ArrayList<String> getLikedBy()
     {
         return likedBy;
     }
 
-    public void setLikedBy(Set<User> likedBy)
+    public void setLikedBy(ArrayList<String> likedBy)
     {
         this.likedBy = likedBy;
+    }
+
+    public String getPostedBy()
+    {
+        return postedBy;
+    }
+
+    public void setPostedBy(String postedBy)
+    {
+        this.postedBy = postedBy;
+    }
+
+    public String getID()
+    {
+        return ID;
+    }
+
+    public void setID(String ID)
+    {
+        this.ID = ID;
     }
 
 

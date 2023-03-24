@@ -24,7 +24,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-        this.posts = null;
+        //this.posts = null;
     }
 
     public User()
@@ -35,7 +35,7 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-        posts = null;
+       // posts = null;
     }
 
     /**
@@ -88,6 +88,49 @@ public class User {
     
         return false;
 
+    }
+
+    /**
+     * 
+     * Finds the search strength of each applicable user to determine how they should be ordered in the search results
+     * 
+     * @param search the term searched
+     * @param a the User being searched
+     * @return searchStrength 
+     */
+    public int getSearchStrength(String search, User a)
+    {
+        int searchStrength = 0;
+
+        if (compareStrings(ID, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(name, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(workPlace, search))
+        {
+            searchStrength++;
+        }
+
+        if (compareStrings(homeTown, search))
+        {
+            searchStrength++;
+        }
+
+        searchStrength = searchStrength + getMutuals(Main.getPrimaryUser(), a).size();
+
+        if (a.getFriends().contains(Main.getPrimaryUser()))
+        {
+            searchStrength = searchStrength * 2;
+        }
+
+
+        return searchStrength;
     }
 
     public boolean compareStrings(String a, String b)
