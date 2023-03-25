@@ -25,8 +25,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Menu {
 
   private JFrame window;
-  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, postsPanel;
-  private JScrollPane scrollPanel, scrollFriendsPanel;
+  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
+  private JScrollPane scrollPanel, scrollFriendsPanel, scrollMutualsPanel;
   private JLabel titleLabel, profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
   private JFormattedTextField textField;
@@ -42,6 +42,9 @@ public class Menu {
   User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/1ALP9275.jpg",
       new ArrayList<String>());
   User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
+  // colours
+  String teaGreen, beige, cornsilk, papayaWhip, buff;
+
 
   /**
    * Constructor for menu class
@@ -121,27 +124,34 @@ public class Menu {
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
 
-    // panel to display friends friends, set visibility to false
+    // panel to display friends friends
     friendsPanel = new JPanel();
     scrollFriendsPanel = new JScrollPane(friendsPanel);
     scrollFriendsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollFriendsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    String teaGreen = "0xCCD5AE";
-    String beige = "0xE9EDC9";
-    String cornsilk = "0xFEFAE0";
-    String papayaWhip = "0xFAEDCD";
-    String buff = "0xD4A373";
+    //panel to display mutual friends
+    mutualsPanel = new JPanel();
+    scrollMutualsPanel = new JScrollPane(mutualsPanel);
+    scrollMutualsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollMutualsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+
+    teaGreen = "0xCCD5AE";
+    beige = "0xE9EDC9";
+    cornsilk = "0xFEFAE0";
+    papayaWhip = "0xFAEDCD";
+    buff = "0xD4A373";
 
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
     leftPanel.setBackground(Color.decode(teaGreen));
     friendsPanel.setBackground(Color.decode(beige));
+    mutualsPanel.setBackground(Color.decode(beige));
     //postsPanel.setBackground(Color.decode(papayaWhip));
 
     // panel to display posts
     postsPanel = new JPanel();
-
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -156,6 +166,10 @@ public class Menu {
     // friends panel will be added to display later, to replace right panel
     friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
     friendsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+
+     // mutuals panel will be added to display later
+     mutualsPanel.setLayout(new BoxLayout(mutualsPanel, BoxLayout.Y_AXIS));
+     mutualsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     createFriendsPanel();
     createProfilePanel();
@@ -200,13 +214,14 @@ public class Menu {
     for (int i = 0; i < user1.getFriends().size(); i++) 
     {
       // display user info
-      User mainUser = main.IDtoUser(user1.getFriends().get(i));
-      displayUserInfo(mainUser, rightPanel);
+      User currentFriend = main.IDtoUser(user1.getFriends().get(i));
+      displayUserInfo(currentFriend, rightPanel);
 
       // view friends button
-      JButton viewFriends = new JButton("View " + mainUser.getName() + "'s Friends");
-      viewFriends.setBackground(Color.decode("0xe07a5f"));
+      JButton viewFriends = new JButton("View " + currentFriend.getName() + "'s Friends");
+      viewFriends.setBackground(Color.decode(buff));
       rightPanel.add(viewFriends);
+      SwingUtilities.updateComponentTreeUI(window);
 
       // https://stackoverflow.com/questions/33799800/java-local-variable-mi-defined-in-an-enclosing-scope-must-be-final-or-effective
       final Integer inneri = new Integer(i);
@@ -215,6 +230,7 @@ public class Menu {
         {
           topPanel.remove(scrollPanel);
           topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
+          scrollFriendsPanel.repaint();
 
           User friend = main.IDtoUser(user1.getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
@@ -228,7 +244,7 @@ public class Menu {
             
             //add an add friends button to each friend
             JButton addFriend = new JButton("Add Friend");
-            addFriend.setBackground(Color.decode("0xe07a5f"));
+            addFriend.setBackground(Color.decode(buff));
             friendsPanel.add(addFriend);
 
             // add the friend to main users friend list
@@ -255,35 +271,59 @@ public class Menu {
                   JOptionPane.showMessageDialog(null, "Friend successfully added!");
                   createFriendsPanel();
                 }
+                SwingUtilities.updateComponentTreeUI(window);
               }
             });
           }
-          // add a back button if one is not already added
-          if (button == false) {
             // back button to go back to main user friends
             JButton backButton = new JButton("Back");
-            backButton.setBackground(Color.decode("0xe07a5f"));
+            backButton.setBackground(Color.decode(buff));
             friendsPanel.add(backButton);
             SwingUtilities.updateComponentTreeUI(window);
-            button = true;
+
+            // this is a back button to take you back to the right panel
             backButton.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
-                // go back to the main right panel
-                button = false;
                 // remove all content from the friends panel
                 friendsPanel.removeAll();
                 friendsPanel.revalidate();
                 friendsPanel.repaint();
 
+                mutualsPanel.removeAll();
+                        mutualsPanel.revalidate();
+                        mutualsPanel.repaint();
+                        
+                
+                // go back to the main right panel
                 topPanel.remove(scrollFriendsPanel);
-                scrollFriendsPanel.revalidate();
-                scrollFriendsPanel.repaint();
                 topPanel.add(scrollPanel, BorderLayout.EAST);
+                topPanel.remove(scrollMutualsPanel);
                 SwingUtilities.updateComponentTreeUI(window);
               }
             });
+
+            // add button to show mutual friends
+            JButton showMutualFriends = new JButton("Show Mutual Friends");
+            showMutualFriends.setBackground(Color.decode(buff));
+            friendsPanel.add(showMutualFriends);
+
+            showMutualFriends.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent e)
+              {
+                  topPanel.remove(scrollFriendsPanel);
+                  topPanel.add(scrollMutualsPanel, BorderLayout.EAST);
+                  ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
+                  System.out.println(mutualFriends.size());
+                  for (int j=0; j<mutualFriends.size(); j++)
+                  {
+                    User mutual = main.IDtoUser(mutualFriends.get(j));
+                    displayUserInfo(mutual, mutualsPanel);
+                  }
+                  mutualsPanel.add(backButton);
+                  SwingUtilities.updateComponentTreeUI(window);
+              }
+            });
           }
-        }
         });
     }
   }
@@ -338,22 +378,22 @@ public class Menu {
 
     // Create a JButton to edit details
     editButton = new JButton("Edit Profile");
-    editButton.setBackground(Color.decode("0xe07a5f"));
+    editButton.setBackground(Color.decode(buff));
     leftPanel.add(editButton);
 
     // create profile picture edit button
     editProfilePictureButton = new JButton("Edit Profile Picture");
-    editProfilePictureButton.setBackground(Color.decode("0xe07a5f"));
+    editProfilePictureButton.setBackground(Color.decode(buff));
 
     // create each edit button
     nameButton = new JButton("Change Name");
-    nameButton.setBackground(Color.decode("0xe07a5f"));
+    nameButton.setBackground(Color.decode(buff));
     idButton = new JButton("Change ID");
-    idButton.setBackground(Color.decode("0xe07a5f"));
+    idButton.setBackground(Color.decode(buff));
     workplaceButton = new JButton("Change Workplace");
-    workplaceButton.setBackground(Color.decode("0xe07a5f"));
+    workplaceButton.setBackground(Color.decode(buff));
     hometownButton = new JButton("Change Hometown");
-    hometownButton.setBackground(Color.decode("0xe07a5f"));
+    hometownButton.setBackground(Color.decode(buff));
 
     // action listener for edit button
     editButton.addActionListener(new ActionListener() {
@@ -369,7 +409,7 @@ public class Menu {
               leftPanel.add(changeName);
 
               JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode("0xe07a5f"));
+              submitButton.setBackground(Color.decode(buff));
               leftPanel.add(submitButton);
               // add action listener to submit button
               submitButton.addActionListener(new ActionListener() {
@@ -391,7 +431,7 @@ public class Menu {
               JTextField changeID = new JTextField("Change your ID");
               leftPanel.add(changeID);
               JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode("0xe07a5f"));
+              submitButton.setBackground(Color.decode(buff));
               leftPanel.add(submitButton);
               // add action listener to submit button
               submitButton.addActionListener(new ActionListener() {
@@ -413,7 +453,7 @@ public class Menu {
               JTextField changeWorkPlace = new JTextField("Change your Workplace");
               leftPanel.add(changeWorkPlace);
               JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode("0xe07a5f"));
+              submitButton.setBackground(Color.decode(buff));
               leftPanel.add(submitButton);
               // add action listener to submit button
               submitButton.addActionListener(new ActionListener() {
@@ -435,7 +475,7 @@ public class Menu {
               JTextField changeHometown = new JTextField("Change your hometown");
               leftPanel.add(changeHometown);
               JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode("0xe07a5f"));
+              submitButton.setBackground(Color.decode(buff));
               leftPanel.add(submitButton);
               // add action listener to submit button
               submitButton.addActionListener(new ActionListener() {
