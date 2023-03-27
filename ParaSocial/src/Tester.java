@@ -264,7 +264,7 @@ public class Tester {
         user20.addFriend(user11.getID());
         user20.addFriend(user10.getID());
         user20.addFriend(user14.getID());
-        user20addFriend(user21.getID());
+        user20.addFriend(user21.getID());
         user20.addFriend(user31.getID());
         user20.addFriend(user12.getID());
 
