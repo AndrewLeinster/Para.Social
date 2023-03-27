@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
+  private User primaryUser;
   private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
@@ -74,6 +75,8 @@ public class Menu {
     main.addUser(user3);
     main.addUser(user4);
     main.addUser(user5);
+
+    setPrimaryUser(main.getPrimaryUser());
 
     teaGreen = "0xCCD5AE";
     beige = "0xE9EDC9";
@@ -352,8 +355,8 @@ public class Menu {
 
       for (int i = 1; i < 92; i++)
       {
-        nextLine = bufferedReader.readLine();
-        Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine, ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i, formatter));
+        //nextLine = bufferedReader.readLine();
+        //Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine, ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i, formatter));
       }
 
       System.out.println("Deez");
@@ -665,7 +668,12 @@ public class Menu {
   public static void displayMessage(String message, String title) {
     int messageType = JOptionPane.PLAIN_MESSAGE;
     JOptionPane.showMessageDialog(null, message, title, messageType);
-  } 
+  }
+
+  public void setPrimaryUser(User a)
+  {
+    primaryUser = a;
+  }
 
 
   /*
