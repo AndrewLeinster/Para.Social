@@ -4,7 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,6 +23,7 @@ import java.util.Scanner;
 public class Tree {
 
 	private Node root;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	public Tree() {
 
@@ -44,9 +47,22 @@ public class Tree {
 	 */
 	public void addItem(Node newNode, Node current, Node previous) {
 
-		long currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()); //determines the elapsed time of each node
-		long previousTime = previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()); //and stores them as fields in the method
-		long newTime = newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now());
+		long currentTime = 0;
+		long previousTime = 0;
+		long newTime = 0;
+
+		if (current != null)
+		{
+		currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()); //determines the elapsed time of each node
+		}
+		if (previous != null)
+		{
+		previousTime = previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()); //and stores them as fields in the method
+		}
+		if (newNode != null)
+		{
+		newTime = newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now());
+		}
 
 		if (treeEmpty()) {
 			setRoot(newNode); // if there's nothing in the tree, it makes newNode the root
@@ -156,15 +172,7 @@ public class Tree {
 	 * 
 	 * @param current the current Node
 	 */
-	public void inorderDisplay(Node current) {
 
-		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			Menu.displayPosts(current.getItem()); // displays the current node
-			inorderDisplay(current.getRightNode());
-		}
-
-	}
 
 	/**
 	 * 
@@ -173,11 +181,10 @@ public class Tree {
 	 * @param current the current Node
 	 */
 	public void postorderDisplay(Node current) {
-
 		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			inorderDisplay(current.getRightNode());
-			Menu.displayPosts(current.getItem()); // displays the current node
+			//inorderDisplay(current.getLeftNode()); // traverses the tree
+			//inorderDisplay(current.getRightNode());
+			//menu.displayPosts(current.getItem()); // displays the current node
 		}
 
 	}
@@ -189,11 +196,10 @@ public class Tree {
 	 * @param current the current Node
 	 */
 	public void preorderDisplay(Node current) {
-
 		if (current != null && current.getItem() != null) {
-			Menu.displayPosts(current.getItem()); // displays the current node
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			inorderDisplay(current.getRightNode());
+			//menu.displayPosts(current.getItem()); // displays the current node
+			//inorderDisplay(current.getLeftNode()); // traverses the tree
+			//inorderDisplay(current.getRightNode());
 		}
 
 	}
@@ -252,7 +258,7 @@ public class Tree {
 				nextLine = bufferedReader.readLine();
 				String postedBy = nextLine; 
 				nextLine = bufferedReader.readLine();
-				LocalDateTime timePosted = LocalDateTime.parse(nextLine); //converts the text in the file to the neccesary field type
+				LocalDateTime timePosted = LocalDateTime.parse(nextLine, formatter); //converts the text in the file to the neccesary field type
 				nextLine = bufferedReader.readLine();
 				String caption = nextLine;
 				nextLine = bufferedReader.readLine();

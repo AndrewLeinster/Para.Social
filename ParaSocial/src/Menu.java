@@ -18,12 +18,16 @@ import javax.swing.JPanel;
 import java.util.Set;
 import java.util.ArrayList;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
-
+  private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
   private JScrollPane scrollPanel, scrollFriendsPanel, scrollMutualsPanel;
@@ -44,7 +48,6 @@ public class Menu {
   User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
-
 
   /**
    * Constructor for menu class
@@ -71,6 +74,12 @@ public class Menu {
     main.addUser(user3);
     main.addUser(user4);
     main.addUser(user5);
+
+    teaGreen = "0xCCD5AE";
+    beige = "0xE9EDC9";
+    cornsilk = "0xFEFAE0";
+    papayaWhip = "0xFAEDCD";
+    buff = "0xD4A373";
 
     // create the window
     window = new JFrame();
@@ -106,7 +115,11 @@ public class Menu {
    * Static method to create an instance of Menu class
    */
   public static void runProgram() {
-    Menu newMenu = new Menu();
+    newMenu = new Menu();
+  }
+
+  public Menu getMenu() {
+    return newMenu;
   }
 
   /**
@@ -136,22 +149,12 @@ public class Menu {
     scrollMutualsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollMutualsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
-    teaGreen = "0xCCD5AE";
-    beige = "0xE9EDC9";
-    cornsilk = "0xFEFAE0";
-    papayaWhip = "0xFAEDCD";
-    buff = "0xD4A373";
-
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
     leftPanel.setBackground(Color.decode(teaGreen));
     friendsPanel.setBackground(Color.decode(beige));
     mutualsPanel.setBackground(Color.decode(beige));
-    //postsPanel.setBackground(Color.decode(papayaWhip));
 
-    // panel to display posts
-    postsPanel = new JPanel();
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -162,6 +165,8 @@ public class Menu {
     leftPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
     rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+    mainPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     // friends panel will be added to display later, to replace right panel
     friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
@@ -173,6 +178,7 @@ public class Menu {
 
     createFriendsPanel();
     createProfilePanel();
+    createPostPanel();
   }
 
   /**
@@ -293,7 +299,6 @@ public class Menu {
                         mutualsPanel.revalidate();
                         mutualsPanel.repaint();
                         
-                
                 // go back to the main right panel
                 topPanel.remove(scrollFriendsPanel);
                 topPanel.add(scrollPanel, BorderLayout.EAST);
@@ -327,6 +332,75 @@ public class Menu {
         });
     }
   }
+
+
+  public void createPostPanel() {
+    JLabel postInfo = new JLabel("Posts");
+    postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
+    mainPanel.add(postInfo);
+    Tree tree = new Tree();
+
+      Post newpost = new Post("Images/Posts/DSCF7634.jpg", "Abdrew", 51, null, LocalDateTime.now(), "1", "1" );
+      Node newNode = new Node(newpost);
+      tree.setRoot(newNode);
+      
+      String str = "1986-04-08 12:30";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+      Post newpost2 = new Post("Images/Posts/DSCF9927.jpg", "adym", 49, null, LocalDateTime.parse(str, formatter), "1", "2" );
+      Node newNode2 = new Node(newpost2);
+      tree.addItem(newNode2, tree.getRoot(), null);
+
+      for (int i = 1; i < 92; i++)
+      {
+        nextLine = bufferedReader.readLine();
+        Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine, ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i, formatter));
+      }
+
+      System.out.println("Deez");
+      inorderDisplay(tree.getRoot());
+  }
+
+	public void inorderDisplay(Node current) {
+		System.out.println("trees");
+		if (current != null && current.getItem() != null) {
+			System.out.println("bees");
+			inorderDisplay(current.getLeftNode()); // traverses the tree
+			displayPosts(current.getItem()); // displays the current node
+			inorderDisplay(current.getRightNode());
+		}
+	}
+
+  public void displayPosts(Post post) {
+    System.out.println("Freeze");
+    
+      JLabel nameLabel = new JLabel(post.getPostedBy());
+      mainPanel.add(nameLabel);
+
+      ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
+      ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
+      JLabel postLabel = new JLabel(postResizeImageIcon);
+      mainPanel.add(postLabel);
+
+      JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
+      mainPanel.add(captionLabel);
+
+      JButton LikeButton = new JButton("Like");
+      LikeButton.setBackground(Color.CYAN);
+      mainPanel.add(LikeButton);
+
+      JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
+      mainPanel.add(likesLabel);
+
+      JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
+      mainPanel.add(spacingLabel);
+
+      JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
+      mainPanel.add(spacing2Label);
+
+      JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
+      mainPanel.add(spacing3Label);
+  }
+
 
   /**
    * Resize an image and put it into form so that it can be displayed using JLabel
