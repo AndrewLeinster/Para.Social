@@ -13,7 +13,6 @@ public class User {
     private String pfp;
     
     private ArrayList<String> friends;
-    Main main;
    // private TreeSet posts;
 
 
@@ -26,7 +25,6 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
-        main = new Main();
         
     }
 
@@ -67,12 +65,6 @@ public class User {
         return userInfo;
     }
 
-    public void displayPosts()
-    {
-
-
-    }
-
     public ArrayList<String> getMutuals(User a, User b)
     {
         ArrayList<String> mutuals = new ArrayList<String>();
@@ -96,68 +88,6 @@ public class User {
 
     }
 
-    
-public ArrayList<User> search(String search)
-{
-    ArrayList<User> result = new ArrayList<User>();
-    ArrayList<Integer> strength = new ArrayList<Integer>();
-
-    for (int i=0; i < friends.size(); i++)
-    {
-        if(main.IDtoUser(friends.get(i)).searchApplicable(search))
-        {
-            strength.add(main.IDtoUser(friends.get(i)).getSearchStrength(search, main.IDtoUser(friends.get(i))));
-            result.add(main.IDtoUser(friends.get(i)));
-        }
-    }
-
-    ArrayList<User> sortedResult = new ArrayList<User>();
-    int index;
-
-    for (int i=0; i<result.size(); i++)
-    {
-        index = strength.indexOf(Collections.max(strength));
-        strength.remove(index);
-        sortedResult.add(result.get(index));
-        result.remove(index);
-    }
-    return sortedResult;
-}
-
-
-    /**
-     * 
-     * Finds the search strength of each applicable user to determine how they should be ordered in the search results
-     * 
-     * @param search the term searched
-     * @param a the User being searched
-     * @return searchStrength 
-     */
-    public int getSearchStrength(String search, User a)
-    {
-        int searchStrength = 0;
-
-        String[] userDetails = {ID, name, workPlace, homeTown};
-
-        for (int i = 0; i < userDetails.length; i++)
-        {
-            if (compareStrings(userDetails[i], search))
-        {
-            searchStrength++;
-        }
-        }
-
-        searchStrength = searchStrength + getMutuals(Main.getPrimaryUser(), a).size();
-
-        if (a.getFriends().contains(Main.getPrimaryUser()))
-        {
-            searchStrength = searchStrength * 2;
-        }
-
-
-        return searchStrength;
-    }
-
     public boolean compareStrings(String a, String b)
     {
         for (int i = 0; i < a.length() - b.length(); i++)
@@ -170,6 +100,7 @@ public ArrayList<User> search(String search)
 
         return false;
     }
+
 
     public String getName()
     {

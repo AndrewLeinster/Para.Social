@@ -248,7 +248,7 @@ public ArrayList<User> search(String search)
         {
             if(userArray[i].searchApplicable(search))
             {
-                strength.add(userArray[i].getSearchStrength(search, userArray[i]));
+                strength.add(getSearchStrength(search, userArray[i]));
                 result.add(userArray[i]);
             }
         }
@@ -265,6 +265,86 @@ public ArrayList<User> search(String search)
         }
         return sortedResult;
     }
+
+    public ArrayList<User> searchFriend(String search, User friend)
+{
+    ArrayList<User> result = new ArrayList<User>();
+    ArrayList<Integer> strength = new ArrayList<Integer>();
+    ArrayList<String> friends = friend.getFriends();
+
+    for (int i=0; i < friends.size(); i++)
+    {
+        if(IDtoUser(friends.get(i)).searchApplicable(search))
+        {
+            strength.add(getSearchStrength(search, IDtoUser(friends.get(i))));
+            result.add(IDtoUser(friends.get(i)));
+        }
+    }
+
+    ArrayList<User> sortedResult = new ArrayList<User>();
+    int index;
+
+    for (int i=0; i<result.size(); i++)
+    {
+        index = strength.indexOf(Collections.max(strength));
+        strength.remove(index);
+        sortedResult.add(result.get(index));
+        result.remove(index);
+    }
+    return sortedResult;
+}
+
+ /**
+     * 
+     * Finds the search strength of each applicable user to determine how they should be ordered in the search results
+     * 
+     * @param search the term searched
+     * @param a the User being searched
+     * @return searchStrength 
+     */
+    public int getSearchStrength(String search, User a)
+    {
+        int searchStrength = 0;
+
+        String[] userDetails = {a.getID(), a.getName(), a.getWorkPlace(), a.getHomeTown()};
+
+        for (int i = 0; i < userDetails.length; i++)
+        {
+            if (compareStrings(userDetails[i], search))
+        {
+            searchStrength++;
+        }
+        }
+
+        searchStrength = searchStrength + a.getMutuals(getPrimaryUser(), a).size();
+
+        if (a.getFriends().contains(getPrimaryUser().getID()))
+        {
+            searchStrength = searchStrength * 2;
+        }
+
+
+        return searchStrength;
+    }
+
+    public boolean compareStrings(String a, String b)
+    {
+        for (int i = 0; i < a.length() - b.length(); i++)
+        {
+            if (a.substring(i, i + b.length()).equals(b))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+public User getPrimaryUser()
+{
+    User[] userArray = users.toArray(new User[users.size()]);
+    return userArray[1];
+}
 
 }
 
