@@ -4,7 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -21,6 +23,7 @@ import java.util.Scanner;
 public class Tree {
 
 	private Node root;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	public Tree() {
 
@@ -255,7 +258,7 @@ public class Tree {
 				nextLine = bufferedReader.readLine();
 				String postedBy = nextLine; 
 				nextLine = bufferedReader.readLine();
-				LocalDateTime timePosted = LocalDateTime.parse(nextLine); //converts the text in the file to the neccesary field type
+				LocalDateTime timePosted = LocalDateTime.parse(nextLine, formatter); //converts the text in the file to the neccesary field type
 				nextLine = bufferedReader.readLine();
 				String caption = nextLine;
 				nextLine = bufferedReader.readLine();
