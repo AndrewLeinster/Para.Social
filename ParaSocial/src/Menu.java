@@ -18,6 +18,10 @@ import javax.swing.JPanel;
 import java.util.Set;
 import java.util.ArrayList;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -92,10 +96,6 @@ public class Menu {
     displayed = false;
     button = false;
   }
-
-  /*
-  public Menu(String bees){
-  }*/
 
   /**
    * main method to launch GUI program on EDT
@@ -177,12 +177,8 @@ public class Menu {
      mutualsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     createFriendsPanel();
-    System.out.println("one");
     createProfilePanel();
-    System.out.println("2");
     createPostPanel();
-    System.out.println("iii");
-
   }
 
   /**
@@ -303,7 +299,6 @@ public class Menu {
                         mutualsPanel.revalidate();
                         mutualsPanel.repaint();
                         
-                
                 // go back to the main right panel
                 topPanel.remove(scrollFriendsPanel);
                 topPanel.add(scrollPanel, BorderLayout.EAST);
@@ -344,24 +339,19 @@ public class Menu {
     postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     mainPanel.add(postInfo);
     Tree tree = new Tree();
-    
-      JButton likeButton = new JButton("Like");
-      likeButton.setBackground(Color.decode(buff));
-      mainPanel.add(likeButton);
 
-      Post newpost = new Post();
+      Post newpost = new Post("Images/Posts/DSCF7634.jpg", "Abdrew", 51, null, LocalDateTime.now(), "1", "1" );
       Node newNode = new Node(newpost);
       tree.setRoot(newNode);
+      
+      String str = "1986-04-08 12:30";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+      Post newpost2 = new Post("Images/Posts/DSCF9927.jpg", "adym", 49, null, LocalDateTime.parse(str, formatter), "1", "2" );
+      Node newNode2 = new Node(newpost2);
+      tree.addItem(newNode2, tree.getRoot(), null);
 
       System.out.println("Deez");
       inorderDisplay(tree.getRoot());
-
-      /*
-      ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
-      ImageIcon postIconResizedIcon = resizeImage(friendProfile, 100, 100);
-      JLabel friendProfiLabel = new JLabel(friendProfileResized);
-      panel.add(friendProfiLabel);
-      JLabel friendName = new JLabel(user.getName());*/
   }
 
 	public void inorderDisplay(Node current) {
@@ -377,13 +367,32 @@ public class Menu {
   public void displayPosts(Post post) {
     System.out.println("Freeze");
     
-    for (int i= 0; i<5; i++) {
-      JButton beesButton = new JButton("Bees");
-      System.out.println("Seas");
-      beesButton.setBackground(Color.CYAN);
-      System.out.println("Seize");
-      mainPanel.add(beesButton);
-    }
+      JLabel nameLabel = new JLabel(post.getPostedBy());
+      mainPanel.add(nameLabel);
+
+      ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
+      ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
+      JLabel postLabel = new JLabel(postResizeImageIcon);
+      mainPanel.add(postLabel);
+
+      JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
+      mainPanel.add(captionLabel);
+
+      JButton LikeButton = new JButton("Like");
+      LikeButton.setBackground(Color.CYAN);
+      mainPanel.add(LikeButton);
+
+      JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
+      mainPanel.add(likesLabel);
+
+      JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
+      mainPanel.add(spacingLabel);
+
+      JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
+      mainPanel.add(spacing2Label);
+
+      JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
+      mainPanel.add(spacing3Label);
   }
 
 

@@ -44,9 +44,22 @@ public class Tree {
 	 */
 	public void addItem(Node newNode, Node current, Node previous) {
 
-		long currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()); //determines the elapsed time of each node
-		long previousTime = previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()); //and stores them as fields in the method
-		long newTime = newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now());
+		long currentTime = 0;
+		long previousTime = 0;
+		long newTime = 0;
+
+		if (current != null)
+		{
+		currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now()); //determines the elapsed time of each node
+		}
+		if (previous != null)
+		{
+		previousTime = previous.getItem().getElapsedTime(previous.getItem().getTimePosted(), LocalDateTime.now()); //and stores them as fields in the method
+		}
+		if (newNode != null)
+		{
+		newTime = newNode.getItem().getElapsedTime(newNode.getItem().getTimePosted(), LocalDateTime.now());
+		}
 
 		if (treeEmpty()) {
 			setRoot(newNode); // if there's nothing in the tree, it makes newNode the root
