@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
-
+  private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
   private JScrollPane scrollPanel, scrollFriendsPanel, scrollMutualsPanel;
@@ -90,9 +91,11 @@ public class Menu {
 
     displayed = false;
     button = false;
-
-    
   }
+
+  /*
+  public Menu(String bees){
+  }*/
 
   /**
    * main method to launch GUI program on EDT
@@ -112,7 +115,11 @@ public class Menu {
    * Static method to create an instance of Menu class
    */
   public static void runProgram() {
-    Menu newMenu = new Menu();
+    newMenu = new Menu();
+  }
+
+  public Menu getMenu() {
+    return newMenu;
   }
 
   /**
@@ -170,8 +177,12 @@ public class Menu {
      mutualsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     createFriendsPanel();
+    System.out.println("one");
     createProfilePanel();
+    System.out.println("2");
     createPostPanel();
+    System.out.println("iii");
+
   }
 
   /**
@@ -342,7 +353,8 @@ public class Menu {
       Node newNode = new Node(newpost);
       tree.setRoot(newNode);
 
-      tree.inorderDisplay(tree.getRoot());
+      System.out.println("Deez");
+      inorderDisplay(tree.getRoot());
 
       /*
       ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
@@ -352,16 +364,25 @@ public class Menu {
       JLabel friendName = new JLabel(user.getName());*/
   }
 
+	public void inorderDisplay(Node current) {
+		System.out.println("trees");
+		if (current != null && current.getItem() != null) {
+			System.out.println("bees");
+			inorderDisplay(current.getLeftNode()); // traverses the tree
+			displayPosts(current.getItem()); // displays the current node
+			inorderDisplay(current.getRightNode());
+		}
+	}
+
   public void displayPosts(Post post) {
     System.out.println("Freeze");
-    for (int i = 0; i<5 /*user1.getUserPosts*/; i++){
-      JButton likeButton = new JButton("Bees");
+    
+    for (int i= 0; i<5; i++) {
+      JButton beesButton = new JButton("Bees");
       System.out.println("Seas");
-      likeButton.setBackground(Color.decode(beige));
+      beesButton.setBackground(Color.CYAN);
       System.out.println("Seize");
-      //mainPanel.add(likeButton);
-      System.out.println("Breeze");
-
+      mainPanel.add(beesButton);
     }
   }
 

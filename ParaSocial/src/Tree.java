@@ -21,7 +21,6 @@ import java.util.Scanner;
 public class Tree {
 
 	private Node root;
-	private Menu menu = new Menu();
 
 	public Tree() {
 
@@ -157,15 +156,7 @@ public class Tree {
 	 * 
 	 * @param current the current Node
 	 */
-	public void inorderDisplay(Node current) {
-		System.out.println("trees");
-		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			menu.displayPosts(current.getItem()); // displays the current node
-			inorderDisplay(current.getRightNode());
-		}
 
-	}
 
 	/**
 	 * 
@@ -175,9 +166,9 @@ public class Tree {
 	 */
 	public void postorderDisplay(Node current) {
 		if (current != null && current.getItem() != null) {
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			inorderDisplay(current.getRightNode());
-			menu.displayPosts(current.getItem()); // displays the current node
+			//inorderDisplay(current.getLeftNode()); // traverses the tree
+			//inorderDisplay(current.getRightNode());
+			//menu.displayPosts(current.getItem()); // displays the current node
 		}
 
 	}
@@ -190,9 +181,9 @@ public class Tree {
 	 */
 	public void preorderDisplay(Node current) {
 		if (current != null && current.getItem() != null) {
-			menu.displayPosts(current.getItem()); // displays the current node
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			inorderDisplay(current.getRightNode());
+			//menu.displayPosts(current.getItem()); // displays the current node
+			//inorderDisplay(current.getLeftNode()); // traverses the tree
+			//inorderDisplay(current.getRightNode());
 		}
 
 	}
