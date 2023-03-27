@@ -26,6 +26,9 @@ public class Tester {
 
     public void addUsers()
     {
+        String startPath  = "Images/PFPs/";
+        String endPath = ".jpg";
+
         User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Laura.jpg", new ArrayList<String>());
         User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.jpg", new ArrayList<String>());
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Iona.jpg", new ArrayList<String>());
@@ -34,6 +37,21 @@ public class Tester {
         User user6 = new User("Adri", "6", "Odeon", "Las Vegas", "Images/PFPs/Adri.jpg", new ArrayList<String>());
         User user7 = new User("Beth", "7", "DUSA", "Falkirk", "Images/PFPs/Beth.jpg", new ArrayList<String>());
         
+        
+
+        String[] userName = {"Laura", "Adam", "Iona", "Andrew", "Marcus", "Adri", "Beth"};
+        String[] workplace = {"Starbucks", "O2", "Tesco", "Self-Employed", "Old Course", "Odeon", "DUSA"};
+
+        for (int i=0; i<getUserCount(); i++) {
+            String pfpPath = startPath + userName[1] + endPath;
+            String ID = i+1
+            ParseInt
+
+            User user0 = new User(userName[i], i, workplace[i], "Glenrothes", pfpPath, new ArrayList<String>());
+        }
+        
+
+
 /*
         for (int i=1; i<=getUserCount();i++) {
             Random random = new Random();
