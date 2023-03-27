@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 
 public class Main {
@@ -234,6 +236,35 @@ public void addUser(User a)
 {
     users.add(a);
 }
+
+public ArrayList<User> search(String search)
+    {
+        User[] userArray = users.toArray(new User[users.size()]);
+
+        ArrayList<User> result = new ArrayList<User>();
+        ArrayList<Integer> strength = new ArrayList<Integer>();
+
+        for (int i=0; i < userArray.length; i++)
+        {
+            if(userArray[i].searchApplicable(search))
+            {
+                strength.add(userArray[i].getSearchStrength(search, userArray[i]));
+                result.add(userArray[i]);
+            }
+        }
+
+        ArrayList<User> sortedResult = new ArrayList<User>();
+        int index;
+
+        for (int i=0; i<result.size(); i++)
+        {
+            index = strength.indexOf(Collections.max(strength));
+            strength.remove(index);
+            sortedResult.add(result.get(index));
+            result.remove(index);
+        }
+        return sortedResult;
+    }
 
 }
 
