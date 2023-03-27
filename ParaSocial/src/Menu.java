@@ -350,6 +350,12 @@ public class Menu {
       Node newNode2 = new Node(newpost2);
       tree.addItem(newNode2, tree.getRoot(), null);
 
+      for (int i = 1; i < 92; i++)
+      {
+        nextLine = bufferedReader.readLine();
+        Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine, ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i, formatter));
+      }
+
       System.out.println("Deez");
       inorderDisplay(tree.getRoot());
   }
