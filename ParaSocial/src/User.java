@@ -2,6 +2,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class User {
 
@@ -12,6 +13,7 @@ public class User {
     private String pfp;
     
     private ArrayList<String> friends;
+    Main main;
    // private TreeSet posts;
 
 
@@ -24,6 +26,7 @@ public class User {
         this.homeTown = homeTown;
         this.pfp = pfp;
         this.friends = friends;
+        main = new Main();
         
     }
 
@@ -92,6 +95,35 @@ public class User {
         return false;
 
     }
+
+    
+public ArrayList<User> search(String search)
+{
+    ArrayList<User> result = new ArrayList<User>();
+    ArrayList<Integer> strength = new ArrayList<Integer>();
+
+    for (int i=0; i < friends.size(); i++)
+    {
+        if(main.IDtoUser(friends.get(i)).searchApplicable(search))
+        {
+            strength.add(main.IDtoUser(friends.get(i)).getSearchStrength(search, main.IDtoUser(friends.get(i))));
+            result.add(main.IDtoUser(friends.get(i)));
+        }
+    }
+
+    ArrayList<User> sortedResult = new ArrayList<User>();
+    int index;
+
+    for (int i=0; i<result.size(); i++)
+    {
+        index = strength.indexOf(Collections.max(strength));
+        strength.remove(index);
+        sortedResult.add(result.get(index));
+        result.remove(index);
+    }
+    return sortedResult;
+}
+
 
     /**
      * 
