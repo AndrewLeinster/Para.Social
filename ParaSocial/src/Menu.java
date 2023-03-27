@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.*;
 import java.awt.event.ActionEvent;
@@ -45,7 +44,6 @@ public class Menu {
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
 
-
   /**
    * Constructor for menu class
    */
@@ -72,6 +70,12 @@ public class Menu {
     main.addUser(user4);
     main.addUser(user5);
 
+    teaGreen = "0xCCD5AE";
+    beige = "0xE9EDC9";
+    cornsilk = "0xFEFAE0";
+    papayaWhip = "0xFAEDCD";
+    buff = "0xD4A373";
+
     // create the window
     window = new JFrame();
     // create the panels
@@ -86,6 +90,8 @@ public class Menu {
 
     displayed = false;
     button = false;
+
+    
   }
 
   /**
@@ -136,22 +142,12 @@ public class Menu {
     scrollMutualsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollMutualsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-
-    teaGreen = "0xCCD5AE";
-    beige = "0xE9EDC9";
-    cornsilk = "0xFEFAE0";
-    papayaWhip = "0xFAEDCD";
-    buff = "0xD4A373";
-
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
     leftPanel.setBackground(Color.decode(teaGreen));
     friendsPanel.setBackground(Color.decode(beige));
     mutualsPanel.setBackground(Color.decode(beige));
-    //postsPanel.setBackground(Color.decode(papayaWhip));
 
-    // panel to display posts
-    postsPanel = new JPanel();
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -162,6 +158,8 @@ public class Menu {
     leftPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
     rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+    mainPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     // friends panel will be added to display later, to replace right panel
     friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
@@ -173,6 +171,7 @@ public class Menu {
 
     createFriendsPanel();
     createProfilePanel();
+    createPostPanel();
   }
 
   /**
@@ -327,6 +326,45 @@ public class Menu {
         });
     }
   }
+
+
+  public void createPostPanel() {
+    JLabel postInfo = new JLabel("Posts");
+    postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
+    mainPanel.add(postInfo);
+    Tree tree = new Tree();
+    
+      JButton likeButton = new JButton("Like");
+      likeButton.setBackground(Color.decode(buff));
+      mainPanel.add(likeButton);
+
+      Post newpost = new Post();
+      Node newNode = new Node(newpost);
+      tree.setRoot(newNode);
+
+      tree.inorderDisplay(tree.getRoot());
+
+      /*
+      ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
+      ImageIcon postIconResizedIcon = resizeImage(friendProfile, 100, 100);
+      JLabel friendProfiLabel = new JLabel(friendProfileResized);
+      panel.add(friendProfiLabel);
+      JLabel friendName = new JLabel(user.getName());*/
+  }
+
+  public void displayPosts(Post post) {
+    System.out.println("Freeze");
+    for (int i = 0; i<5 /*user1.getUserPosts*/; i++){
+      JButton likeButton = new JButton("Bees");
+      System.out.println("Seas");
+      likeButton.setBackground(Color.decode(beige));
+      System.out.println("Seize");
+      //mainPanel.add(likeButton);
+      System.out.println("Breeze");
+
+    }
+  }
+
 
   /**
    * Resize an image and put it into form so that it can be displayed using JLabel

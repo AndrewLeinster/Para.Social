@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class Tree {
 
 	private Node root;
+	private Menu menu = new Menu();
 
 	public Tree() {
 
@@ -157,10 +158,10 @@ public class Tree {
 	 * @param current the current Node
 	 */
 	public void inorderDisplay(Node current) {
-
+		System.out.println("trees");
 		if (current != null && current.getItem() != null) {
 			inorderDisplay(current.getLeftNode()); // traverses the tree
-			Menu.displayPosts(current.getItem()); // displays the current node
+			menu.displayPosts(current.getItem()); // displays the current node
 			inorderDisplay(current.getRightNode());
 		}
 
@@ -173,11 +174,10 @@ public class Tree {
 	 * @param current the current Node
 	 */
 	public void postorderDisplay(Node current) {
-
 		if (current != null && current.getItem() != null) {
 			inorderDisplay(current.getLeftNode()); // traverses the tree
 			inorderDisplay(current.getRightNode());
-			Menu.displayPosts(current.getItem()); // displays the current node
+			menu.displayPosts(current.getItem()); // displays the current node
 		}
 
 	}
@@ -189,9 +189,8 @@ public class Tree {
 	 * @param current the current Node
 	 */
 	public void preorderDisplay(Node current) {
-
 		if (current != null && current.getItem() != null) {
-			Menu.displayPosts(current.getItem()); // displays the current node
+			menu.displayPosts(current.getItem()); // displays the current node
 			inorderDisplay(current.getLeftNode()); // traverses the tree
 			inorderDisplay(current.getRightNode());
 		}
