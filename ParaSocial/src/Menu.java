@@ -30,23 +30,22 @@ public class Menu {
   private User primaryUser;
   private static Menu newMenu;
   private JFrame window;
-  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
-  private JScrollPane scrollPanel, scrollFriendsPanel, scrollMutualsPanel;
-  private JLabel titleLabel, profileLabel;
+  private JPanel topPanel, mainPanel, leftPanel, rightPanel;
+  private JScrollPane scrollPanel;
+  private JLabel profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
-  private JFormattedTextField textField;
   // private Tree allPosts;
   private ImageIcon profile1, profileIcon;
   private Set<User> users;
-  private boolean displayed, button;
+  private boolean displayed, editing;
   private JFileChooser chooser;
   private Main main;
-  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
-  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
-  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
-  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/1ALP9275.jpg",
+  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Beth.jpg", new ArrayList<String>());
+  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.jpg", new ArrayList<String>());
+  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Dominique.jpg", new ArrayList<String>());
+  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/Andrew.jpg",
       new ArrayList<String>());
-  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
+  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
 
@@ -89,7 +88,6 @@ public class Menu {
     // create the panels
     createMainPanels();
 
-    window.setJMenuBar(createMenuBar());
     window.setContentPane(topPanel);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setTitle("para.social");
@@ -97,7 +95,7 @@ public class Menu {
     window.pack();
 
     displayed = false;
-    button = false;
+    editing = false;
   }
 
   /**
@@ -121,6 +119,11 @@ public class Menu {
     newMenu = new Menu();
   }
 
+  /**
+   * Method to return the instance of the menu we are using
+   * 
+   * @return The instance of menu
+   */
   public Menu getMenu() {
     return newMenu;
   }
@@ -140,24 +143,9 @@ public class Menu {
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
 
-    // panel to display friends friends
-    friendsPanel = new JPanel();
-    scrollFriendsPanel = new JScrollPane(friendsPanel);
-    scrollFriendsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollFriendsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-    //panel to display mutual friends
-    mutualsPanel = new JPanel();
-    scrollMutualsPanel = new JScrollPane(mutualsPanel);
-    scrollMutualsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollMutualsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
     leftPanel.setBackground(Color.decode(teaGreen));
-    friendsPanel.setBackground(Color.decode(beige));
-    mutualsPanel.setBackground(Color.decode(beige));
-
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -171,14 +159,6 @@ public class Menu {
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
     mainPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
-    // friends panel will be added to display later, to replace right panel
-    friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
-    friendsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
-     // mutuals panel will be added to display later
-     mutualsPanel.setLayout(new BoxLayout(mutualsPanel, BoxLayout.Y_AXIS));
-     mutualsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
     createFriendsPanel();
     createProfilePanel();
     createPostPanel();
@@ -186,28 +166,92 @@ public class Menu {
 
   /**
    * Method to display all of an inputted users details to the user
-   * @param user The user to display the details of
+   * 
+   * @param user  The user to display the details of
    * @param panel The panel to add the information to
    */
-  public void displayUserInfo(User user, JPanel panel)
-  {
-      ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(user.getPfp()));
-      ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
-      JLabel friendProfiLabel = new JLabel(friendProfileResized);
-      panel.add(friendProfiLabel);
-      JLabel friendName = new JLabel(user.getName());
-      friendName.setFont(new Font("Sans", Font.PLAIN, 20));
-      panel.add(friendName);
-      JLabel friendId = new JLabel("ID: " + user.getID());
-      friendId.setFont(new Font("Sans", Font.PLAIN, 16));
-      panel.add(friendId);
-      JLabel friendWork = new JLabel("Workplace: " + user.getWorkPlace());
-      friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
-      panel.add(friendWork);
-      JLabel friendHome = new JLabel("Hometown: " + user.getHomeTown());
-      friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
-      panel.add(friendHome);
-      SwingUtilities.updateComponentTreeUI(window);
+  public void displayUserInfo(User user, JPanel panel) {
+    ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(user.getPfp()));
+    ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+    JLabel friendProfiLabel = new JLabel(friendProfileResized);
+    panel.add(friendProfiLabel);
+    JLabel friendName = new JLabel(user.getName());
+    friendName.setFont(new Font("Sans", Font.PLAIN, 20));
+    panel.add(friendName);
+    JLabel friendId = new JLabel("ID: " + user.getID());
+    friendId.setFont(new Font("Sans", Font.PLAIN, 16));
+    panel.add(friendId);
+    JLabel friendWork = new JLabel("Workplace: " + user.getWorkPlace());
+    friendWork.setFont(new Font("Sans", Font.PLAIN, 16));
+    panel.add(friendWork);
+    JLabel friendHome = new JLabel("Hometown: " + user.getHomeTown());
+    friendHome.setFont(new Font("Sans", Font.PLAIN, 16));
+    panel.add(friendHome);
+    SwingUtilities.updateComponentTreeUI(window);
+  }
+
+  /**
+   * Create a back button to take the user back to the main friends page
+   * 
+   * @return The back button
+   */
+  public JButton backButton() {
+    JButton backButton = new JButton("Back");
+    backButton.setBackground(Color.decode(buff));
+
+    // this is a back button to take you back to the right panel
+    backButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+
+        rightPanel.removeAll();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+        createFriendsPanel();
+      }
+    });
+
+    return backButton;
+  }
+
+  /**
+   * Method to create a search bar and add function to filter friends
+   */
+  public void search() {
+    // search/ filter friends
+    JFormattedTextField searchbox = new JFormattedTextField("Search/ filter your friends");
+    rightPanel.add(searchbox);
+    JButton searchButton = new JButton("Search");
+    searchButton.setBackground(Color.decode(buff));
+    rightPanel.add(searchButton);
+
+    searchButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        String searchTerm = (String) searchbox.getValue();
+        JLabel filteredFriends = new JLabel("Friends filtered by " + searchTerm);
+        filteredFriends.setFont(new Font("Sans", Font.PLAIN, 26));
+
+        ArrayList<User> sortedFriends = main.searchFriend(searchTerm, user1);
+        // clear the right panel
+        rightPanel.removeAll();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+        rightPanel.add(filteredFriends);
+        // display message if no friends were found by filter
+        if (sortedFriends.size() == 0) {
+          JLabel noResults = new JLabel("No friends were found with that search term!");
+          noResults.setFont(new Font("Sans", Font.PLAIN, 16));
+          rightPanel.add(noResults);
+          rightPanel.add(backButton());
+        } else {
+          // display filtered friends
+          for (int j = 0; j < sortedFriends.size(); j++) {
+            displayUserInfo(sortedFriends.get(j), rightPanel);
+          }
+          rightPanel.add(backButton());
+        }
+      }
+    });
+
   }
 
   /**
@@ -219,10 +263,11 @@ public class Menu {
     friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     rightPanel.add(friendsInfo);
 
-    // rightPanel.add(createTextPanel());
-    for (int i = 0; i < user1.getFriends().size(); i++) 
-    {
-      // display user info
+    // add search bar
+    search();
+
+    // display all friends
+    for (int i = 0; i < user1.getFriends().size(); i++) {
       User currentFriend = main.IDtoUser(user1.getFriends().get(i));
       displayUserInfo(currentFriend, rightPanel);
 
@@ -235,182 +280,163 @@ public class Menu {
       // https://stackoverflow.com/questions/33799800/java-local-variable-mi-defined-in-an-enclosing-scope-must-be-final-or-effective
       final Integer inneri = new Integer(i);
       viewFriends.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e)
-        {
-          topPanel.remove(scrollPanel);
-          topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
-          scrollFriendsPanel.repaint();
+        public void actionPerformed(ActionEvent e) {
+          rightPanel.removeAll();
+          rightPanel.revalidate();
+          rightPanel.repaint();
 
           User friend = main.IDtoUser(user1.getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
           friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
-          friendsPanel.add(friendFriendsLabel);
+          rightPanel.add(friendFriendsLabel);
 
           // display the info of each of the friends friends
           for (int k = 0; k < friend.getFriends().size(); k++) {
             User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
-            displayUserInfo(friendsFriend, friendsPanel);
-            
-            //add an add friends button to each friend
+            displayUserInfo(friendsFriend, rightPanel);
+
+            // add an add friends button to each friend
             JButton addFriend = new JButton("Add Friend");
             addFriend.setBackground(Color.decode(buff));
-            friendsPanel.add(addFriend);
+            rightPanel.add(addFriend);
 
             // add the friend to main users friend list
             addFriend.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e)
-              {
+              public void actionPerformed(ActionEvent e) {
                 // check if they try to add themseleves
-                if (friendsFriend.getID() == user1.getID())
-                {
-                    JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
+                if (friendsFriend.getID() == user1.getID()) {
+                  JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
                 }
                 // check if user is already in their friends list
-                else if (user1.getFriends().contains(friendsFriend.getID()))
-                {
+                else if (user1.getFriends().contains(friendsFriend.getID())) {
                   JOptionPane.showMessageDialog(null, "This person is already in your friends list!");
                 }
                 // else, add them to friends list
-                else
-                {
+                else {
                   user1.addFriend(friendsFriend.getID());
-                  rightPanel.removeAll();
-                  rightPanel.revalidate();
-                  rightPanel.repaint();
                   JOptionPane.showMessageDialog(null, "Friend successfully added!");
-                  createFriendsPanel();
                 }
                 SwingUtilities.updateComponentTreeUI(window);
               }
             });
           }
-            // back button to go back to main user friends
-            JButton backButton = new JButton("Back");
-            backButton.setBackground(Color.decode(buff));
-            friendsPanel.add(backButton);
-            SwingUtilities.updateComponentTreeUI(window);
+          // add button to show mutual friends
+          JButton showMutualFriends = new JButton("Show Mutual Friends");
+          showMutualFriends.setBackground(Color.decode(buff));
+          rightPanel.add(showMutualFriends);
 
-            // this is a back button to take you back to the right panel
-            backButton.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                // remove all content from the friends panel
-                friendsPanel.removeAll();
-                friendsPanel.revalidate();
-                friendsPanel.repaint();
+          rightPanel.add(backButton());
+          SwingUtilities.updateComponentTreeUI(window);
 
-                mutualsPanel.removeAll();
-                        mutualsPanel.revalidate();
-                        mutualsPanel.repaint();
-                        
-                // go back to the main right panel
-                topPanel.remove(scrollFriendsPanel);
-                topPanel.add(scrollPanel, BorderLayout.EAST);
-                topPanel.remove(scrollMutualsPanel);
-                SwingUtilities.updateComponentTreeUI(window);
+          showMutualFriends.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              rightPanel.removeAll();
+              rightPanel.revalidate();
+              rightPanel.repaint();
+
+              JLabel mutualsLabel = new JLabel("Mutual Friends");
+              mutualsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
+              rightPanel.add(mutualsLabel);
+              ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
+              if (mutualFriends.size() == 0) {
+                JLabel noMutualFriends = new JLabel("No Mutual Friends");
+                noMutualFriends.setFont(new Font("Sans", Font.PLAIN, 16));
+                rightPanel.add(noMutualFriends);
               }
-            });
-
-            // add button to show mutual friends
-            JButton showMutualFriends = new JButton("Show Mutual Friends");
-            showMutualFriends.setBackground(Color.decode(buff));
-            friendsPanel.add(showMutualFriends);
-
-            showMutualFriends.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e)
-              {
-                  topPanel.remove(scrollFriendsPanel);
-                  topPanel.add(scrollMutualsPanel, BorderLayout.EAST);
-                  ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
-                  System.out.println(mutualFriends.size());
-                  for (int j=0; j<mutualFriends.size(); j++)
-                  {
-                    User mutual = main.IDtoUser(mutualFriends.get(j));
-                    displayUserInfo(mutual, mutualsPanel);
-                  }
-                  mutualsPanel.add(backButton);
-                  SwingUtilities.updateComponentTreeUI(window);
+              for (int j = 0; j < mutualFriends.size(); j++) {
+                User mutual = main.IDtoUser(mutualFriends.get(j));
+                displayUserInfo(mutual, rightPanel);
               }
-            });
-          }
-        });
+              rightPanel.add(backButton());
+              SwingUtilities.updateComponentTreeUI(window);
+            }
+          });
+        }
+      });
     }
   }
 
-
+  /**
+   * Create panel to display posts
+   */
   public void createPostPanel() {
     JLabel postInfo = new JLabel("Posts");
     postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     mainPanel.add(postInfo);
     Tree tree = new Tree();
 
-      Post newpost = new Post("Images/Posts/DSCF7634.jpg", "Abdrew", 51, null, LocalDateTime.now(), "1", "1" );
-      Node newNode = new Node(newpost);
-      tree.setRoot(newNode);
-      
-      String str = "1986-04-08 12:30";
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-      Post newpost2 = new Post("Images/Posts/DSCF9927.jpg", "adym", 49, null, LocalDateTime.parse(str, formatter), "1", "2" );
-      Node newNode2 = new Node(newpost2);
-      tree.addItem(newNode2, tree.getRoot(), null);
+    Post newpost = new Post("Images/Posts/DSCF7634.jpg", "Abdrew", 51, null, LocalDateTime.now(), "1", "1");
+    Node newNode = new Node(newpost);
+    tree.setRoot(newNode);
 
-      for (int i = 1; i < 92; i++)
-      {
-        //nextLine = bufferedReader.readLine();
-        //Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine, ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i, formatter));
-      }
+    String str = "1986-04-08 12:30";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    Post newpost2 = new Post("Images/Posts/DSCF9927.jpg", "adym", 49, null, LocalDateTime.parse(str, formatter), "1",
+        "2");
+    Node newNode2 = new Node(newpost2);
+    tree.addItem(newNode2, tree.getRoot(), null);
 
-      System.out.println("Deez");
-      inorderDisplay(tree.getRoot());
+    for (int i = 1; i < 92; i++) {
+      // nextLine = bufferedReader.readLine();
+      // Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine,
+      // ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i,
+      // formatter));
+    }
+
+    System.out.println("Deez");
+    inorderDisplay(tree.getRoot());
   }
 
-	public void inorderDisplay(Node current) {
-		System.out.println("trees");
-		if (current != null && current.getItem() != null) {
-			System.out.println("bees");
-			inorderDisplay(current.getLeftNode()); // traverses the tree
-			displayPosts(current.getItem()); // displays the current node
-			inorderDisplay(current.getRightNode());
-		}
-	}
+  public void inorderDisplay(Node current) {
+    System.out.println("trees");
+    if (current != null && current.getItem() != null) {
+      System.out.println("bees");
+      inorderDisplay(current.getLeftNode()); // traverses the tree
+      displayPosts(current.getItem()); // displays the current node
+      inorderDisplay(current.getRightNode());
+    }
+  }
 
+  /**
+   * Display posts
+   */
   public void displayPosts(Post post) {
     System.out.println("Freeze");
-    
-      JLabel nameLabel = new JLabel(post.getPostedBy());
-      mainPanel.add(nameLabel);
 
-      ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
-      ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
-      JLabel postLabel = new JLabel(postResizeImageIcon);
-      mainPanel.add(postLabel);
+    JLabel nameLabel = new JLabel(post.getPostedBy());
+    mainPanel.add(nameLabel);
 
-      JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
-      mainPanel.add(captionLabel);
+    ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
+    ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
+    JLabel postLabel = new JLabel(postResizeImageIcon);
+    mainPanel.add(postLabel);
 
-      JButton LikeButton = new JButton("Like");
-      LikeButton.setBackground(Color.CYAN);
-      mainPanel.add(LikeButton);
+    JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
+    mainPanel.add(captionLabel);
 
-      JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
-      mainPanel.add(likesLabel);
+    JButton LikeButton = new JButton("Like");
+    LikeButton.setBackground(Color.CYAN);
+    mainPanel.add(LikeButton);
 
-      JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
-      mainPanel.add(spacingLabel);
+    JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
+    mainPanel.add(likesLabel);
 
-      JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
-      mainPanel.add(spacing2Label);
+    JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
+    mainPanel.add(spacingLabel);
 
-      JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
-      mainPanel.add(spacing3Label);
+    JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
+    mainPanel.add(spacing2Label);
+
+    JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
+    mainPanel.add(spacing3Label);
   }
-
 
   /**
    * Resize an image and put it into form so that it can be displayed using JLabel
    * 
    * @param testProfile ImageIcon that is being used as a profile picture
-   * @param width The width to set the ImageIcon to
-   * @param height The height to set the ImageIcon to
+   * @param width       The width to set the ImageIcon to
+   * @param height      The height to set the ImageIcon to
    * @return The resized profile picture to be displayed on the profile
    */
   public ImageIcon resizeImage(ImageIcon testProfile, int width, int height) {
@@ -432,7 +458,6 @@ public class Menu {
     profile.setFont(new Font("Sans", Font.PLAIN, 26));
     leftPanel.add(profile);
 
-    // as a temporary fix, image has been moved to source code file
     profile1 = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
     profileIcon = resizeImage(profile1, 300, 300);
     profileLabel = new JLabel(profileIcon);
@@ -458,10 +483,6 @@ public class Menu {
     editButton.setBackground(Color.decode(buff));
     leftPanel.add(editButton);
 
-    // create profile picture edit button
-    editProfilePictureButton = new JButton("Edit Profile Picture");
-    editProfilePictureButton.setBackground(Color.decode(buff));
-
     // create each edit button
     nameButton = new JButton("Change Name");
     nameButton.setBackground(Color.decode(buff));
@@ -471,6 +492,8 @@ public class Menu {
     workplaceButton.setBackground(Color.decode(buff));
     hometownButton = new JButton("Change Hometown");
     hometownButton.setBackground(Color.decode(buff));
+    editProfilePictureButton = new JButton("Edit Profile Picture");
+    editProfilePictureButton.setBackground(Color.decode(buff));
 
     // action listener for edit button
     editButton.addActionListener(new ActionListener() {
@@ -482,22 +505,26 @@ public class Menu {
           leftPanel.add(nameButton);
           nameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              JTextField changeName = new JTextField("Change your name");
-              leftPanel.add(changeName);
+              if (editing == false) {
+                editing = true;
+                JTextField changeName = new JTextField("Change your name");
+                leftPanel.add(changeName);
 
-              JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode(buff));
-              leftPanel.add(submitButton);
-              // add action listener to submit button
-              submitButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  user1.setName(changeName.getText());
-                  name.setText(changeName.getText());
-                  leftPanel.remove(submitButton);
-                  leftPanel.remove(changeName);
-                }
-              });
-              SwingUtilities.updateComponentTreeUI(window);
+                JButton submitButton = new JButton("Submit");
+                submitButton.setBackground(Color.decode(buff));
+                leftPanel.add(submitButton);
+                // add action listener to submit button
+                submitButton.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent e) {
+                    user1.setName(changeName.getText());
+                    name.setText(changeName.getText());
+                    leftPanel.remove(submitButton);
+                    leftPanel.remove(changeName);
+                    editing = false;
+                  }
+                });
+                SwingUtilities.updateComponentTreeUI(window);
+              }
             }
           });
 
@@ -505,21 +532,25 @@ public class Menu {
           leftPanel.add(idButton);
           idButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              JTextField changeID = new JTextField("Change your ID");
-              leftPanel.add(changeID);
-              JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode(buff));
-              leftPanel.add(submitButton);
-              // add action listener to submit button
-              submitButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  user1.setID(changeID.getText());
-                  id.setText("ID: " + changeID.getText());
-                  leftPanel.remove(submitButton);
-                  leftPanel.remove(changeID);
-                }
-              });
-              SwingUtilities.updateComponentTreeUI(window);
+              if (editing == false) {
+                editing = true;
+                JTextField changeID = new JTextField("Change your ID");
+                leftPanel.add(changeID);
+                JButton submitButton = new JButton("Submit");
+                submitButton.setBackground(Color.decode(buff));
+                leftPanel.add(submitButton);
+                // add action listener to submit button
+                submitButton.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent e) {
+                    user1.setID(changeID.getText());
+                    id.setText("ID: " + changeID.getText());
+                    leftPanel.remove(submitButton);
+                    leftPanel.remove(changeID);
+                    editing = false;
+                  }
+                });
+                SwingUtilities.updateComponentTreeUI(window);
+              }
             }
           });
 
@@ -527,21 +558,25 @@ public class Menu {
           leftPanel.add(workplaceButton);
           workplaceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              JTextField changeWorkPlace = new JTextField("Change your Workplace");
-              leftPanel.add(changeWorkPlace);
-              JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode(buff));
-              leftPanel.add(submitButton);
-              // add action listener to submit button
-              submitButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  user1.setWorkPlace(changeWorkPlace.getText());
-                  work.setText("Workplace: " + changeWorkPlace.getText());
-                  leftPanel.remove(submitButton);
-                  leftPanel.remove(changeWorkPlace);
-                }
-              });
-              SwingUtilities.updateComponentTreeUI(window);
+              if (editing = false) {
+                editing = true;
+                JTextField changeWorkPlace = new JTextField("Change your Workplace");
+                leftPanel.add(changeWorkPlace);
+                JButton submitButton = new JButton("Submit");
+                submitButton.setBackground(Color.decode(buff));
+                leftPanel.add(submitButton);
+                // add action listener to submit button
+                submitButton.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent e) {
+                    user1.setWorkPlace(changeWorkPlace.getText());
+                    work.setText("Workplace: " + changeWorkPlace.getText());
+                    leftPanel.remove(submitButton);
+                    leftPanel.remove(changeWorkPlace);
+                    editing = false;
+                  }
+                });
+                SwingUtilities.updateComponentTreeUI(window);
+              }
             }
           });
 
@@ -549,21 +584,26 @@ public class Menu {
           leftPanel.add(hometownButton);
           hometownButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              JTextField changeHometown = new JTextField("Change your hometown");
-              leftPanel.add(changeHometown);
-              JButton submitButton = new JButton("Submit");
-              submitButton.setBackground(Color.decode(buff));
-              leftPanel.add(submitButton);
-              // add action listener to submit button
-              submitButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                  user1.setHomeTown(changeHometown.getText());
-                  home.setText("Hometown:" + changeHometown.getText());
-                  leftPanel.remove(submitButton);
-                  leftPanel.remove(changeHometown);
-                }
-              });
-              SwingUtilities.updateComponentTreeUI(window);
+              if (editing == false)
+              {
+                editing = true;
+                JTextField changeHometown = new JTextField("Change your hometown");
+                leftPanel.add(changeHometown);
+                JButton submitButton = new JButton("Submit");
+                submitButton.setBackground(Color.decode(buff));
+                leftPanel.add(submitButton);
+                // add action listener to submit button
+                submitButton.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent e) {
+                    user1.setHomeTown(changeHometown.getText());
+                    home.setText("Hometown:" + changeHometown.getText());
+                    leftPanel.remove(submitButton);
+                    leftPanel.remove(changeHometown);
+                    editing = false;
+                  }
+                });
+                SwingUtilities.updateComponentTreeUI(window);
+              }
             }
           });
 
@@ -572,7 +612,10 @@ public class Menu {
           editProfilePictureButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
               // call method to choose an image to set PFP to
-              selectFile();
+              if (editing == false)
+              {
+                  selectFile();
+              }
             }
           });
           displayed = true;
@@ -591,52 +634,7 @@ public class Menu {
   }
 
   /**
-   * Create the menu bar
-   * 
-   * @return The menu bar
-   */
-  public JMenuBar createMenuBar() {
-    JMenuBar menuBar = new JMenuBar();
-
-    // add a menu called to menuBar
-    JMenu menu = new JMenu("Menu");
-    menuBar.add(menu);
-
-    // add a menu item
-    JMenuItem menuItem = new JMenuItem("Menu Option 1");
-    JMenuItem menuItem2 = new JMenuItem("Menu Option 2");
-    menu.add(menuItem);
-    menu.add(menuItem2);
-
-    menuBar.setBackground(Color.GRAY);
-    return menuBar;
-  }
-
-  /**
-   * Creates a text panel to search
-   * 
-   * @return
-   */
-  public JPanel createTextPanel() {
-    JPanel textPanel = new JPanel();
-    titleLabel = new JLabel("Search");
-
-    // create a formatted text field called scaleField
-    textField = new JFormattedTextField(new String("Search for a friend"));
-    textField.setColumns(12);
-
-    textPanel.add(titleLabel);
-    textPanel.add(textField);
-
-    textPanel.setMaximumSize(new Dimension(200, 40));
-    textPanel.setBackground(Color.lightGray);
-    return textPanel;
-  }
-
-  /**
    * Select a new file to set the profile picture to
-   * 
-   * @return
    */
   public void selectFile() {
     chooser = new JFileChooser();
@@ -670,11 +668,9 @@ public class Menu {
     JOptionPane.showMessageDialog(null, message, title, messageType);
   }
 
-  public void setPrimaryUser(User a)
-  {
+  public void setPrimaryUser(User a) {
     primaryUser = a;
   }
-
 
   /*
    * public void postsPanel()
