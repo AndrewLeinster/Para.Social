@@ -167,8 +167,6 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
-            setFileName("ParaSocial/paraSocial.txt");
-            readIn();
         } catch (IOException e) {
             System.out.println("Error reading in file" + e);
         } finally {
@@ -340,11 +338,6 @@ public class Main {
 
     public Set<User> getUsers() {
         return users;
-    }
-
-    public void setFileName(String fileName)
-    {
-        this.fileName = fileName;
     }
 
 }

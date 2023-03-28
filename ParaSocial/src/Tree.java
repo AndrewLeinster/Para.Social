@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,11 +20,9 @@ import java.util.ArrayList;
 public class Tree {
 
 	private Node root;
-	private String fileName;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	public Tree() {
-		fileName = "PsPosts.txt";
 		root = null;
 	}
 
@@ -202,7 +199,7 @@ public class Tree {
 		PrintWriter printWriter = null;
 		String fileName;
 
-		fileName = ("/PsPosts.txt");
+		fileName = ("PsPosts.txt");
 
 		try {
 			outputStream = new FileOutputStream(fileName);
@@ -276,16 +273,9 @@ public class Tree {
 
 			}
 			System.out.println("Loaded");
-		}
-		catch(FileNotFoundException e) {
-
-		System.out.println("Posts File Not Found");
-		setFileName("ParaSocial/PsPosts.txt");
-		readTree();
-	} catch (IOException e) {
-		System.out.println("Error Loading File");
-
-		}finally {
+		} catch (IOException e) {
+			System.out.println("Error Loading File");
+		} finally {
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
@@ -313,10 +303,5 @@ public class Tree {
 	public void setRoot(Node newRoot) {
 		root = newRoot;
 	}
-
-	public void setFileName(String fileName)
-    {
-        this.fileName = fileName;
-    }
 
 }
