@@ -150,7 +150,7 @@ public class Menu {
    */
   public void displayUserInfo(User user, JPanel panel) {
     ImageIcon friendProfile = new javax.swing.ImageIcon(getClass().getResource(user.getPfp()));
-    ImageIcon friendProfileResized = resizeImage(friendProfile, 100, 100);
+    ImageIcon friendProfileResized = resizeImage(friendProfile, 200, 200);
     JLabel friendProfiLabel = new JLabel(friendProfileResized);
     panel.add(friendProfiLabel);
     JLabel friendName = new JLabel(user.getName());
@@ -233,6 +233,59 @@ public class Menu {
   }
 
   /**
+   * Display a list of users who have things in common with the main user
+   * Display people with similar hometowns or workplaces as the main user
+   */
+  public void friendRecommendations() {
+    JButton friendRecommendations = new JButton(" See Friend Recommendations");
+    friendRecommendations.setBackground(Color.decode(buff));
+    rightPanel.add(friendRecommendations);
+
+    friendRecommendations.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        rightPanel.removeAll();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+        JLabel friendRecommendJLabel = new JLabel("Friend Recommendations");
+        friendRecommendJLabel.setFont(new Font("Sans", Font.PLAIN, 26));
+        rightPanel.add(friendRecommendJLabel);
+
+        JLabel friendRecommendInfo = new JLabel("Here are some people you may know");
+        friendRecommendInfo.setFont(new Font("Sans", Font.PLAIN, 16));
+
+       ArrayList<User> friendRecommend = main.getFriendRecommendations(main.getPrimaryUser());
+       
+       System.out.println(friendRecommend.size());
+
+        // remove main user from list if present
+        for (int i = 0; i < friendRecommend.size(); i++) {
+          if (friendRecommend.get(i).equals(main.getPrimaryUser())) {
+            friendRecommend.remove(friendRecommend.get(i));
+          }
+        }
+        // should i check if the user is already in their friends list?
+
+        // check if the list is empty
+        if (friendRecommend.size() == 0) {
+          JLabel noResults = new JLabel("No friend recommendations currently available!");
+          noResults.setFont(new Font("Sans", Font.PLAIN, 16));
+          rightPanel.add(noResults);
+        } 
+        else {
+          // display friend recommendations 
+          for (int j = 0; j < friendRecommend.size(); j++) {
+
+            displayUserInfo(friendRecommend.get(j), rightPanel);
+            rightPanel.add(addFriendsButton(friendRecommend.get(j)));
+          }
+
+        }
+        rightPanel.add(backButton());
+      }
+    });
+  }
+
+  /**
    * Method to create the right hand panel to display friends
    */
   public void createFriendsPanel() {
@@ -243,6 +296,9 @@ public class Menu {
 
     // add search bar
     search();
+
+    // call friend recommendation method
+    friendRecommendations();
 
     // display all friends
     for (int i = 0; i < main.getPrimaryUser().getFriends().size(); i++) {
@@ -335,6 +391,39 @@ public class Menu {
   }
 
   /**
+   * Method to add a friends button to a add a given user as a friend
+   * 
+   * @param aUser The user to add the add friend button for
+   * @return The add friends button
+   */
+  public JButton addFriendsButton(User aUser) {
+    // add an add friends button to each friend
+    JButton addFriend = new JButton("Add Friend");
+    addFriend.setBackground(Color.decode(buff));
+
+    // add the friend to main users friend list
+    addFriend.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // check if they try to add themseleves
+        if (aUser.getID() == main.getPrimaryUser().getID()) {
+          JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
+        }
+        // check if user is already in their friends list
+        else if (main.getPrimaryUser().getFriends().contains(aUser.getID())) {
+          JOptionPane.showMessageDialog(null, "This person is already in your friends list!");
+        }
+        // else, add them to friends list
+        else {
+          main.getPrimaryUser().addFriend(aUser.getID());
+          JOptionPane.showMessageDialog(null, "Friend successfully added!");
+        }
+        SwingUtilities.updateComponentTreeUI(window);
+      }
+    });
+    return addFriend;
+  }
+
+  /**
    * Create panel to display posts
    */
   public void createPostPanel() {
@@ -370,6 +459,7 @@ public class Menu {
    * Make posts scrollable
    */
   public void displayPosts(Post post) {
+
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
