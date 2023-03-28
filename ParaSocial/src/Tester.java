@@ -190,7 +190,6 @@ public class Tester {
         user15.addFriend(user10.getID());
         user15.addFriend(user12.getID());
         user15.addFriend(user20.getID());
-        user15.addFriend(user12.getID());
         user15.addFriend(user30.getID());
         user15.addFriend(user31.getID());
         user15.addFriend(user32.getID());
@@ -262,7 +261,6 @@ public class Tester {
         user20.addFriend(user9.getID());
         user20.addFriend(user19.getID());
         user20.addFriend(user11.getID());
-        user20.addFriend(user10.getID());
         user20.addFriend(user14.getID());
         user20.addFriend(user21.getID());
         user20.addFriend(user31.getID());
@@ -274,10 +272,10 @@ public class Tester {
         user21.addFriend(user10.getID());
         user21.addFriend(user18.getID());
         user21.addFriend(user19.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
+        user21.addFriend(user11.getID());
+        user21.addFriend(user12.getID());
+        user21.addFriend(user13.getID());
+        user21.addFriend(user14.getID());
 
         user22.addFriend(user4.getID());
         user22.addFriend(user16.getID());
