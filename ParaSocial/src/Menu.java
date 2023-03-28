@@ -36,6 +36,8 @@ public class Menu {
   private boolean displayed, editing;
   private JFileChooser chooser;
   private Main main;
+  public boolean liked = false;
+
   private Tree tree;
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
@@ -46,7 +48,6 @@ public class Menu {
   public Menu() {
 
     main = new Main();
-
     main.readIn();
 
     teaGreen = "0xCCD5AE";
@@ -54,6 +55,8 @@ public class Menu {
     cornsilk = "0xFEFAE0";
     papayaWhip = "0xFAEDCD";
     buff = "0xD4A373";
+
+
 
     // create the window
     window = new JFrame();
@@ -361,11 +364,17 @@ public class Menu {
    *    adds user to 'likedby'
    *    reload panel
    * 
-   * Make posts scrollable
+   *
    */
   public void displayPosts(Post post) {
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
+
+    User user = new User();
+
+    if (post.getLikedBy().contains(user)) {
+      liked=true;
+    }
 
     ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
     ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
@@ -375,12 +384,38 @@ public class Menu {
     JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
     mainPanel.add(captionLabel);
 
-    JButton LikeButton = new JButton("Like");
+    JButton LikeButton = new JButton("Bees");
     LikeButton.setBackground(Color.CYAN);
     mainPanel.add(LikeButton);
 
+    // Set button text depending on if a post is liked or not
+    if (liked) {
+      LikeButton.setText("Liked");
+    } else {
+      LikeButton.setText("Like");
+    }
+
     JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
     mainPanel.add(likesLabel);
+
+    LikeButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+
+        post.likePost(user.getID());
+        
+        liked ^= true;
+        
+        if (liked) {
+          LikeButton.setText("Liked");
+        } else {
+          LikeButton.setText("Like");
+        }
+
+        likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
+
+        SwingUtilities.updateComponentTreeUI(window);
+      }
+    });
 
     JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
     mainPanel.add(spacingLabel);
@@ -642,33 +677,4 @@ public class Menu {
     int messageType = JOptionPane.PLAIN_MESSAGE;
     JOptionPane.showMessageDialog(null, message, title, messageType);
   }
-
-  /*
-   * public void postsPanel()
-   * {
-   * 
-   * BorderLayout layout = new BorderLayout();
-   * topPanel = new JPanel(layout);
-   * mainPanel = new JPanel();
-   * mainPanel.setBackground(Color.decode("0xF5CCE8"));
-   * 
-   * // add main panel to top panel
-   * topPanel.add(mainPanel, BorderLayout.CENTER);
-   * 
-   * allPosts.postorderDisplay(allPosts.getRoot());
-   * 
-   * }
-   */
-
-  /*
-   * public void displayPost(Post p)
-   * {
-   * 
-   * topPanel.add(); //add the Username of who posted it
-   * topPanel.add(); //add the image
-   * topPanel.add(); //the caption
-   * topPanel.add(); //like button
-   * 
-   * }
-   */
 }
