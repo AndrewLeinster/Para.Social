@@ -23,15 +23,11 @@ public class Tree {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	public Tree() {
-
 		root = null;
-
 	}
 
 	public Tree(Node root) {
-
 		this.root = root;
-
 	}
 
 	/**
@@ -76,7 +72,6 @@ public class Tree {
 		} else if (current.getItem() != null && currentTime > newTime) {
 			addItem(newNode, current.getLeftNode(), current);
 		}
-
 	}
 
 	/**
@@ -129,7 +124,6 @@ public class Tree {
 															// message is displayed
 			}
 		}
-
 	}
 
 	/**
@@ -159,7 +153,6 @@ public class Tree {
 
 			target.setItem(replaced.getItem()); // sets target to the node found
 			replaced.setItem(null); // sets the original node found to null
-
 		}
 	}
 

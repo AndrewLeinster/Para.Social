@@ -19,8 +19,7 @@ public class User {
         this.workPlace = workPlace;
         this.homeTown = homeTown;
         this.pfp = pfp;
-        this.friends = friends;
-        
+        this.friends = friends;  
     }
 
     public User()
@@ -31,7 +30,6 @@ public class User {
         homeTown = null;
         pfp = null;
         friends = null;
-       
     }
 
     /**
@@ -88,14 +86,11 @@ public class User {
             System.out.println(workPlace);
             System.out.println(homeTown);
         }
-    
         return false;
-
     }
 
     public boolean compareStrings(String a, String b)
     {
-        
         a = a.toLowerCase();
         b = b.toLowerCase();
 
@@ -107,7 +102,6 @@ public class User {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -181,5 +175,4 @@ public class User {
     {
         friends.remove(friend);
     }
-
 }

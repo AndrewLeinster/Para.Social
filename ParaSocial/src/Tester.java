@@ -1,12 +1,23 @@
+
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.HashSet;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
 public class Tester {
     private Main main;
+    private Tree tree;
 
     public Tester()
     {
        main = new Main();
+       tree = new Tree();
     }
 
     public static void main(String[] args)
@@ -14,6 +25,7 @@ public class Tester {
         Tester t = new Tester();
         t.addUsers();
         t.write();
+        t.addPosts();
 
     }
 
@@ -188,7 +200,6 @@ public class Tester {
         user15.addFriend(user10.getID());
         user15.addFriend(user12.getID());
         user15.addFriend(user20.getID());
-        user15.addFriend(user12.getID());
         user15.addFriend(user30.getID());
         user15.addFriend(user31.getID());
         user15.addFriend(user32.getID());
@@ -260,7 +271,6 @@ public class Tester {
         user20.addFriend(user9.getID());
         user20.addFriend(user19.getID());
         user20.addFriend(user11.getID());
-        user20.addFriend(user10.getID());
         user20.addFriend(user14.getID());
         user20.addFriend(user21.getID());
         user20.addFriend(user31.getID());
@@ -272,10 +282,10 @@ public class Tester {
         user21.addFriend(user10.getID());
         user21.addFriend(user18.getID());
         user21.addFriend(user19.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
-        user21.addFriend(user1.getID());
+        user21.addFriend(user11.getID());
+        user21.addFriend(user12.getID());
+        user21.addFriend(user13.getID());
+        user21.addFriend(user14.getID());
 
         user22.addFriend(user4.getID());
         user22.addFriend(user16.getID());
@@ -447,5 +457,75 @@ public class Tester {
         // Any thoughts on getting a max ID value?
 
         return max;
+    }
+
+    public void addPosts()
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    
+    FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+    String nextLine;
+
+    String fileName = "C:/Users/adamm/Downloads/captions.txt";
+    User[] userArray = main.getUsers().toArray(new User[main.getUsers().size()]);
+
+    try{
+
+      fileReader = new FileReader(fileName);
+			bufferedReader = new BufferedReader(fileReader);
+
+    for (int i = 1; i <= 91; i++) {
+      
+      nextLine = bufferedReader.readLine();
+
+      int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
+
+      if (i < 10)
+      {
+        String dateTime = "2023-03-27 11:0" + i;
+       Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
+       Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 10 && i < 60)
+      {
+        String dateTime = "2023-03-27 11:" + i;
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 60 && i - 60 > 9){
+        String dateTime = "2023-03-27 11:" + (i-60);
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 60 && i - 60 < 10){
+        String dateTime = "2023-03-27 11:0" + (i-60);
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+    }
+  }
+  catch (IOException e)
+  {
+    System.out.println("error with file");
+  }
+  finally
+  {
+    if (bufferedReader != null)
+    {
+      try{
+        bufferedReader.close();
+      }
+      catch (IOException e)
+      {
+        System.out.println("Error closing file");
+      }
+    }
+  }
+  tree.writeTree();
     }
 }

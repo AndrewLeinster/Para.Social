@@ -36,6 +36,7 @@ public class Menu {
   private boolean displayed, editing;
   private JFileChooser chooser;
   private Main main;
+  private Tree tree;
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
 
@@ -334,56 +335,10 @@ public class Menu {
     JLabel postInfo = new JLabel("Posts");
     postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     mainPanel.add(postInfo);
-    Tree tree = new Tree();
+    tree = new Tree();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    tree.readTree();
     
-    FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
-    String nextLine;
-
-    String fileName = "C:/Users/adamm/Downloads/captions.txt";
-    User[] userArray = main.getUsers().toArray(new User[main.getUsers().size()]);
-
-    try{
-
-    for (int i = 1; i <= 91; i++) {
-
-      fileReader = new FileReader(fileName);
-			bufferedReader = new BufferedReader(fileReader);
-      
-      nextLine = bufferedReader.readLine();
-
-      int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
-
-      if (i < 10)
-      {
-       Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:0" + i, formatter), userArray[x].getName(), Integer.toString(i));
-       Node newNode = new Node(newPost);
-       tree.addItem(newNode, tree.getRoot(), null);
-      }
-      else if(i >= 10 && i < 60)
-      {
-        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:" + i, formatter), userArray[x].getName(), Integer.toString(i));
-        Node newNode = new Node(newPost);
-       tree.addItem(newNode, tree.getRoot(), null);
-      }
-      else if(i >= 60 && i - 60 > 9){
-        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:" + (i-60), formatter), userArray[x].getName(), Integer.toString(i));
-        Node newNode = new Node(newPost);
-       tree.addItem(newNode, tree.getRoot(), null);
-      }
-      else if(i >= 60 && i - 60 < 10){
-        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:0" + (i-60), formatter), userArray[x].getName(), Integer.toString(i));
-        Node newNode = new Node(newPost);
-       tree.addItem(newNode, tree.getRoot(), null);
-      }
-    }
-  }
-  catch (IOException e)
-  {
-    System.out.println("Error with file");
-  }
     inorderDisplay(tree.getRoot());
   }
 
@@ -646,6 +601,7 @@ public class Menu {
       public void actionPerformed(ActionEvent e) {
 
         main.writeToFile();
+        tree.writeTree();
 
       }
     });
