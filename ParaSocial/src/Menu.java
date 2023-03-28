@@ -17,10 +17,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import java.util.Set;
 import java.util.ArrayList;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
@@ -338,23 +342,54 @@ public class Menu {
     mainPanel.add(postInfo);
     Tree tree = new Tree();
 
-    Post newpost = new Post("Images/Posts/DSCF7634.jpg", "Abdrew", 51, null, LocalDateTime.now(), "1", "1");
-    Node newNode = new Node(newpost);
-    tree.setRoot(newNode);
-
-    String str = "1986-04-08 12:30";
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    Post newpost2 = new Post("Images/Posts/DSCF9927.jpg", "adym", 49, null, LocalDateTime.parse(str, formatter), "1",
-        "2");
-    Node newNode2 = new Node(newpost2);
-    tree.addItem(newNode2, tree.getRoot(), null);
+    
+    FileReader fileReader = null;
+		BufferedReader bufferedReader = null;
+    String nextLine;
 
-    for (int i = 1; i < 92; i++) {
-      // nextLine = bufferedReader.readLine();
-      // Post newPost3 = newPost("Images/Posts/" + i + ".jpg", nextLine,
-      // ((Math.random())*1000)+1, null, LocalDateTime.parse("2023-03-27-11-45-" + i,
-      // formatter));
+    String fileName = "C:/Users/adamm/Downloads/captions.txt";
+    User[] userArray = main.getUsers().toArray(new User[main.getUsers().size()]);
+
+    try{
+
+    for (int i = 1; i <= 91; i++) {
+
+      fileReader = new FileReader(fileName);
+			bufferedReader = new BufferedReader(fileReader);
+      
+      nextLine = bufferedReader.readLine();
+
+      int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
+
+      if (i < 10)
+      {
+       Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:0" + i, formatter), userArray[x].getName(), Integer.toString(i));
+       Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 10 && i < 60)
+      {
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:" + i, formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 60 && i - 60 > 9){
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:" + (i-60), formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
+      else if(i >= 60 && i - 60 < 10){
+        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse("2023-03-27 11:0" + (i-60), formatter), userArray[x].getName(), Integer.toString(i));
+        Node newNode = new Node(newPost);
+       tree.addItem(newNode, tree.getRoot(), null);
+      }
     }
+  }
+  catch (IOException e)
+  {
+    System.out.println("error with file");
+  }
 
     System.out.println("Deez");
     inorderDisplay(tree.getRoot());
