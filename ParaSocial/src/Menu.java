@@ -200,25 +200,11 @@ public class Menu {
     // this is a back button to take you back to the right panel
     backButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        // remove all content from the friends panel
-        /*friendsPanel.removeAll();
-        friendsPanel.revalidate();
-        friendsPanel.repaint();
-
-        mutualsPanel.removeAll();
-        mutualsPanel.revalidate();
-        mutualsPanel.repaint();*/
 
         rightPanel.removeAll();
         rightPanel.revalidate();
         rightPanel.repaint();
         createFriendsPanel();
-                
-        // go back to the main right panel
-        /*topPanel.remove(scrollFriendsPanel);
-        topPanel.add(scrollPanel, BorderLayout.EAST);
-        topPanel.remove(scrollMutualsPanel);
-        SwingUtilities.updateComponentTreeUI(window);*/
       }
     });
 
@@ -361,7 +347,12 @@ public class Menu {
                   mutualsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
                   rightPanel.add(mutualsLabel);
                   ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
-                  System.out.println(mutualFriends.size());
+                 if (mutualFriends.size() == 0)
+                 {
+                   JLabel noMutualFriends = new JLabel("No Mutual Friends");
+                   noMutualFriends.setFont(new Font("Sans", Font.PLAIN, 16));
+                   rightPanel.add(noMutualFriends);
+                 }
                   for (int j=0; j<mutualFriends.size(); j++)
                   {
                     User mutual = main.IDtoUser(mutualFriends.get(j));
