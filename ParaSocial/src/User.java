@@ -13,7 +13,6 @@ public class User {
 
 
     public User(String name, String ID, String workPlace, String homeTown, String pfp, ArrayList<String> friends)
-
     {
         this.name = name;
         this.ID = ID;

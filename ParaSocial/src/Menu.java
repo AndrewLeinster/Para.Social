@@ -11,21 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import java.util.Set;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -344,7 +338,7 @@ public class Menu {
     tree = new Tree();
 
     tree.readTree();
-
+    
     inorderDisplay(tree.getRoot());
   }
 
@@ -358,9 +352,18 @@ public class Menu {
 
   /**
    * Display posts
+   * 
+   * 
+   * Like buttons - 
+   *    Adds 1 to label
+   *    changes 'like' to 'liked'
+   *    ^ and inverse
+   *    adds user to 'likedby'
+   *    reload panel
+   * 
+   * Make posts scrollable
    */
   public void displayPosts(Post post) {
-
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
