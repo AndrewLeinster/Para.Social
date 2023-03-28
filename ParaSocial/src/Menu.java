@@ -11,21 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import java.util.Set;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -34,7 +28,8 @@ public class Menu {
   private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel;
-  private JScrollPane scrollPanel;
+  private JScrollPane scrollPanelRight;
+  private JScrollPane scrollPanelMain;
   private JLabel profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
   // private Tree allPosts;
@@ -113,12 +108,17 @@ public class Menu {
     BorderLayout layout = new BorderLayout();
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
+
+    scrollPanelMain = new JScrollPane(mainPanel);
+    scrollPanelMain.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanelMain.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
     rightPanel = new JPanel();
 
     // make a scroll panel so you can scroll to see all friends
-    scrollPanel = new JScrollPane(rightPanel);
-    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    scrollPanelRight = new JScrollPane(rightPanel);
+    scrollPanelRight.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanelRight.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
 
     mainPanel.setBackground(Color.decode(cornsilk));
@@ -126,8 +126,8 @@ public class Menu {
     leftPanel.setBackground(Color.decode(teaGreen));
 
     // add main, left and right panels to top panel
-    topPanel.add(mainPanel, BorderLayout.CENTER);
-    topPanel.add(scrollPanel, BorderLayout.EAST);
+    topPanel.add(scrollPanelMain, BorderLayout.CENTER);
+    topPanel.add(scrollPanelRight, BorderLayout.EAST);
     topPanel.add(leftPanel, BorderLayout.WEST);
 
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -344,7 +344,7 @@ public class Menu {
     tree = new Tree();
 
     tree.readTree();
-
+    
     inorderDisplay(tree.getRoot());
   }
 
@@ -358,9 +358,18 @@ public class Menu {
 
   /**
    * Display posts
+   * 
+   * 
+   * Like buttons - 
+   *    Adds 1 to label
+   *    changes 'like' to 'liked'
+   *    ^ and inverse
+   *    adds user to 'likedby'
+   *    reload panel
+   * 
+   * Make posts scrollable
    */
   public void displayPosts(Post post) {
-
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
@@ -382,7 +391,7 @@ public class Menu {
     JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
     mainPanel.add(spacingLabel);
 
-    JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
+    JLabel spacing2Label = new JLabel("____________________________________________________________________________________________________________________________________________________________________________________________________", SwingConstants.CENTER);
     mainPanel.add(spacing2Label);
 
     JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
