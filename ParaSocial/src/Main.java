@@ -20,7 +20,7 @@ public class Main {
     public Main() {
         users = new HashSet<User>();
         posts = new HashSet<Post>();
-        fileName = "para.social/paraSocial.txt";
+        fileName = "paraSocial.txt";
     }
 
     public static void main(String[] args) {
