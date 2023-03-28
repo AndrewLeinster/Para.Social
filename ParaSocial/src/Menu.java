@@ -30,15 +30,14 @@ public class Menu {
   private User primaryUser;
   private static Menu newMenu;
   private JFrame window;
-  private JPanel topPanel, mainPanel, leftPanel, rightPanel, friendsPanel, mutualsPanel, postsPanel;
-  private JScrollPane scrollPanel, scrollFriendsPanel, scrollMutualsPanel;
-  private JLabel titleLabel, profileLabel;
+  private JPanel topPanel, mainPanel, leftPanel, rightPanel;
+  private JScrollPane scrollPanel;
+  private JLabel profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
-  private JFormattedTextField textField;
   // private Tree allPosts;
   private ImageIcon profile1, profileIcon;
   private Set<User> users;
-  private boolean displayed, button;
+  private boolean displayed;
   private JFileChooser chooser;
   private Main main;
   User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Beth.jpg", new ArrayList<String>());
@@ -89,7 +88,6 @@ public class Menu {
     // create the panels
     createMainPanels();
 
-    window.setJMenuBar(createMenuBar());
     window.setContentPane(topPanel);
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setTitle("para.social");
@@ -97,7 +95,6 @@ public class Menu {
     window.pack();
 
     displayed = false;
-    button = false;
   }
 
   /**
@@ -121,6 +118,10 @@ public class Menu {
     newMenu = new Menu();
   }
 
+  /**
+   * Method to return the instance of the menu we are using
+   * @return The instance of menu
+   */
   public Menu getMenu() {
     return newMenu;
   }
@@ -140,24 +141,9 @@ public class Menu {
     scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
 
-    // panel to display friends friends
-    friendsPanel = new JPanel();
-    scrollFriendsPanel = new JScrollPane(friendsPanel);
-    scrollFriendsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollFriendsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-    //panel to display mutual friends
-    mutualsPanel = new JPanel();
-    scrollMutualsPanel = new JScrollPane(mutualsPanel);
-    scrollMutualsPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollMutualsPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
     leftPanel.setBackground(Color.decode(teaGreen));
-    friendsPanel.setBackground(Color.decode(beige));
-    mutualsPanel.setBackground(Color.decode(beige));
-
 
     // add main, left and right panels to top panel
     topPanel.add(mainPanel, BorderLayout.CENTER);
@@ -170,14 +156,6 @@ public class Menu {
     rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
     mainPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
-    // friends panel will be added to display later, to replace right panel
-    friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
-    friendsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-
-     // mutuals panel will be added to display later
-     mutualsPanel.setLayout(new BoxLayout(mutualsPanel, BoxLayout.Y_AXIS));
-     mutualsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
     createFriendsPanel();
     createProfilePanel();
@@ -212,7 +190,7 @@ public class Menu {
 
   /**
    * Create a back button to take the user back to the main friends page
-   * @return
+   * @return The back button
    */
   public JButton backButton()
   {
@@ -223,13 +201,13 @@ public class Menu {
     backButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         // remove all content from the friends panel
-        friendsPanel.removeAll();
+        /*friendsPanel.removeAll();
         friendsPanel.revalidate();
         friendsPanel.repaint();
 
         mutualsPanel.removeAll();
         mutualsPanel.revalidate();
-        mutualsPanel.repaint();
+        mutualsPanel.repaint();*/
 
         rightPanel.removeAll();
         rightPanel.revalidate();
@@ -237,10 +215,10 @@ public class Menu {
         createFriendsPanel();
                 
         // go back to the main right panel
-        topPanel.remove(scrollFriendsPanel);
+        /*topPanel.remove(scrollFriendsPanel);
         topPanel.add(scrollPanel, BorderLayout.EAST);
         topPanel.remove(scrollMutualsPanel);
-        SwingUtilities.updateComponentTreeUI(window);
+        SwingUtilities.updateComponentTreeUI(window);*/
       }
     });
 
@@ -248,15 +226,11 @@ public class Menu {
   }
 
   /**
-   * Method to create the right hand panel to display friends
+   * Method to create a search bar and add function to filter friends
    */
-  public void createFriendsPanel() {
-
-    JLabel friendsInfo = new JLabel("Friends");
-    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
-    rightPanel.add(friendsInfo);
-
-    // search/ filter friends
+  public void search()
+  {
+       // search/ filter friends
     JFormattedTextField searchbox = new JFormattedTextField("Search/ filter your friends");
     rightPanel.add(searchbox);
     JButton searchButton = new JButton("Search");
@@ -294,6 +268,20 @@ public class Menu {
       }
     });
 
+  }
+
+  /**
+   * Method to create the right hand panel to display friends
+   */
+  public void createFriendsPanel() {
+
+    JLabel friendsInfo = new JLabel("Friends");
+    friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
+    rightPanel.add(friendsInfo);
+
+    // add search bar
+    search();
+   
     // display all friends
     for (int i = 0; i < user1.getFriends().size(); i++) 
     {
@@ -311,24 +299,24 @@ public class Menu {
       viewFriends.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e)
         {
-          topPanel.remove(scrollPanel);
-          topPanel.add(scrollFriendsPanel, BorderLayout.EAST);
-          scrollFriendsPanel.repaint();
+          rightPanel.removeAll();
+          rightPanel.revalidate();
+          rightPanel.repaint();
 
           User friend = main.IDtoUser(user1.getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
           friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
-          friendsPanel.add(friendFriendsLabel);
+          rightPanel.add(friendFriendsLabel);
 
           // display the info of each of the friends friends
           for (int k = 0; k < friend.getFriends().size(); k++) {
             User friendsFriend = main.IDtoUser(friend.getFriends().get(k));
-            displayUserInfo(friendsFriend, friendsPanel);
+            displayUserInfo(friendsFriend, rightPanel);
             
             //add an add friends button to each friend
             JButton addFriend = new JButton("Add Friend");
             addFriend.setBackground(Color.decode(buff));
-            friendsPanel.add(addFriend);
+            rightPanel.add(addFriend);
 
             // add the friend to main users friend list
             addFriend.addActionListener(new ActionListener() {
@@ -348,37 +336,38 @@ public class Menu {
                 else
                 {
                   user1.addFriend(friendsFriend.getID());
-                  rightPanel.removeAll();
-                  rightPanel.revalidate();
-                  rightPanel.repaint();
                   JOptionPane.showMessageDialog(null, "Friend successfully added!");
-                  createFriendsPanel();
                 }
                 SwingUtilities.updateComponentTreeUI(window);
               }
             });
           }
-            friendsPanel.add(backButton());
-            SwingUtilities.updateComponentTreeUI(window);
-
             // add button to show mutual friends
             JButton showMutualFriends = new JButton("Show Mutual Friends");
             showMutualFriends.setBackground(Color.decode(buff));
-            friendsPanel.add(showMutualFriends);
+            rightPanel.add(showMutualFriends);
+
+            rightPanel.add(backButton());
+            SwingUtilities.updateComponentTreeUI(window);
 
             showMutualFriends.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e)
               {
-                  topPanel.remove(scrollFriendsPanel);
-                  topPanel.add(scrollMutualsPanel, BorderLayout.EAST);
+                 rightPanel.removeAll();
+                 rightPanel.revalidate();
+                 rightPanel.repaint();
+
+                  JLabel mutualsLabel = new JLabel("Mutual Friends");
+                  mutualsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
+                  rightPanel.add(mutualsLabel);
                   ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
                   System.out.println(mutualFriends.size());
                   for (int j=0; j<mutualFriends.size(); j++)
                   {
                     User mutual = main.IDtoUser(mutualFriends.get(j));
-                    displayUserInfo(mutual, mutualsPanel);
+                    displayUserInfo(mutual, rightPanel);
                   }
-                  mutualsPanel.add(backButton());
+                  rightPanel.add(backButton());
                   SwingUtilities.updateComponentTreeUI(window);
               }
             });
@@ -388,6 +377,9 @@ public class Menu {
   }
 
 
+  /**
+   * Create panel to display posts
+   */
   public void createPostPanel() {
     JLabel postInfo = new JLabel("Posts");
     postInfo.setFont(new Font("Sans", Font.PLAIN, 26));
@@ -424,6 +416,9 @@ public class Menu {
 		}
 	}
 
+  /**
+   * Display posts
+   */
   public void displayPosts(Post post) {
     System.out.println("Freeze");
     
@@ -642,52 +637,7 @@ public class Menu {
   }
 
   /**
-   * Create the menu bar
-   * 
-   * @return The menu bar
-   */
-  public JMenuBar createMenuBar() {
-    JMenuBar menuBar = new JMenuBar();
-
-    // add a menu called to menuBar
-    JMenu menu = new JMenu("Menu");
-    menuBar.add(menu);
-
-    // add a menu item
-    JMenuItem menuItem = new JMenuItem("Menu Option 1");
-    JMenuItem menuItem2 = new JMenuItem("Menu Option 2");
-    menu.add(menuItem);
-    menu.add(menuItem2);
-
-    menuBar.setBackground(Color.GRAY);
-    return menuBar;
-  }
-
-  /**
-   * Creates a text panel to search
-   * 
-   * @return
-   */
-  public JPanel createTextPanel() {
-    JPanel textPanel = new JPanel();
-    titleLabel = new JLabel("Search");
-
-    // create a formatted text field called scaleField
-    textField = new JFormattedTextField(new String("Search for a friend"));
-    textField.setColumns(12);
-
-    textPanel.add(titleLabel);
-    textPanel.add(textField);
-
-    textPanel.setMaximumSize(new Dimension(200, 40));
-    textPanel.setBackground(Color.lightGray);
-    return textPanel;
-  }
-
-  /**
    * Select a new file to set the profile picture to
-   * 
-   * @return
    */
   public void selectFile() {
     chooser = new JFileChooser();
