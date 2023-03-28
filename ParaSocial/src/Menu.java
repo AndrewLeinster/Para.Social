@@ -27,7 +27,6 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Menu {
-  private User primaryUser;
   private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel;
@@ -36,16 +35,9 @@ public class Menu {
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
   // private Tree allPosts;
   private ImageIcon profile1, profileIcon;
-  private Set<User> users;
   private boolean displayed, editing;
   private JFileChooser chooser;
   private Main main;
-  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Beth.jpg", new ArrayList<String>());
-  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.jpg", new ArrayList<String>());
-  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Dominique.jpg", new ArrayList<String>());
-  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/Andrew.jpg",
-      new ArrayList<String>());
-  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
 
@@ -53,29 +45,10 @@ public class Menu {
    * Constructor for menu class
    */
   public Menu() {
-    user1.addFriend(user2.getID());
-    user1.addFriend(user3.getID());
-    user1.addFriend(user5.getID());
-    user2.addFriend(user1.getID());
-    user2.addFriend(user4.getID());
-    user3.addFriend(user1.getID());
-    user3.addFriend(user2.getID());
-    user3.addFriend(user5.getID());
-    user4.addFriend(user1.getID());
-    user4.addFriend(user2.getID());
-    user4.addFriend(user5.getID());
-    user5.addFriend(user2.getID());
-    user5.addFriend(user3.getID());
-    user5.addFriend(user4.getID());
 
     main = new Main();
-    main.addUser(user1);
-    main.addUser(user2);
-    main.addUser(user3);
-    main.addUser(user4);
-    main.addUser(user5);
 
-    setPrimaryUser(main.getPrimaryUser());
+    main.readIn();
 
     teaGreen = "0xCCD5AE";
     beige = "0xE9EDC9";
@@ -230,7 +203,7 @@ public class Menu {
         JLabel filteredFriends = new JLabel("Friends filtered by " + searchTerm);
         filteredFriends.setFont(new Font("Sans", Font.PLAIN, 26));
 
-        ArrayList<User> sortedFriends = main.searchFriend(searchTerm, user1);
+        ArrayList<User> sortedFriends = main.searchFriend(searchTerm, main.getPrimaryUser());
         // clear the right panel
         rightPanel.removeAll();
         rightPanel.revalidate();
@@ -267,8 +240,8 @@ public class Menu {
     search();
 
     // display all friends
-    for (int i = 0; i < user1.getFriends().size(); i++) {
-      User currentFriend = main.IDtoUser(user1.getFriends().get(i));
+    for (int i = 0; i < main.getPrimaryUser().getFriends().size(); i++) {
+      User currentFriend = main.IDtoUser(main.getPrimaryUser().getFriends().get(i));
       displayUserInfo(currentFriend, rightPanel);
 
       // view friends button
@@ -285,7 +258,7 @@ public class Menu {
           rightPanel.revalidate();
           rightPanel.repaint();
 
-          User friend = main.IDtoUser(user1.getFriends().get(inneri));
+          User friend = main.IDtoUser(main.getPrimaryUser().getFriends().get(inneri));
           JLabel friendFriendsLabel = new JLabel(friend.getName() + "'s friends");
           friendFriendsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
           rightPanel.add(friendFriendsLabel);
@@ -304,16 +277,16 @@ public class Menu {
             addFriend.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                 // check if they try to add themseleves
-                if (friendsFriend.getID() == user1.getID()) {
+                if (friendsFriend.getID() == main.getPrimaryUser().getID()) {
                   JOptionPane.showMessageDialog(null, "You cannot add yourself as a friend!");
                 }
                 // check if user is already in their friends list
-                else if (user1.getFriends().contains(friendsFriend.getID())) {
+                else if (main.getPrimaryUser().getFriends().contains(friendsFriend.getID())) {
                   JOptionPane.showMessageDialog(null, "This person is already in your friends list!");
                 }
                 // else, add them to friends list
                 else {
-                  user1.addFriend(friendsFriend.getID());
+                  main.getPrimaryUser().addFriend(friendsFriend.getID());
                   JOptionPane.showMessageDialog(null, "Friend successfully added!");
                 }
                 SwingUtilities.updateComponentTreeUI(window);
@@ -337,7 +310,7 @@ public class Menu {
               JLabel mutualsLabel = new JLabel("Mutual Friends");
               mutualsLabel.setFont(new Font("Sans", Font.PLAIN, 26));
               rightPanel.add(mutualsLabel);
-              ArrayList<String> mutualFriends = user1.getMutuals(user1, friend);
+              ArrayList<String> mutualFriends = main.getPrimaryUser().getMutuals(main.getPrimaryUser(), friend);
               if (mutualFriends.size() == 0) {
                 JLabel noMutualFriends = new JLabel("No Mutual Friends");
                 noMutualFriends.setFont(new Font("Sans", Font.PLAIN, 16));
@@ -458,23 +431,23 @@ public class Menu {
     profile.setFont(new Font("Sans", Font.PLAIN, 26));
     leftPanel.add(profile);
 
-    profile1 = new javax.swing.ImageIcon(getClass().getResource(user1.getPfp()));
+    profile1 = new javax.swing.ImageIcon(getClass().getResource(main.getPrimaryUser().getPfp()));
     profileIcon = resizeImage(profile1, 300, 300);
     profileLabel = new JLabel(profileIcon);
 
     leftPanel.add(profileLabel);
 
     // add profile information
-    JLabel name = new JLabel(user1.getName());
+    JLabel name = new JLabel(main.getPrimaryUser().getName());
     name.setFont(new Font("Sans", Font.PLAIN, 20));
     leftPanel.add(name);
-    JLabel id = new JLabel("ID: " + user1.getID());
+    JLabel id = new JLabel("ID: " + main.getPrimaryUser().getID());
     id.setFont(new Font("Sans", Font.PLAIN, 16));
     leftPanel.add(id);
-    JLabel work = new JLabel("Workplace: " + user1.getWorkPlace());
+    JLabel work = new JLabel("Workplace: " + main.getPrimaryUser().getWorkPlace());
     work.setFont(new Font("Sans", Font.PLAIN, 16));
     leftPanel.add(work);
-    JLabel home = new JLabel("Hometown: " + user1.getHomeTown());
+    JLabel home = new JLabel("Hometown: " + main.getPrimaryUser().getHomeTown());
     home.setFont(new Font("Sans", Font.PLAIN, 16));
     leftPanel.add(home);
 
@@ -516,7 +489,7 @@ public class Menu {
                 // add action listener to submit button
                 submitButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent e) {
-                    user1.setName(changeName.getText());
+                    main.getPrimaryUser().setName(changeName.getText());
                     name.setText(changeName.getText());
                     leftPanel.remove(submitButton);
                     leftPanel.remove(changeName);
@@ -542,7 +515,7 @@ public class Menu {
                 // add action listener to submit button
                 submitButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent e) {
-                    user1.setID(changeID.getText());
+                    main.getPrimaryUser().setID(changeID.getText());
                     id.setText("ID: " + changeID.getText());
                     leftPanel.remove(submitButton);
                     leftPanel.remove(changeID);
@@ -568,7 +541,7 @@ public class Menu {
                 // add action listener to submit button
                 submitButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent e) {
-                    user1.setWorkPlace(changeWorkPlace.getText());
+                    main.getPrimaryUser().setWorkPlace(changeWorkPlace.getText());
                     work.setText("Workplace: " + changeWorkPlace.getText());
                     leftPanel.remove(submitButton);
                     leftPanel.remove(changeWorkPlace);
@@ -595,7 +568,7 @@ public class Menu {
                 // add action listener to submit button
                 submitButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent e) {
-                    user1.setHomeTown(changeHometown.getText());
+                    main.getPrimaryUser().setHomeTown(changeHometown.getText());
                     home.setText("Hometown:" + changeHometown.getText());
                     leftPanel.remove(submitButton);
                     leftPanel.remove(changeHometown);
@@ -631,6 +604,19 @@ public class Menu {
         }
       }
     });
+
+    JButton savebutton = new JButton("Save");
+    savebutton.setBackground(Color.decode(buff));
+    leftPanel.add(savebutton);
+
+    savebutton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+
+        main.writeToFile();
+
+      }
+    });
+
   }
 
   /**
@@ -666,10 +652,6 @@ public class Menu {
   public static void displayMessage(String message, String title) {
     int messageType = JOptionPane.PLAIN_MESSAGE;
     JOptionPane.showMessageDialog(null, message, title, messageType);
-  }
-
-  public void setPrimaryUser(User a) {
-    primaryUser = a;
   }
 
   /*

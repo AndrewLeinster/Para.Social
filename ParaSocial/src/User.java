@@ -79,7 +79,7 @@ public class User {
     public boolean searchApplicable(String search)
     {
         
-        if ((compareStrings(ID, search) == true)|| (compareStrings(name, search) == true) || (compareStrings(workPlace, search) == true) || (compareStrings(homeTown, search) == true))
+        if ((compareStrings(ID, search)) || (compareStrings(name, search)) || (compareStrings(workPlace, search)) || (compareStrings(homeTown, search)))
         {
             System.out.println("This should print");
             return true;
@@ -100,25 +100,20 @@ public class User {
 
     public boolean compareStrings(String a, String b)
     {
-        if (a.equals(b))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        /* 
-        for (int i = 0; i < a.length() - b.length(); i++)
+        
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+
+        for (int i = 0; i < a.length() - b.length() + 1 ; i++)
         {
             if (a.substring(i, i + b.length()).equals(b))
             {
                 System.out.println("Strings match");
                 return true;
             }
-        }*/
+        }
 
-        //return false;
+        return false;
     }
 
 
