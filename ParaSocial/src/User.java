@@ -1,8 +1,4 @@
-import java.util.Set;
-import java.util.HashSet;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class User {
 
@@ -17,7 +13,6 @@ public class User {
 
 
     public User(String name, String ID, String workPlace, String homeTown, String pfp, ArrayList<String> friends)
-
     {
         this.name = name;
         this.ID = ID;
