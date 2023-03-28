@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 
@@ -38,16 +39,20 @@ public class Node {
 	 * @param printWriter the instance of PrintWriter used
 	 */
 	public void writeNode(PrintWriter printWriter) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 		printWriter.println(getItem().getID());
 		printWriter.println(getItem().getPostedBy());
-		printWriter.println(getItem().getTimePosted());
-		printWriter.println(getItem().getCaption()); 
+		printWriter.println(getItem().getTimePosted().format(formatter));
+		printWriter.println(getItem().getCaption());
 		printWriter.println(getItem().getNumberOfLikes());
-		printWriter.println(getItem().getLikedBy().size());
-
-		for (int i = 0; i < getItem().getLikedBy().size(); i++) {
-			printWriter.println(getItem().getLikedBy());
+		if (getItem().getLikedBy() != null) {
+			printWriter.println(getItem().getLikedBy().size());
+			for (int i = 0; i < getItem().getLikedBy().size(); i++) {
+				printWriter.println(getItem().getLikedBy());
+			}
+		} else {
+			printWriter.println("0");
 		}
 
 		printWriter.println(getItem().getPostImage());
