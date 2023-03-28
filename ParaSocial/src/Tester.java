@@ -54,7 +54,7 @@ public class Tester {
         User user26 = new User("Patryk", "26", "DUMRCC", "Arran", "Images/PFPs/Patryk.jpg", new ArrayList<String>());
         User user27 = new User("Ross", "27", "DUMRCC", "Rumbling Bridge", "Images/PFPs/Ross.jpg", new ArrayList<String>());
         User user28 = new User("Roy", "28", "DUMRCC", "Rumbling Bridge", "Images/PFPs/Roy.jpg", new ArrayList<String>());
-        User user29 = new User("Sally", "29", "Aviemore Bikes", "Aviemore Bikes", "Images/PFPs/Sally.jpg", new ArrayList<String>());
+        User user29 = new User("Sally", "29", "Aviemore Bikes", "Aviemore", "Images/PFPs/Sally.jpg", new ArrayList<String>());
         User user30 = new User("Sean", "30", "Grizzly Munro Diaries", "Dundee", "Images/PFPs/Sean.jpg", new ArrayList<String>());
         User user31 = new User("Sid", "31", "Sid's Clothing emporium", "Arran", "Images/PFPs/Sid.jpg", new ArrayList<String>());
         User user32 = new User("Tash", "32", "Avertical", "England:(", "Images/PFPs/Tash.jpg", new ArrayList<String>());
