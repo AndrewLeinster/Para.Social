@@ -34,7 +34,8 @@ public class Menu {
   private static Menu newMenu;
   private JFrame window;
   private JPanel topPanel, mainPanel, leftPanel, rightPanel;
-  private JScrollPane scrollPanel;
+  private JScrollPane scrollPanelRight;
+  private JScrollPane scrollPanelMain;
   private JLabel profileLabel;
   private JButton editButton, editProfilePictureButton, nameButton, idButton, workplaceButton, hometownButton;
   // private Tree allPosts;
@@ -113,12 +114,17 @@ public class Menu {
     BorderLayout layout = new BorderLayout();
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
+
+    scrollPanelMain = new JScrollPane(mainPanel);
+    scrollPanelMain.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanelMain.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
     rightPanel = new JPanel();
 
     // make a scroll panel so you can scroll to see all friends
-    scrollPanel = new JScrollPane(rightPanel);
-    scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    scrollPanelRight = new JScrollPane(rightPanel);
+    scrollPanelRight.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPanelRight.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
 
     mainPanel.setBackground(Color.decode(cornsilk));
@@ -126,8 +132,8 @@ public class Menu {
     leftPanel.setBackground(Color.decode(teaGreen));
 
     // add main, left and right panels to top panel
-    topPanel.add(mainPanel, BorderLayout.CENTER);
-    topPanel.add(scrollPanel, BorderLayout.EAST);
+    topPanel.add(scrollPanelMain, BorderLayout.CENTER);
+    topPanel.add(scrollPanelRight, BorderLayout.EAST);
     topPanel.add(leftPanel, BorderLayout.WEST);
 
     leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -382,7 +388,7 @@ public class Menu {
     JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
     mainPanel.add(spacingLabel);
 
-    JLabel spacing2Label = new JLabel("___________________________________________", SwingConstants.CENTER);
+    JLabel spacing2Label = new JLabel("____________________________________________________________________________________________________________________________________________________________________________________________________", SwingConstants.CENTER);
     mainPanel.add(spacing2Label);
 
     JLabel spacing3Label = new JLabel("\n \n \n", SwingConstants.CENTER);
