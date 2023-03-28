@@ -158,6 +158,7 @@ public class Main {
             homeTown = bufferedReader.readLine();
             pfp = bufferedReader.readLine();
             noOfFriends = bufferedReader.readLine();
+         
 
             // while there are still lines to read in
             while (name != null)
@@ -182,6 +183,7 @@ public class Main {
                 id = bufferedReader.readLine();
                 workPlace = bufferedReader.readLine();
                 homeTown = bufferedReader.readLine();
+                pfp = bufferedReader.readLine();
                 noOfFriends = bufferedReader.readLine();
             }    
         }
@@ -333,6 +335,9 @@ public ArrayList<User> search(String search)
 
     public boolean compareStrings(String a, String b)
     {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+
         for (int i = 0; i < a.length() - b.length(); i++)
         {
             if (a.substring(i, i + b.length()).equals(b))
@@ -348,6 +353,11 @@ public User getPrimaryUser()
 {
     User[] userArray = users.toArray(new User[users.size()]);
     return userArray[1];
+}
+
+public Set<User> getUsers()
+{
+    return users;
 }
 
 }
