@@ -41,12 +41,12 @@ public class Menu {
   private boolean displayed, button;
   private JFileChooser chooser;
   private Main main;
-  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/1ALP0101.jpg", new ArrayList<String>());
-  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/1ALP0209.jpg", new ArrayList<String>());
-  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/1ALP0265.jpg", new ArrayList<String>());
-  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/1ALP9275.jpg",
+  User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Beth.jpg", new ArrayList<String>());
+  User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.jpg", new ArrayList<String>());
+  User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Dominique.jpg", new ArrayList<String>());
+  User user4 = new User("Andrew", "4", "Self-Employed", "North-East Fife", "Images/PFPs/Andrew.jpg",
       new ArrayList<String>());
-  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/1ALP1004.jpg", new ArrayList<String>());
+  User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
   // colours
   String teaGreen, beige, cornsilk, papayaWhip, buff;
 
@@ -211,6 +211,43 @@ public class Menu {
   }
 
   /**
+   * Create a back button to take the user back to the main friends page
+   * @return
+   */
+  public JButton backButton()
+  {
+    JButton backButton = new JButton("Back");
+    backButton.setBackground(Color.decode(buff));
+
+    // this is a back button to take you back to the right panel
+    backButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // remove all content from the friends panel
+        friendsPanel.removeAll();
+        friendsPanel.revalidate();
+        friendsPanel.repaint();
+
+        mutualsPanel.removeAll();
+        mutualsPanel.revalidate();
+        mutualsPanel.repaint();
+
+        rightPanel.removeAll();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+        createFriendsPanel();
+                
+        // go back to the main right panel
+        topPanel.remove(scrollFriendsPanel);
+        topPanel.add(scrollPanel, BorderLayout.EAST);
+        topPanel.remove(scrollMutualsPanel);
+        SwingUtilities.updateComponentTreeUI(window);
+      }
+    });
+
+    return backButton;
+  }
+
+  /**
    * Method to create the right hand panel to display friends
    */
   public void createFriendsPanel() {
@@ -219,10 +256,47 @@ public class Menu {
     friendsInfo.setFont(new Font("Sans", Font.PLAIN, 26));
     rightPanel.add(friendsInfo);
 
-    // rightPanel.add(createTextPanel());
+    // search/ filter friends
+    JFormattedTextField searchbox = new JFormattedTextField("Search/ filter your friends");
+    rightPanel.add(searchbox);
+    JButton searchButton = new JButton("Search");
+    searchButton.setBackground(Color.decode(buff));
+    rightPanel.add(searchButton);
+
+    searchButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+      {
+        String searchTerm = (String) searchbox.getValue();
+        JLabel filteredFriends = new JLabel("Friends filtered by " + searchTerm);
+        filteredFriends.setFont(new Font("Sans", Font.PLAIN, 26));
+  
+        ArrayList<User> sortedFriends = main.searchFriend(searchTerm, user1);
+        // clear the right panel
+        rightPanel.removeAll();
+        rightPanel.revalidate();
+        rightPanel.repaint();
+        rightPanel.add(filteredFriends);
+        // display message if no friends were found by filter
+        if (sortedFriends.size() == 0) {
+          JLabel noResults = new JLabel("No friends were found with that search term!");
+          noResults.setFont(new Font("Sans", Font.PLAIN, 16));
+          rightPanel.add(noResults);
+          rightPanel.add(backButton());
+        }
+        else {
+          // display filtered friends
+          for (int j=0; j<sortedFriends.size(); j++)
+          {
+            displayUserInfo(sortedFriends.get(j), rightPanel);
+          }
+          rightPanel.add(backButton());
+        }
+      }
+    });
+
+    // display all friends
     for (int i = 0; i < user1.getFriends().size(); i++) 
     {
-      // display user info
       User currentFriend = main.IDtoUser(user1.getFriends().get(i));
       displayUserInfo(currentFriend, rightPanel);
 
@@ -284,31 +358,8 @@ public class Menu {
               }
             });
           }
-            // back button to go back to main user friends
-            JButton backButton = new JButton("Back");
-            backButton.setBackground(Color.decode(buff));
-            friendsPanel.add(backButton);
+            friendsPanel.add(backButton());
             SwingUtilities.updateComponentTreeUI(window);
-
-            // this is a back button to take you back to the right panel
-            backButton.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent e) {
-                // remove all content from the friends panel
-                friendsPanel.removeAll();
-                friendsPanel.revalidate();
-                friendsPanel.repaint();
-
-                mutualsPanel.removeAll();
-                        mutualsPanel.revalidate();
-                        mutualsPanel.repaint();
-                        
-                // go back to the main right panel
-                topPanel.remove(scrollFriendsPanel);
-                topPanel.add(scrollPanel, BorderLayout.EAST);
-                topPanel.remove(scrollMutualsPanel);
-                SwingUtilities.updateComponentTreeUI(window);
-              }
-            });
 
             // add button to show mutual friends
             JButton showMutualFriends = new JButton("Show Mutual Friends");
@@ -327,7 +378,7 @@ public class Menu {
                     User mutual = main.IDtoUser(mutualFriends.get(j));
                     displayUserInfo(mutual, mutualsPanel);
                   }
-                  mutualsPanel.add(backButton);
+                  mutualsPanel.add(backButton());
                   SwingUtilities.updateComponentTreeUI(window);
               }
             });

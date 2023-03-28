@@ -268,13 +268,16 @@ public ArrayList<User> search(String search)
 
     public ArrayList<User> searchFriend(String search, User friend)
 {
+    System.out.println(friend.getName());
     ArrayList<User> result = new ArrayList<User>();
     ArrayList<Integer> strength = new ArrayList<Integer>();
     ArrayList<String> friends = friend.getFriends();
 
+    System.out.println("Number of friends: " + friends.size());
+
     for (int i=0; i < friends.size(); i++)
     {
-        if(IDtoUser(friends.get(i)).searchApplicable(search))
+        if(IDtoUser(friends.get(i)).searchApplicable(search) == true)
         {
             strength.add(getSearchStrength(search, IDtoUser(friends.get(i))));
             result.add(IDtoUser(friends.get(i)));
@@ -291,6 +294,7 @@ public ArrayList<User> search(String search)
         sortedResult.add(result.get(index));
         result.remove(index);
     }
+    System.out.println("Sorted result" + sortedResult.size());
     return sortedResult;
 }
 
@@ -347,4 +351,3 @@ public User getPrimaryUser()
 }
 
 }
-
