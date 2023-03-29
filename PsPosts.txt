@@ -173,13 +173,6 @@ Life is too short to not follow your dreams.
 496
 0
 Images/Posts/25.jpg
-26
-Adam
-2023-03-27 11:26
-Life is a dance, enjoy every step.
-761
-0
-Images/Posts/26.jpg
 27
 Niamh
 2023-03-27 11:27
@@ -388,14 +381,20 @@ Brandon
 2023-03-27 11:57
 It's not the destination, it's the journey that counts.
 384
-0
+2
+2
+2
 Images/Posts/57.jpg
 58
 Gary
 2023-03-27 11:58
 Live life to the fullest and focus on the positive.
 675
-0
+4
+2
+2
+2
+2
 Images/Posts/58.jpg
 60
 Evan

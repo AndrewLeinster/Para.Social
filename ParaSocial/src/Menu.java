@@ -51,8 +51,6 @@ public class Menu {
     main = new Main();
     main.readIn();
 
-    System.out.println(main.getPrimaryUser().getName());
-
     teaGreen = "0xCCD5AE";
     beige = "0xE9EDC9";
     cornsilk = "0xFEFAE0";
@@ -263,8 +261,6 @@ public class Menu {
         friendRecommendInfo.setFont(new Font("Sans", Font.PLAIN, 16));
 
        ArrayList<User> friendRecommend = main.getFriendRecommendations(main.getPrimaryUser());
-       
-       System.out.println(friendRecommend.size());
 
        for (int i = 0; i < friendRecommend.size(); i++) {
         // remove main user from list if present
@@ -474,6 +470,7 @@ public class Menu {
    * @param post the post being displayed
    */
   public void displayPost(Post post) {
+
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
@@ -642,6 +639,7 @@ public class Menu {
               if (editing == false) {
                 editing = true;
                 JTextField changeName = new JTextField("Change your name");
+                changeName.setMaximumSize(new Dimension(400, 40));
                 leftPanel.add(changeName);
 
                 JButton submitButton = new JButton("Submit");
@@ -669,6 +667,7 @@ public class Menu {
               if (editing == false) {
                 editing = true;
                 JTextField changeID = new JTextField("Change your ID");
+                changeID.setMaximumSize(new Dimension(400, 40));
                 leftPanel.add(changeID);
                 JButton submitButton = new JButton("Submit");
                 submitButton.setBackground(Color.decode(buff));
@@ -695,6 +694,7 @@ public class Menu {
               if (editing = false) {
                 editing = true;
                 JTextField changeWorkPlace = new JTextField("Change your Workplace");
+                changeWorkPlace.setMaximumSize(new Dimension(400, 40));
                 leftPanel.add(changeWorkPlace);
                 JButton submitButton = new JButton("Submit");
                 submitButton.setBackground(Color.decode(buff));
@@ -722,6 +722,7 @@ public class Menu {
               {
                 editing = true;
                 JTextField changeHometown = new JTextField("Change your hometown");
+                changeHometown.setMaximumSize(new Dimension(400, 40));
                 leftPanel.add(changeHometown);
                 JButton submitButton = new JButton("Submit");
                 submitButton.setBackground(Color.decode(buff));
@@ -797,9 +798,8 @@ public class Menu {
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       // open dialog box to select files
       File file = chooser.getSelectedFile();
+     
       // get the file path
-      System.out.println(file.getAbsolutePath());
-
       String[] filePathArray = file.getPath().split("src");
       String relative = filePathArray[1];
 
