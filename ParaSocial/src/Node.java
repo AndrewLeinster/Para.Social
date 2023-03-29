@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
  * Stores the Nodes of the binary tree containing methods to display individual
  * nodes and write individual nodes to a file
  * 
- * @author Adam Munro
+ * @author Laura Clark, Adam Munro, Iona Cavill and Andrew Leinster
  * @version 1.0.0
  *
  */
@@ -46,6 +46,7 @@ public class Node {
 		printWriter.println(getItem().getTimePosted().format(formatter));
 		printWriter.println(getItem().getCaption());
 		printWriter.println(getItem().getNumberOfLikes());
+		
 		if (getItem().getLikedBy() != null) {
 			printWriter.println(getItem().getLikedBy().size());
 			for (int i = 0; i < getItem().getLikedBy().size(); i++) {

@@ -2,15 +2,22 @@ import java.util.ArrayList;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * 
+ * Contains all fields and methods for a post
+ * 
+ * @author Laura Clark, Adam Munro, Iona Cavill and Andrew Leinster
+ * @version 1.0.0
+ */
 public class Post {
 
     private LocalDateTime timePosted;
     private String postImage;
     private String caption;
     private int numberOfLikes;
-    private ArrayList<String> likedBy;
+    private ArrayList<String> likedBy; //the IDs of the users who have liked the post
     private String postedBy;
-    private String ID;
+    private String ID; //the unique ID of the post used for grouping elements when reading and writing to files
 
     public Post(String postImage, String caption, int numberOfLikes, ArrayList<String> likedBy, LocalDateTime timePosted, String postedBy, String ID)
     {
@@ -52,14 +59,7 @@ public class Post {
      */
     public void dislikePost(String userID)
     {
-        for (int i = 0; i < likedBy.size(); i++)
-        {
-            if (userID.equals(likedBy.get(i)))
-            {
-                likedBy.remove(i);
-            }
-        }
-
+        likedBy.remove(userID);
         numberOfLikes--;
         
     }
@@ -73,13 +73,10 @@ public class Post {
     public boolean liked(String userID)
     {
 
-        for (int i = 0; i < likedBy.size(); i++)
-        {
-            if (userID.equals(likedBy.get(i)))
+            if (likedBy.contains(userID))
             {
-                return true; //if found return true, breaking the for loop
+                return true; //if found return true
             }
-        }
 
         return false; //if the end of the list is reached, return false
 

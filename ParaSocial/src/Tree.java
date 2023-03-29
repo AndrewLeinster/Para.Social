@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * writing to files, displaying and searching the tree as well as addding and
  * removing nodes
  * 
- * @author Adam Munro
+ * @author Laura Clark, Adam Munro, Iona Cavill and Andrew Leinster
  * @version 1.0.0
  *
  */
@@ -97,8 +97,9 @@ public class Tree {
 	 * @param previous the previous node that was checked
 	 * 
 	 */
-	public void searchDelete(boolean found, Node current, int target, Node previous) {
+	public void searchDelete(boolean found, Node current, Post targetPost, Node previous) {
 
+		long target = targetPost.getElapsedTime(targetPost.getTimePosted(), LocalDateTime.now());
 		long currentTime = current.getItem().getElapsedTime(current.getItem().getTimePosted(), LocalDateTime.now());
 
 		if (target == currentTime) {
@@ -109,11 +110,11 @@ public class Tree {
 
 		} else if (target < currentTime && current.getLeftNode() != null) {
 
-			searchDelete(found, current.getLeftNode(), target, current);
+			searchDelete(found, current.getLeftNode(), targetPost, current);
 
 		} else if (target > currentTime && current.getRightNode() != null) {
 
-			searchDelete(found, current.getRightNode(), target, current);
+			searchDelete(found, current.getRightNode(), targetPost, current);
 
 		}
 
@@ -134,6 +135,7 @@ public class Tree {
 	 * @param parent the parent node of target
 	 */
 	public void removeItem(Node target, Node parent) {
+
 		if (target.getLeftNode() == null && target.getRightNode() == null) {
 			target.setItem(null); // if the node has no children, the node is removed
 		} else if (target.getLeftNode() != null && target.getRightNode() == null) {
@@ -154,44 +156,6 @@ public class Tree {
 			target.setItem(replaced.getItem()); // sets target to the node found
 			replaced.setItem(null); // sets the original node found to null
 		}
-	}
-
-	/**
-	 * 
-	 * Displays the tree from lowest ID to highest
-	 * 
-	 * @param current the current Node
-	 */
-
-
-	/**
-	 * 
-	 * Displays the tree from bottom to top
-	 * 
-	 * @param current the current Node
-	 */
-	public void postorderDisplay(Node current) {
-		if (current != null && current.getItem() != null) {
-			//inorderDisplay(current.getLeftNode()); // traverses the tree
-			//inorderDisplay(current.getRightNode());
-			//menu.displayPosts(current.getItem()); // displays the current node
-		}
-
-	}
-
-	/**
-	 * 
-	 * Displays the tree from top to bottom
-	 * 
-	 * @param current the current Node
-	 */
-	public void preorderDisplay(Node current) {
-		if (current != null && current.getItem() != null) {
-			//menu.displayPosts(current.getItem()); // displays the current node
-			//inorderDisplay(current.getLeftNode()); // traverses the tree
-			//inorderDisplay(current.getRightNode());
-		}
-
 	}
 
 	public void writeTree() {
@@ -224,14 +188,18 @@ public class Tree {
 	 *                
 	 */
 	public void writeNodes(Node current, PrintWriter printWriter) {
-		if (current != null) {
+		if (current != null && current.getItem() != null) {
 			current.writeNode(printWriter); // writes the current node to the file
 			writeNodes(current.getLeftNode(), printWriter); // traverses the tree
 			writeNodes(current.getRightNode(), printWriter);
 		}
 	}
 
+	/**
+	 * reads the tree from a file
+	 */
 	public void readTree() {
+
 		String fileName = null;
 		FileReader fileReader = null;
 		BufferedReader bufferedReader = null;

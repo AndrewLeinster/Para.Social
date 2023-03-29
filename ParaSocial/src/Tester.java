@@ -6,7 +6,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
+/**
+ * 
+ * Generated the inital data for all users and posts to later be read and written to files
+ * 
+ * @author Laura Clark, Adam Munro, Iona Cavill and Andrew Leinster
+ * @version 0.5.0
+ */
 public class Tester {
     private Main main;
     private Tree tree;
@@ -26,13 +32,24 @@ public class Tester {
 
     }
 
+    /**
+     * 
+     * writes the Users to a file
+     * 
+     */
     public void write()
     {
         main.writeToFile();
     }
 
+    /**
+     * 
+     * initialises set of Users to fill the social media platform so that in actual use they can just be read and written to a file
+     * 
+     */
     public void addUsers()
     {
+        //users were added to generate initial pool of users to later be read and written to a file
         User user1 = new User("Laura", "1", "Starbucks", "Glenrothes", "Images/PFPs/Laura.JPG", new ArrayList<String>());
         User user2 = new User("Adam", "2", "O2", "Dunfermline", "Images/PFPs/Adam.JPG", new ArrayList<String>());
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Iona.jpg", new ArrayList<String>());
@@ -67,6 +84,7 @@ public class Tester {
         User user32 = new User("Tash", "32", "NHS", "Fife", "Images/PFPs/Tash.jpg", new ArrayList<String>());
         User user33 = new User("Tilly", "33", "NHS", "Dundee", "Images/PFPs/Tilly.jpg", new ArrayList<String>());
 
+        //each user was then assigned an assortment of friends
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
         user1.addFriend(user4.getID());
@@ -413,6 +431,7 @@ public class Tester {
         user33.addFriend(user9.getID());
         user33.addFriend(user29.getID());
 
+        //users are then added to the main set of users
         main.addUsers(user1);
         main.addUsers(user2);
         main.addUsers(user3);
@@ -448,6 +467,11 @@ public class Tester {
         main.addUsers(user33);
     }
 
+    /**
+     * 
+     * initialises all the posts that will to populate the system with posts to later be read and written to files
+     * 
+     */
     public void addPosts()
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -456,6 +480,7 @@ public class Tester {
 		BufferedReader bufferedReader = null;
     String nextLine;
 
+    //uses file of random captions to add to the posts
     String fileName = "captions.txt";
     User[] userArray = main.getUsers().toArray(new User[main.getUsers().size()]);
 
@@ -468,11 +493,15 @@ public class Tester {
       
       nextLine = bufferedReader.readLine();
 
+      //x represents the index of a randomly chosen user who will be labelled as the author of the post being currently generating
       int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
 
+      //time posted is offset by i
+      //an if statment is used to ensure that they are all valid times
       if (i < 10)
       {
         String dateTime = "2023-03-27 11:0" + i;
+        //numebrOfLikes is set to a random integer value for each post
        Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
        Node newNode = new Node(newPost);
        tree.addItem(newNode, tree.getRoot(), null);
@@ -480,6 +509,7 @@ public class Tester {
       else if(i >= 10 && i < 60)
       {
         String dateTime = "2023-03-27 11:" + i;
+        //and the caption is the next line of the captions.txt file
         Post newPost = new Post("Images/Posts/" + i + ".jpg", nextLine, ThreadLocalRandom.current().nextInt(1, 1000 + 1), null, LocalDateTime.parse(dateTime, formatter), userArray[x].getName(), Integer.toString(i));
         Node newNode = new Node(newPost);
        tree.addItem(newNode, tree.getRoot(), null);

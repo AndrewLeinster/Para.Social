@@ -14,10 +14,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * 
+ * Contains all fields and methods for the systems GUI and also contains the main method for the final program
+ * 
+ * @author Laura Clark, Adam Munro, Iona Cavill and Andrew Leinster
+ * @version 1.0.0
+ */
 public class Menu {
   private static Menu newMenu;
   private JFrame window;
@@ -108,6 +114,7 @@ public class Menu {
     topPanel = new JPanel(layout);
     mainPanel = new JPanel();
 
+    // make a scroll panel so you can scroll to see all posts
     scrollPanelMain = new JScrollPane(mainPanel);
     scrollPanelMain.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPanelMain.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -444,40 +451,41 @@ public class Menu {
     inorderDisplay(tree.getRoot());
   }
 
+  /**
+   * 
+   * displays post in reverse chronological order using recursion
+   * 
+   * @param current the post to be displayed
+   */
   public void inorderDisplay(Node current) {
     if (current != null && current.getItem() != null) {
       inorderDisplay(current.getLeftNode()); // traverses the tree
-      displayPosts(current.getItem()); // displays the current node
+      displayPost(current.getItem()); // displays the current node
       inorderDisplay(current.getRightNode());
     }
   }
 
   /**
-   * Display posts
    * 
+   * displays a single post in the main panel
    * 
-   * Like buttons - 
-   *    Adds 1 to label
-   *    changes 'like' to 'liked'
-   *    ^ and inverse
-   *    adds user to 'likedby'
-   *    reload panel
-   * 
-   *
+   * @param post the post being displayed
    */
-  public void displayPosts(Post post) {
+  public void displayPost(Post post) {
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
     String userID = main.getPrimaryUser().getID();
 
-    if (post.getLikedBy().contains(userID)) {
+    //checks if the primary user has liked the post
+    if (post.liked(userID)) {
       liked=true;
     }
-    else{
+    else {
       liked = false;
     }
 
+    //converts the file path to the image
     ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
     ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
     JLabel postLabel = new JLabel(postResizeImageIcon);
@@ -486,11 +494,11 @@ public class Menu {
     JLabel captionLabel = new JLabel(post.getCaption(), SwingConstants.CENTER);
     mainPanel.add(captionLabel);
 
-    JButton LikeButton = new JButton("Bees");
+    JButton LikeButton = new JButton();
     LikeButton.setBackground(Color.CYAN);
     mainPanel.add(LikeButton);
 
-    // Set button text depending on if a post is liked or not
+    // Set button text and colour depending on if a post is liked or not
     if (liked) {
       LikeButton.setText("Liked");
       LikeButton.setBackground(Color.gray);
@@ -509,6 +517,7 @@ public class Menu {
 
         liked ^= true;
         
+        //changes the state of the likeButton when clicked
         if (liked) {
           LikeButton.setText("Liked");
           LikeButton.setBackground(Color.gray);
@@ -523,8 +532,26 @@ public class Menu {
         }
 
 
+
       }
     });
+
+    if (post.getPostedBy().equals(main.getPrimaryUser().getName()))
+    {
+      JButton deleteButton = new JButton();
+      deleteButton.setText("Delete Post");
+      deleteButton.setBackground(Color.gray);
+      mainPanel.add(deleteButton);
+  
+      deleteButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            tree.searchDelete(false, tree.getRoot(), post, null);
+            SwingUtilities.updateComponentTreeUI(window);
+            mainPanel.removeAll();
+            inorderDisplay(tree.getRoot());
+        }
+      });
+    }
 
     JLabel spacingLabel = new JLabel("\n \n \n", SwingConstants.CENTER);
     mainPanel.add(spacingLabel);
@@ -737,13 +764,14 @@ public class Menu {
       }
     });
 
+    //adds button to allow the user to write the data to a file
     JButton savebutton = new JButton("Save");
     savebutton.setBackground(Color.decode(buff));
     leftPanel.add(savebutton);
 
     savebutton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-
+        //writes posts and users to their respective files
         main.writeToFile();
         tree.writeTree();
 
