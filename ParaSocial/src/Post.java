@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.awt.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
@@ -42,6 +41,7 @@ public class Post {
     public void likePost(String userID)
     {
         likedBy.add(userID); 
+        numberOfLikes++;
     }
 
     /**
@@ -60,7 +60,8 @@ public class Post {
             }
         }
 
-        numberOfLikes = likedBy.size();
+        numberOfLikes--;
+        
     }
 
     /**

@@ -1,7 +1,4 @@
-
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.HashSet;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -41,34 +38,35 @@ public class Tester {
         User user3 = new User("Iona", "3", "Tesco", "Monifieth", "Images/PFPs/Iona.jpg", new ArrayList<String>());
         User user4 = new User("Andrew", "4", "Self-Employed", "Fife", "Images/PFPs/Andrew.jpg", new ArrayList<String>());
         User user5 = new User("Marcus", "5", "Old Course", "Monikie", "Images/PFPs/Marcus.jpg", new ArrayList<String>());
-        User user6 = new User("Adri", "6", "Odeon", "Las Vegas", "Images/PFPs/Adri.jpg", new ArrayList<String>());
-        User user7 = new User("Beth", "7", "DUSA", "Falkirk", "Images/PFPs/Beth.jpg", new ArrayList<String>());
-        User user8 = new User("Brandon", "8", "Worrel's Garage", "Glasgow", "Images/PFPs/Brandon.jpg", new ArrayList<String>());
-        User user9 = new User("Danny", "9", "Big Band Jazz Consortiumm", "Gotham City", "Images/PFPs/Danny.jpg", new ArrayList<String>());
-        User user10 = new User("Dennis", "10", "Monster Bike", "Stoketown", "Images/PFPs/Dennis.jpg", new ArrayList<String>());
+        User user6 = new User("Adri", "6", "Old course", "Fife", "Images/PFPs/Adri.jpg", new ArrayList<String>());
+        User user7 = new User("Beth", "7", "DUSA", "Glenrothes", "Images/PFPs/Beth.jpg", new ArrayList<String>());
+        User user8 = new User("Brandon", "8", "Monster Bike", "Glasgow", "Images/PFPs/Brandon.jpg", new ArrayList<String>());
+        User user9 = new User("Danny", "9", "Big Band Jazz Consortiumm", "Glasgow", "Images/PFPs/Danny.jpg", new ArrayList<String>());
+        User user10 = new User("Dennis", "10", "Monster Bike", "Monifieth", "Images/PFPs/Dennis.jpg", new ArrayList<String>());
         User user11 = new User("Dominique", "11", "Luigis Pizzeria", "Dundee", "Images/PFPs/Dominique.jpg", new ArrayList<String>());
-        User user12 = new User("Evan", "12", "Sarcasm.Inc", "Bangor", "Images/PFPs/Evan.jpg", new ArrayList<String>());
-        User user13 = new User("French", "13", "Bangin' Baguette Bakery", "Dubai", "Images/PFPs/Ffrench.jpg", new ArrayList<String>());
-        User user14 = new User("Fin", "14", "Comrie Croft Bikes", "Comrie", "Images/PFPs/Fin.jpg", new ArrayList<String>());
-        User user15 = new User("Gary", "15", "Nevis Cycles", "Fort William", "Images/PFPs/Gary.jpg", new ArrayList<String>());
+        User user12 = new User("Evan", "12", "Starbucks", "Dunfermline", "Images/PFPs/Evan.jpg", new ArrayList<String>());
+        User user13 = new User("French", "13", "Bangin' Baguette Bakery", "Dundee", "Images/PFPs/Ffrench.jpg", new ArrayList<String>());
+        User user14 = new User("Fin", "14", "Comrie Croft Bikes", "Monikie", "Images/PFPs/Fin.jpg", new ArrayList<String>());
+        User user15 = new User("Gary", "15", "Nevis Cycles", "Dunfemline", "Images/PFPs/Gary.jpg", new ArrayList<String>());
         User user16 = new User("Grant", "16", "SDA", "Dundee", "Images/PFPs/Grant.jpg", new ArrayList<String>());
-        User user17 = new User("James", "17", "RadVenture Tours", "Strathmiglo", "Images/PFPs/James.jpg", new ArrayList<String>());
-        User user18 = new User("Joe", "18", "Mazda Motors", "NewPort", "Images/PFPs/Joe.jpg", new ArrayList<String>());
-        User user19 = new User("John", "19", "Big Band Jazz Consortiumm", "NightCity", "Images/PFPs/John.jpg", new ArrayList<String>());
+        User user17 = new User("James", "17", "SDA", "Fife", "Images/PFPs/James.jpg", new ArrayList<String>());
+        User user18 = new User("Joe", "18", "SDA", "Fife", "Images/PFPs/Joe.jpg", new ArrayList<String>());
+        User user19 = new User("John", "19", "Big Band Jazz Consortiumm", "Glasgow", "Images/PFPs/John.jpg", new ArrayList<String>());
         User user20 = new User("Kyle", "20", "Monster Bike", "Inverness", "Images/PFPs/Kyle.jpg", new ArrayList<String>());
-        User user21 = new User("Lewis", "21", "Army Stuff", "Dundee", "Images/PFPs/Lewis.jpg", new ArrayList<String>());
-        User user22 = new User("Lindsay", "22", "NHS", "Kingskettle", "Images/PFPs/Lindsay.jpg", new ArrayList<String>());
+        User user21 = new User("Lewis", "21", "NHS", "Dundee", "Images/PFPs/Lewis.jpg", new ArrayList<String>());
+        User user22 = new User("Lindsay", "22", "NHS", "Fife", "Images/PFPs/Lindsay.jpg", new ArrayList<String>());
         User user23 = new User("Matt", "23", "H+I Adventures", "Inverness", "Images/PFPs/Matt.jpg", new ArrayList<String>());
-        User user24 = new User("Niamh", "24", "Montezumas Race Team", "Falkirk", "Images/PFPs/Niamh.jpg", new ArrayList<String>());
-        User user25 = new User("Orla", "25", "Wholesome corp", "Glasgow", "Images/PFPs/Orla.jpg", new ArrayList<String>());
-        User user26 = new User("Patryk", "26", "DUMRCC", "Arran", "Images/PFPs/Patryk.jpg", new ArrayList<String>());
+        User user24 = new User("Niamh", "24", "NHS", "Inverness", "Images/PFPs/Niamh.jpg", new ArrayList<String>());
+        User user25 = new User("Orla", "25", "NHS", "Glasgow", "Images/PFPs/Orla.jpg", new ArrayList<String>());
+        User user26 = new User("Patryk", "26", "DUMRCC", "Rumbling Bridge", "Images/PFPs/Patryk.jpg", new ArrayList<String>());
         User user27 = new User("Ross", "27", "DUMRCC", "Rumbling Bridge", "Images/PFPs/Ross.jpg", new ArrayList<String>());
         User user28 = new User("Roy", "28", "DUMRCC", "Rumbling Bridge", "Images/PFPs/Roy.jpg", new ArrayList<String>());
-        User user29 = new User("Sally", "29", "Aviemore Bikes", "Aviemore", "Images/PFPs/Sally.jpg", new ArrayList<String>());
-        User user30 = new User("Sean", "30", "Grizzly Munro Diaries", "Dundee", "Images/PFPs/Sean.jpg", new ArrayList<String>());
-        User user31 = new User("Sid", "31", "Sid's Clothing emporium", "Arran", "Images/PFPs/Sid.jpg", new ArrayList<String>());
-        User user32 = new User("Tash", "32", "Avertical", "England:(", "Images/PFPs/Tash.jpg", new ArrayList<String>());
-        User user33 = new User("Tilly", "33", "Hidden Glen", "Muchty", "Images/PFPs/Tilly.jpg", new ArrayList<String>());
+        User user29 = new User("Sally", "29", "Aviemore Bikes", "Glasgow", "Images/PFPs/Sally.jpg", new ArrayList<String>());
+        User user30 = new User("Sean", "30", "DUMRCC", "Dundee", "Images/PFPs/Sean.jpg", new ArrayList<String>());
+        User user31 = new User("Sid", "31", "DUMRCC", "Monikie", "Images/PFPs/Sid.jpg", new ArrayList<String>());
+        User user32 = new User("Tash", "32", "NHS", "Fife", "Images/PFPs/Tash.jpg", new ArrayList<String>());
+        User user33 = new User("Tilly", "33", "NHS", "Dundee", "Images/PFPs/Tilly.jpg", new ArrayList<String>());
+        User user34 = new User ("Craig", "34", "Uni of Dundee", "Dundee", "Images/PFPs/Craig.jpg", new ArrayList<String>());
 
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
@@ -416,6 +414,40 @@ public class Tester {
         user33.addFriend(user9.getID());
         user33.addFriend(user29.getID());
 
+        user34.addFriend(user1.getID());
+        user34.addFriend(user2.getID());
+        user34.addFriend(user3.getID());
+        user34.addFriend(user4.getID());
+        user34.addFriend(user5.getID());
+        user34.addFriend(user6.getID());
+        user34.addFriend(user7.getID());
+        user34.addFriend(user8.getID());
+        user34.addFriend(user9.getID());
+        user34.addFriend(user10.getID());
+        user34.addFriend(user11.getID());
+        user34.addFriend(user12.getID());
+        user34.addFriend(user13.getID());
+        user34.addFriend(user14.getID());
+        user34.addFriend(user15.getID());
+        user34.addFriend(user16.getID());
+        user34.addFriend(user17.getID());
+        user34.addFriend(user18.getID());
+        user34.addFriend(user19.getID());
+        user34.addFriend(user20.getID());
+        user34.addFriend(user21.getID());
+        user34.addFriend(user22.getID());
+        user34.addFriend(user23.getID());
+        user34.addFriend(user24.getID());
+        user34.addFriend(user25.getID());
+        user34.addFriend(user26.getID());
+        user34.addFriend(user27.getID());
+        user34.addFriend(user28.getID());
+        user34.addFriend(user29.getID());
+        user34.addFriend(user30.getID());
+        user34.addFriend(user31.getID());
+        user34.addFriend(user32.getID());
+        user34.addFriend(user33.getID());
+
         main.addUsers(user1);
         main.addUsers(user2);
         main.addUsers(user3);
@@ -449,14 +481,7 @@ public class Tester {
         main.addUsers(user31);
         main.addUsers(user32);
         main.addUsers(user33);
-    }
-
-    public int getUserCount() {
-        int max = 31;
-
-        // Any thoughts on getting a max ID value?
-
-        return max;
+        main.addUsers(user34);
     }
 
     public void addPosts()
@@ -467,7 +492,7 @@ public class Tester {
 		BufferedReader bufferedReader = null;
     String nextLine;
 
-    String fileName = "C:/Users/adamm/Downloads/captions.txt";
+    String fileName = "captions.txt";
     User[] userArray = main.getUsers().toArray(new User[main.getUsers().size()]);
 
     try{
@@ -479,7 +504,7 @@ public class Tester {
       
       nextLine = bufferedReader.readLine();
 
-      int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
+      int x = ThreadLocalRandom.current().nextInt(0, 33 + 1);
 
       if (i < 10)
       {

@@ -126,7 +126,7 @@ public class Menu {
 
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
-    leftPanel.setBackground(Color.decode(teaGreen));
+    leftPanel.setBackground(Color.decode(papayaWhip));
 
     // add main, left and right panels to top panel
     topPanel.add(scrollPanelMain, BorderLayout.CENTER);
@@ -470,13 +470,12 @@ public class Menu {
    *
    */
   public void displayPosts(Post post) {
-
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
-    User user = new User();
+    String userID = main.getPrimaryUser().getID();
 
-    if (post.getLikedBy().contains(user)) {
+    if (post.getLikedBy().contains(userID)) {
       liked=true;
     }
 
@@ -505,8 +504,8 @@ public class Menu {
     LikeButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
 
-        post.likePost(user.getID());
-        
+        post.likePost(userID);
+
         liked ^= true;
         
         if (liked) {
@@ -516,7 +515,6 @@ public class Menu {
         }
 
         likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
-
         SwingUtilities.updateComponentTreeUI(window);
       }
     });
