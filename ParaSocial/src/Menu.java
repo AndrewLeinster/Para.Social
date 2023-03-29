@@ -504,12 +504,16 @@ public class Menu {
         
         if (liked) {
           LikeButton.setText("Liked");
+          likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
+          SwingUtilities.updateComponentTreeUI(window);
         } else {
+          post.setNumberOfLikes(post.getNumberOfLikes()-1);
+          likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
+          SwingUtilities.updateComponentTreeUI(window);
           LikeButton.setText("Like");
         }
 
-        likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
-        SwingUtilities.updateComponentTreeUI(window);
+
       }
     });
 
