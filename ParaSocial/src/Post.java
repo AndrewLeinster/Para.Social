@@ -41,9 +41,7 @@ public class Post {
      */
     public void likePost(String userID)
     {
-        likedBy.add(userID);
-        numberOfLikes = likedBy.size();
-        
+        likedBy.add(userID); 
     }
 
     /**
