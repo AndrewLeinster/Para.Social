@@ -474,6 +474,9 @@ public class Menu {
     if (post.getLikedBy().contains(userID)) {
       liked=true;
     }
+    else{
+      liked = false;
+    }
 
     ImageIcon postIcon = new javax.swing.ImageIcon(getClass().getResource(post.getPostImage()));
     ImageIcon postResizeImageIcon = resizeImage(postIcon, 300, 300);
