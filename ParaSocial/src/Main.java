@@ -248,10 +248,11 @@ public class Main {
         ArrayList<User> recommendations = new ArrayList<User>();
 
         for (int i = 0; i < userArray.length; i++) {
-            System.out.println(userArray[i].getHomeTown());
-            System.out.println(user.getHomeTown());
-            if (userArray[i].getWorkPlace().equals(user.getWorkPlace())
-                    || userArray[i].getHomeTown().equals(user.getHomeTown())) {
+           
+            if ((userArray[i].getWorkPlace().equals(user.getWorkPlace())
+                    || userArray[i].getHomeTown().equals(user.getHomeTown()))
+                    && !getPrimaryUser().getFriends().contains(userArray[i].getID())) {
+
                 recommendations.add(userArray[i]);
             }
         }
