@@ -536,7 +536,7 @@ public class Tester {
   }
   catch (IOException e)
   {
-    System.out.println("error with file");
+    System.out.println("error with captions file");
   }
   finally
   {
