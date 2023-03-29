@@ -200,6 +200,7 @@ public class Menu {
   public void search() {
     // search/ filter friends
     JFormattedTextField searchbox = new JFormattedTextField("Search/ filter your friends");
+    searchbox.setMaximumSize(new Dimension(400, 40));
     rightPanel.add(searchbox);
     JButton searchButton = new JButton("Search");
     searchButton.setBackground(Color.decode(buff));
@@ -237,7 +238,7 @@ public class Menu {
 
   /**
    * Display a list of users who have things in common with the main user
-   * Display people with similar hometowns or workplaces as the main user
+   * Display people with same hometown or workplace as the main user
    */
   public void friendRecommendations() {
     JButton friendRecommendations = new JButton(" See Friend Recommendations");
@@ -260,13 +261,20 @@ public class Menu {
        
        System.out.println(friendRecommend.size());
 
+       for (int i = 0; i < friendRecommend.size(); i++) {
         // remove main user from list if present
-        for (int i = 0; i < friendRecommend.size(); i++) {
-          if (friendRecommend.get(i).equals(main.getPrimaryUser())) {
-            friendRecommend.remove(friendRecommend.get(i));
-          }
+        if (friendRecommend.get(i).equals(main.getPrimaryUser())) {
+          friendRecommend.remove(friendRecommend.get(i));
         }
-        // should i check if the user is already in their friends list?
+  
+      }
+      for (int j=0; j<friendRecommend.size(); j++) {
+        // check if people in list are already in friends list and remove
+        if (main.getPrimaryUser().getFriends().contains(friendRecommend.get(j).getID()))
+        {
+          friendRecommend.remove(friendRecommend.get(j));
+        }
+      }
 
         // check if the list is empty
         if (friendRecommend.size() == 0) {
