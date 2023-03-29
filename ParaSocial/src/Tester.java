@@ -45,7 +45,7 @@ public class Tester {
         User user10 = new User("Dennis", "10", "Monster Bike", "Monifieth", "Images/PFPs/Dennis.jpg", new ArrayList<String>());
         User user11 = new User("Dominique", "11", "Luigis Pizzeria", "Dundee", "Images/PFPs/Dominique.jpg", new ArrayList<String>());
         User user12 = new User("Evan", "12", "Starbucks", "Dunfermline", "Images/PFPs/Evan.jpg", new ArrayList<String>());
-        User user13 = new User("French", "13", "Bangin' Baguette Bakery", "Dundee", "Images/PFPs/Ffrench.jpg", new ArrayList<String>());
+        User user13 = new User("Ffrench", "13", "Bangin' Baguette Bakery", "Dundee", "Images/PFPs/Ffrench.jpg", new ArrayList<String>());
         User user14 = new User("Fin", "14", "Comrie Croft Bikes", "Monikie", "Images/PFPs/Fin.jpg", new ArrayList<String>());
         User user15 = new User("Gary", "15", "Nevis Cycles", "Dunfemline", "Images/PFPs/Gary.jpg", new ArrayList<String>());
         User user16 = new User("Grant", "16", "SDA", "Dundee", "Images/PFPs/Grant.jpg", new ArrayList<String>());
@@ -66,7 +66,6 @@ public class Tester {
         User user31 = new User("Sid", "31", "DUMRCC", "Monikie", "Images/PFPs/Sid.jpg", new ArrayList<String>());
         User user32 = new User("Tash", "32", "NHS", "Fife", "Images/PFPs/Tash.jpg", new ArrayList<String>());
         User user33 = new User("Tilly", "33", "NHS", "Dundee", "Images/PFPs/Tilly.jpg", new ArrayList<String>());
-        User user34 = new User ("Craig", "34", "Uni of Dundee", "Dundee", "Images/PFPs/Craig.jpg", new ArrayList<String>());
 
         user1.addFriend(user2.getID());
         user1.addFriend(user3.getID());
@@ -414,40 +413,6 @@ public class Tester {
         user33.addFriend(user9.getID());
         user33.addFriend(user29.getID());
 
-        user34.addFriend(user1.getID());
-        user34.addFriend(user2.getID());
-        user34.addFriend(user3.getID());
-        user34.addFriend(user4.getID());
-        user34.addFriend(user5.getID());
-        user34.addFriend(user6.getID());
-        user34.addFriend(user7.getID());
-        user34.addFriend(user8.getID());
-        user34.addFriend(user9.getID());
-        user34.addFriend(user10.getID());
-        user34.addFriend(user11.getID());
-        user34.addFriend(user12.getID());
-        user34.addFriend(user13.getID());
-        user34.addFriend(user14.getID());
-        user34.addFriend(user15.getID());
-        user34.addFriend(user16.getID());
-        user34.addFriend(user17.getID());
-        user34.addFriend(user18.getID());
-        user34.addFriend(user19.getID());
-        user34.addFriend(user20.getID());
-        user34.addFriend(user21.getID());
-        user34.addFriend(user22.getID());
-        user34.addFriend(user23.getID());
-        user34.addFriend(user24.getID());
-        user34.addFriend(user25.getID());
-        user34.addFriend(user26.getID());
-        user34.addFriend(user27.getID());
-        user34.addFriend(user28.getID());
-        user34.addFriend(user29.getID());
-        user34.addFriend(user30.getID());
-        user34.addFriend(user31.getID());
-        user34.addFriend(user32.getID());
-        user34.addFriend(user33.getID());
-
         main.addUsers(user1);
         main.addUsers(user2);
         main.addUsers(user3);
@@ -481,7 +446,6 @@ public class Tester {
         main.addUsers(user31);
         main.addUsers(user32);
         main.addUsers(user33);
-        main.addUsers(user34);
     }
 
     public void addPosts()
@@ -504,7 +468,7 @@ public class Tester {
       
       nextLine = bufferedReader.readLine();
 
-      int x = ThreadLocalRandom.current().nextInt(0, 33 + 1);
+      int x = ThreadLocalRandom.current().nextInt(0, 32 + 1);
 
       if (i < 10)
       {

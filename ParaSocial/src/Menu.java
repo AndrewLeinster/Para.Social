@@ -45,6 +45,8 @@ public class Menu {
     main = new Main();
     main.readIn();
 
+    System.out.println(main.getPrimaryUser().getName());
+
     teaGreen = "0xCCD5AE";
     beige = "0xE9EDC9";
     cornsilk = "0xFEFAE0";
@@ -488,8 +490,10 @@ public class Menu {
     // Set button text depending on if a post is liked or not
     if (liked) {
       LikeButton.setText("Liked");
+      LikeButton.setBackground(Color.gray);
     } else {
       LikeButton.setText("Like");
+      LikeButton.setBackground(Color.cyan);
     }
 
     JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
@@ -504,12 +508,14 @@ public class Menu {
         
         if (liked) {
           LikeButton.setText("Liked");
+          LikeButton.setBackground(Color.gray);
           likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
           SwingUtilities.updateComponentTreeUI(window);
         } else {
-          post.setNumberOfLikes(post.getNumberOfLikes()-1);
+          post.setNumberOfLikes(post.getNumberOfLikes()-2);
           likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
           SwingUtilities.updateComponentTreeUI(window);
+          LikeButton.setBackground(Color.cyan);
           LikeButton.setText("Like");
         }
 
