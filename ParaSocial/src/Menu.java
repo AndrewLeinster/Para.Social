@@ -119,6 +119,8 @@ public class Menu {
     scrollPanelRight.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scrollPanelRight.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     leftPanel = new JPanel();
+    scrollPanelMain.getVerticalScrollBar().setUnitIncrement(10);
+    scrollPanelRight.getVerticalScrollBar().setUnitIncrement(10);
 
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
