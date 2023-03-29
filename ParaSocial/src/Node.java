@@ -49,7 +49,7 @@ public class Node {
 		if (getItem().getLikedBy() != null) {
 			printWriter.println(getItem().getLikedBy().size());
 			for (int i = 0; i < getItem().getLikedBy().size(); i++) {
-				printWriter.println(getItem().getLikedBy());
+				printWriter.println(getItem().getLikedBy().get(i));
 			}
 		} else {
 			printWriter.println("0");

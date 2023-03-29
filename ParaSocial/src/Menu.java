@@ -13,13 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,6 +44,8 @@ public class Menu {
 
     main = new Main();
     main.readIn();
+
+    System.out.println(main.getPrimaryUser().getName());
 
     teaGreen = "0xCCD5AE";
     beige = "0xE9EDC9";
@@ -126,7 +122,7 @@ public class Menu {
 
     mainPanel.setBackground(Color.decode(cornsilk));
     rightPanel.setBackground(Color.decode(beige));
-    leftPanel.setBackground(Color.decode(teaGreen));
+    leftPanel.setBackground(Color.decode(papayaWhip));
 
     // add main, left and right panels to top panel
     topPanel.add(scrollPanelMain, BorderLayout.CENTER);
@@ -470,13 +466,12 @@ public class Menu {
    *
    */
   public void displayPosts(Post post) {
-
     JLabel nameLabel = new JLabel(post.getPostedBy());
     mainPanel.add(nameLabel);
 
-    User user = new User();
+    String userID = main.getPrimaryUser().getID();
 
-    if (post.getLikedBy().contains(user)) {
+    if (post.getLikedBy().contains(userID)) {
       liked=true;
     }
 
@@ -495,8 +490,10 @@ public class Menu {
     // Set button text depending on if a post is liked or not
     if (liked) {
       LikeButton.setText("Liked");
+      LikeButton.setBackground(Color.gray);
     } else {
       LikeButton.setText("Like");
+      LikeButton.setBackground(Color.cyan);
     }
 
     JLabel likesLabel = new JLabel(Integer.toString(post.getNumberOfLikes()), SwingConstants.CENTER);
@@ -505,19 +502,24 @@ public class Menu {
     LikeButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
 
-        post.likePost(user.getID());
-        
+        post.likePost(userID);
+
         liked ^= true;
         
         if (liked) {
           LikeButton.setText("Liked");
+          LikeButton.setBackground(Color.gray);
+          likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
+          SwingUtilities.updateComponentTreeUI(window);
         } else {
+          post.setNumberOfLikes(post.getNumberOfLikes()-2);
+          likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
+          SwingUtilities.updateComponentTreeUI(window);
+          LikeButton.setBackground(Color.cyan);
           LikeButton.setText("Like");
         }
 
-        likesLabel.setText(Integer.toString(post.getNumberOfLikes()));
 
-        SwingUtilities.updateComponentTreeUI(window);
       }
     });
 
